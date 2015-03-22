@@ -1,1 +1,1 @@
-visual economic calendar
+visual calendar

@@ -1,7 +1,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
-function parse_investing(eventDateFrom, eventDateTo, countries, importances, sendto_db){ // may be add more parameters
+function parse_investing(eventDateFrom, eventDateTo, countries=[], importances=[], sendto_db){ // may be add more parameters
 	// eventDateFrom: '2015-03-25'
 	// eventDateTo: '2015-03-25'
 	// countries: [1,2,3,...]
@@ -15,7 +15,7 @@ function parse_investing(eventDateFrom, eventDateTo, countries, importances, sen
 	  	dateFrom: eventDateFrom,
 	    dateTo: eventDateTo,
 	    //timeZone: 18,
-	    //quotes_search_text: '',
+	    quotes_search_text: '',
 	    country: countries,
 	    importance: importances
 	    //category: []

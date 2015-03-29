@@ -41,6 +41,8 @@ parse_investing('2015-03-25','2015-03-25', function(event_p){console.log(event_p
 
 */
 
+// http://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit?rq=1
+
 var fs = require('fs');
 
 function filelog(str){
@@ -59,16 +61,17 @@ function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, impor
 	importances = typeof importances !== 'undefined' ? importances : [];
 
 	var options = {
-	  url: 'http://ru.investing.com/economic-calendar/',
+	  url: 'http://ru.investing.com/economic-calendar/filter',
 	  headers: {
 	    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36',
-	    'Accept': 'application/json, text/javascript, */*; q=0.01',
-		'Origin': 'http://www.investing.com',
+	    //'Accept': 'application/json, text/javascript, */*; q=0.01',
+		//'Origin': 'http://www.investing.com',
 		'X-Requested-With': 'XMLHttpRequest',
-		'Content-Type': 'application/x-www-form-urlencoded',
-		'Referer': "http://www.investing.com/economic-calendar/",
-		'Accept-Encoding': 'deflate',
-		'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+		//'Content-Type': 'application/x-www-form-urlencoded',
+		//'Referer': "http://www.investing.com/economic-calendar/",
+		//'Accept-Encoding': 'deflate',
+		//'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
+		//'Cookie':'PHPSESSID=j50org6fdhg9gjf0qp3q6opaa3; fpros_popup=1427627618; _gat=1; _gat_allSitesTracker=1; _ga=GA1.2.154408938.1423301836'
 	  },
 	  form:{
 	  	dateFrom: eventDateFrom,
@@ -87,12 +90,10 @@ function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, impor
 
 	function callback(error, response, body) {
 	  if (!error && response.statusCode == 200) {
+	  	var json = JSON.parse(body);
+	    var $ = cheerio.load(json['renderedFilteredEvents']);
 
-	    var $ = cheerio.load(body); 
-
-	    filelog(body)
-
-	 	$('#ecEventsTable tr[event_attr_id]').each(function() {
+	 	$('tr[event_attr_id]').each(function() {
 	 		var cols = $(this).find('td')
 	 		var econ_event = {
 	 			id: $(this).attr('id').replace('eventRowId_',''),
@@ -106,7 +107,6 @@ function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, impor
 		        previous: $(cols['6']).text()
 	 		}
 	 		sendto_db(econ_event); // может заменить на yield
-	      	//console.log(econ_event);
 	    })
 	  } else{
 	  		console.log(response.statusCode);
@@ -115,3 +115,5 @@ function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, impor
 	}
 	request.post(options, callback);
 }
+
+parse_investing('2015-03-24','2015-03-25', function(event_p){console.log(event_p)})

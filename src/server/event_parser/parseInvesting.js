@@ -1,10 +1,11 @@
-var request = require('request');
-var cheerio = require('cheerio');
-
 /* ---GETTING PARSED DATA---
 
 Function request investing.com economic calendar and parse the responce. Parsed events then sends to the sendto_db function
 
+---LANGUAGE---
+To change language you need to chang URL in options variable
+
+---FILTER---
 Filter on investing.com looks like this:
 form:{
 	  	dateFrom: '2015-03-25',
@@ -23,6 +24,7 @@ form:{
 If it'll be needed you can modify code below so that it contained more fields from filter.
 In get all values(for fields with arrays) without filtering, just set the field to the empty array []
 
+---RESPONSE---
 Responce event looks like this:
 { id: '55378',
   time: '2015-03-27 19:30:00',
@@ -34,86 +36,59 @@ Responce event looks like this:
   forecast: ' ',
   previous: '-32,8K' }
 
-
-  ---testing---
+---TESTING---
 parse_investing('2015-03-20','2015-03-20', function(event_p){console.log(event_p)})
 parse_investing('2015-03-25','2015-03-25', function(event_p){console.log(event_p['time'])})
 
 */
 
-// http://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit?rq=1
-
-var fs = require('fs');
-
-function filelog(str){
-	fs.writeFile("/Work/temp.txt", str, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log("The file was saved!");
-}); 
-}
-
+var request = require('request');
+var cheerio = require('cheerio');
 
 function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, importances){ 
 	countries = typeof countries !== 'undefined' ? countries : [];
 	importances = typeof importances !== 'undefined' ? importances : [];
 
 	var options = {
-	  url: 'http://ru.investing.com/economic-calendar/filter',
-	  headers: {
-	    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36',
-	    //'Accept': 'application/json, text/javascript, */*; q=0.01',
-		//'Origin': 'http://www.investing.com',
-		'X-Requested-With': 'XMLHttpRequest',
-		//'Content-Type': 'application/x-www-form-urlencoded',
-		//'Referer': "http://www.investing.com/economic-calendar/",
-		//'Accept-Encoding': 'deflate',
-		//'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
-		//'Cookie':'PHPSESSID=j50org6fdhg9gjf0qp3q6opaa3; fpros_popup=1427627618; _gat=1; _gat_allSitesTracker=1; _ga=GA1.2.154408938.1423301836'
-	  },
-	  form:{
-	  	dateFrom: eventDateFrom,
-	    dateTo: eventDateTo,
-	    quotes_search_text: '',
-	    //country: countries,
-	    //importance: importances,
-	    timeZone:8,
-	    timeFilter:  'timeRemain'
-	    //timeFrame: 'tomorrow',	    
-	  }
+		url: 'http://ru.investing.com/economic-calendar/filter',
+		headers: {
+			'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36',
+			'X-Requested-With': 'XMLHttpRequest'
+		},
+		form:{
+			dateFrom: eventDateFrom,
+			dateTo: eventDateTo,
+			quotes_search_text: '',
+			country: countries,
+			importance: importances,
+			timeZone:1 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
+		}
 	};
 
-	console.log(eventDateFrom)
-	console.log(eventDateTo)
-
 	function callback(error, response, body) {
-	  if (!error && response.statusCode == 200) {
-	  	var json = JSON.parse(body);
-	    var $ = cheerio.load(json['renderedFilteredEvents']);
+		if (!error && response.statusCode == 200) {
+			var json = JSON.parse(body);
+			var $ = cheerio.load(json['renderedFilteredEvents']);
 
-	 	$('tr[event_attr_id]').each(function() {
-	 		var cols = $(this).find('td')
-	 		var econ_event = {
-	 			id: $(this).attr('id').replace('eventRowId_',''),
-	 			time: $(this).attr('event_timestamp'),
-	 			country: $(cols['1']).find('span').attr('title'),
-	 			currency: $(cols['1']).text().trim(),
-	 			importance: $(cols['2']).attr('data-img_key'),
+			$('tr[event_attr_id]').each(function() {
+				var cols = $(this).find('td')
+				var econ_event = {
+					id: $(this).attr('id').replace('eventRowId_',''),
+					time: $(this).attr('event_timestamp'),
+					country: $(cols['1']).find('span').attr('title'),
+					currency: $(cols['1']).text().trim(),
+					importance: $(cols['2']).attr('data-img_key'),
 		        descriptrion: $(cols['3']).text().trim(),
 		        actual: $(cols['4']).text(),
 		        forecast: $(cols['5']).text(),
 		        previous: $(cols['6']).text()
-	 		}
-	 		sendto_db(econ_event); // может заменить на yield
-	    })
-	  } else{
-	  		console.log(response.statusCode);
-	    	// TODO: raise exception. console.log(response.statusCod)
-	  }
+				}
+				sendto_db(econ_event); // может заменить на yield
+			})
+		} else{
+			console.log(response.statusCode);
+			// TODO: raise exception. console.log(response.statusCod)
+		}
 	}
 	request.post(options, callback);
 }
-
-parse_investing('2015-03-24','2015-03-25', function(event_p){console.log(event_p)})

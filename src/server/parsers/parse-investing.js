@@ -37,35 +37,36 @@ Responce event looks like this:
   previous: '-32,8K' }
 
 ---TESTING---
-parse_investing('2015-03-20','2015-03-20', function(event_p){console.log(event_p)})
-parse_investing('2015-03-25','2015-03-25', function(event_p){console.log(event_p['time'])})
+parse_investing('ru', '2015-02-01', '2015-03-01', function(event_p){console.log(event_p)})
+parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(event_p['time'])})
 
 */
 
-var request = require('request');
-var cheerio = require('cheerio');
+var request = require('request'),
+	cheerio = require('cheerio');
 
-function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, importances){ 
-	countries = typeof countries !== 'undefined' ? countries : [];
-	importances = typeof importances !== 'undefined' ? importances : [];
+function parse_investing(lang, fromDate, toDate, sendto_func){ 
+	var lang_url = {
+		'en': 'www',
+		'ru' : 'ru'
+	};
 
 	var options = {
-		url: 'http://ru.investing.com/economic-calendar/filter',
+		url: 'http://'+lang_url[lang]+'.investing.com/economic-calendar/filter',
 		headers: {
 			'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36',
 			'X-Requested-With': 'XMLHttpRequest'
 		},
 		form:{
-			dateFrom: eventDateFrom,
-			dateTo: eventDateTo,
+			dateFrom: fromDate,
+			dateTo: toDate,
 			quotes_search_text: '',
-			country: countries,
-			importance: importances,
 			timeZone:1 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
 		}
 	};
 
 	function callback(error, response, body) {
+		var allEvents = [];
 		if (!error && response.statusCode == 200) {
 			var json = JSON.parse(body);
 			var $ = cheerio.load(json['renderedFilteredEvents']);
@@ -78,17 +79,19 @@ function parse_investing(eventDateFrom, eventDateTo, sendto_db, countries, impor
 					country: $(cols['1']).find('span').attr('title'),
 					currency: $(cols['1']).text().trim(),
 					importance: $(cols['2']).attr('data-img_key'),
-		        descriptrion: $(cols['3']).text().trim(),
-		        actual: $(cols['4']).text(),
-		        forecast: $(cols['5']).text(),
-		        previous: $(cols['6']).text()
+			        descriptrion: $(cols['3']).text().trim(),
+			        actual: $(cols['4']).text(),
+			        forecast: $(cols['5']).text(),
+			        previous: $(cols['6']).text()
 				}
-				sendto_db(econ_event); // может заменить на yield
+				allEvents.push(econ_event)				
 			})
+			sendto_func(allEvents);
 		} else{
-			console.log(response.statusCode);
+			// console.log('Error' + response.statusCode);
 			// TODO: raise exception. console.log(response.statusCod)
 		}
+		
 	}
 	request.post(options, callback);
 }

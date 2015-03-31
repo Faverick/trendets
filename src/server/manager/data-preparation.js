@@ -1,41 +1,41 @@
 var rek = require('rekuire');
 var investing = rek('parse-investing'),
 	stocks = rek('parse-stocks'),
-	dbHandler = rek('db-handler');
+	DbHandler = rek('db-handler');
 
 
-function download_events(events_params){
+function downloadEvents(events_params){
 	console.log('Downloading Events');
-	dbHandler.connect()
-	function sendto_db(events){
+	DbHandler.connect()
+	function sendToDb(events){
 		// call db function
-		dbHandler.insert_events_todb(events);
+		dbHandler.insertEventsToDb(events);
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
-	investing.parse_investing(events_params['language'], events_params['dateFrom'], events_params['dateTo'], sendto_db);
-	dbHandler.disconnect()
+	investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
+	DbHandler.disconnect()
 }
 
-function download_stocks(stocks_params){
+function downloadStocks(stocksParams){
 
-	function sendto_db(stocks){
+	function sendToDb(stocks){
 		// call db function
-		dbHandler.insert_stocks_todb(stocks);
+		DbHandler.insertStocksToDb(stocks);
 	}
 
 	// call stock parser with callback func
-	stocks.parse_stocks(stocks_params['fromDate'], stocks_params['toDate'], sendto_db);
+	stocks.parseStocks(stocksParams['fromDate'], stocksParams['toDate'], sendToDb);
 }
 
-function events_to_files(file_params){
+function eventsToFiles(fileParams){
 	// вызвать загрузку данных из бд в файлы
 	// db_handler.extract_events_fromdb(file_params);
 }
 
-function stocks_to_files(file_params){
+function stocksToFiles(fileParams){
 	// вызвать загрузку данных из бд в файлы
 	// db_handler.extract_stocks_fromdb(file_params);
 }
 
-module.exports.download_events = download_events;
-module.exports.download_stocks = download_stocks;
+module.exports.downloadEvents = downloadEvents;
+module.exports.downloadStocks = downloadStocks;

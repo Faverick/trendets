@@ -45,8 +45,8 @@ parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(
 var request = require('request'),
 	cheerio = require('cheerio');
 
-function parse_investing(lang, fromDate, toDate, sendto_func){ 
-	var lang_url = {
+function parseInvesting(lang, fromDate, toDate, sendToFunc){ 
+	var langUrl = {
 		'en': 'www',
 		'ru' : 'ru'
 	};
@@ -88,7 +88,7 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 					allEvents.push(econ_event)				
 				})
 			}
-			sendto_func(allEvents);
+			sendToFunc(allEvents);
 		} else{
 			// console.log('Error' + response.statusCode);
 			// TODO: raise exception. console.log(response.statusCod)
@@ -98,4 +98,4 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 	request.post(options, callback);
 }
 
-module.exports.parse_investing = parse_investing;
+module.exports.parseInvesting = parseInvesting;

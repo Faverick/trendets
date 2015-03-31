@@ -1,7 +1,7 @@
 var rek = require('rekuire')
 var TrendetsDb = rek('db')
 
-function dbHandler(dbPath){
+function DbHandler(dbPath){
 
 	var db = new TrendetsDb(dbPath)
 	db.exists() ? 'ok' : db.create();
@@ -10,28 +10,28 @@ function dbHandler(dbPath){
 		db.connect()
 	}
 
-	this.disconnect = function function_name (argument) {
+	this.disconnect = function functionName (argument) {
 		db.disconnect()
 	}
 
-	this.insert_events_todb = function insert_events_todb(events){
+	this.insertEventsToDb = function insertEventsToDb(events){
 		events.forEach(function(event){
 			db.Events.create(event)
 		})
 	}
 
-	this.insert_stocks_todb = function insert_stocks_todb(stocks){
+	this.insertStocksToDb = function insertStocksToDb(stocks){
 		
 	}
 
-	this.extract_events_fromdb = function extract_events_fromdb(file_params){
+	this.extractEventsFromDb = function extractEventsFromDb(file_params){
 
 	}
 
-	this.extract_stocks_fromdb = function extract_stocks_fromdb(file_params){
+	this.extractStocksFromDb = function extractStocksFromDb(file_params){
 
 	}
 }
 
 
-module.exports.dbHandler = dbHandler;
+module.exports.DbHandler = DbHandler;

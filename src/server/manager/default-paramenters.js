@@ -1,7 +1,7 @@
 var rek = require('rekuire');
 var preparation = rek('data-preparation')
 
-var default_parameters={
+var defaultParameters={
 	investing:{
 		language: 'ru',
 		dateFrom:'2015-03-20',
@@ -16,6 +16,6 @@ var default_parameters={
 
 }
 
-preparation.download_events(default_parameters['investing']);
-preparation.download_stocks(default_parameters['stocks']);
+preparation.downloadEvents(defaultParameters['investing']);
+preparation.downloadStocks(defaultParameters['stocks']);
 

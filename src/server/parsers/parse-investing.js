@@ -66,26 +66,28 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 	};
 
 	function callback(error, response, body) {
-		var allEvents = [];
 		if (!error && response.statusCode == 200) {
+			var allEvents = [];
 			var json = JSON.parse(body);
-			var $ = cheerio.load(json['renderedFilteredEvents']);
+			if (json['renderedFilteredEvents'] != null){
+				var $ = cheerio.load(json['renderedFilteredEvents']);
 
-			$('tr[event_attr_id]').each(function() {
-				var cols = $(this).find('td')
-				var econ_event = {
-					id: $(this).attr('id').replace('eventRowId_',''),
-					time: $(this).attr('event_timestamp'),
-					country: $(cols['1']).find('span').attr('title'),
-					currency: $(cols['1']).text().trim(),
-					importance: $(cols['2']).attr('data-img_key'),
-			        descriptrion: $(cols['3']).text().trim(),
-			        actual: $(cols['4']).text(),
-			        forecast: $(cols['5']).text(),
-			        previous: $(cols['6']).text()
-				}
-				allEvents.push(econ_event)				
-			})
+				$('tr[event_attr_id]').each(function() {
+					var cols = $(this).find('td')
+					var econ_event = {
+						id: $(this).attr('id').replace('eventRowId_',''),
+						time: $(this).attr('event_timestamp'),
+						country: $(cols['1']).find('span').attr('title'),
+						currency: $(cols['1']).text().trim(),
+						importance: $(cols['2']).attr('data-img_key'),
+				        descriptrion: $(cols['3']).text().trim(),
+				        actual: $(cols['4']).text(),
+				        forecast: $(cols['5']).text(),
+				        previous: $(cols['6']).text()
+					}
+					allEvents.push(econ_event)				
+				})
+			}
 			sendto_func(allEvents);
 		} else{
 			// console.log('Error' + response.statusCode);
@@ -95,3 +97,5 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 	}
 	request.post(options, callback);
 }
+
+module.exports.parse_investing = parse_investing;

@@ -12,12 +12,13 @@ var gulp = require('gulp'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
     browserSync = require("browser-sync"),
+    rek = require('rekuire'),
     reload = browserSync.reload;
 
 //  for 'data' task
-var TrendetsDb = require('./server/db');
-var eventsRetriever = require('./server/parsers/parse_investing');
+var TrendetsDb = rek('db');
 require('date-utils');
+var startDefault = rek('start-default');
 var q = require('q');
 
 var path = {
@@ -52,7 +53,7 @@ var config = {
     tunnel: true,
     host: 'localhost',
     port: 9000,
-    logPrefix: "Frontend_Devil"
+    logPrefix: "Trendets"
 };
 
 gulp.task('html:build', function () {
@@ -135,6 +136,10 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', ['build', 'webserver', 'watch']);
+
+gulp.task('data', function(){
+    startDefault.downloadData();
+});
 
 // gulp.task('data', ['update-database'], function () {
 //     var db = new TrendetsDb(),

@@ -4,7 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 var orm = require("orm");
 var q = require('q');
 
-var defaultDbPath = path.join(__dirname, '/src/server/trendets.db');
+var defaultDbPath = path.join(__dirname, 'trendets.db');
 
 function TrendetsDb(dbPath) {
 
@@ -64,7 +64,14 @@ function TrendetsDb(dbPath) {
             console.info('Database at ' + dbPath + ' not found - nothing to delete.');
     }
 
-    this.disconnect = function disconnect(db) {
+    // this.disconnect = function(){
+    //     var res = disconnect(connection);
+    //     console.info('Database at ' + dbPath + ' disconnect.');
+
+    //     return res;
+    // }
+
+    function disconnect(db) {
         var d = q.defer();
         db.close(resolveDeferred(d));
         return d.promise.then(function () {
@@ -75,7 +82,6 @@ function TrendetsDb(dbPath) {
         //return connect().then(function (db) {
         //    return new TrendetsDbMigrator(db);
         //});
-}
 
     function connect() {
         var d = q.defer();
@@ -197,7 +203,6 @@ function TrendetsDb(dbPath) {
     }
 }
 
-
 function resolveDeferred(deferred, resolveValue) {
     return function (err, res) {
         if (err) {
@@ -209,4 +214,4 @@ function resolveDeferred(deferred, resolveValue) {
 }
 
 
-module.exports.TrendetsDb = TrendetsDb;
+module.exports = TrendetsDb;

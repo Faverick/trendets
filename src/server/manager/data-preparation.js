@@ -4,23 +4,27 @@ var investing = rek('parse-investing'),
 	DbHandler = rek('db-handler');
 
 
-function downloadEvents(events_params){
+function downloadEvents(eventsParams){
 	console.log('Downloading Events');
-	DbHandler.connect()
+	var TrendetsHandler = new DbHandler();
+
+	//TrendetsHandler.connect()
 	function sendToDb(events){
 		// call db function
-		dbHandler.insertEventsToDb(events);
+		console.log("enetered sendToDb");
+		TrendetsHandler.insertEventsToDb(events);
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
 	investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
-	DbHandler.disconnect()
+	console.log("left downloadEvents")
+	//TrendetsHandler.disconnect()
 }
 
 function downloadStocks(stocksParams){
 
 	function sendToDb(stocks){
 		// call db function
-		DbHandler.insertStocksToDb(stocks);
+		TrendetsHandler.insertStocksToDb(stocks);
 	}
 
 	// call stock parser with callback func

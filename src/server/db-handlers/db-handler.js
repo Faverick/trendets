@@ -6,18 +6,24 @@ function DbHandler(dbPath){
 	var db = new TrendetsDb(dbPath)
 	db.exists() ? 'ok' : db.create();
 	
-	this.connect = function connect(){
-		db.connect()
-	}
+	// this.connect = function connect(){
+	// 	var asd = db.connect();
+	// }
 
-	this.disconnect = function functionName (argument) {
-		db.disconnect()
-	}
+	// this.disconnect = function functionName (argument) {
+	// 	db.disconnect();
+	// }
 
 	this.insertEventsToDb = function insertEventsToDb(events){
-		events.forEach(function(event){
-			db.Events.create(event)
-		})
+		db.connect()
+            .then(function (db) {
+                events.forEach(function(event){
+                	console.log(event);
+					db.Events.create(event);
+				})
+				db.disconnect(db);
+            })
+		
 	}
 
 	this.insertStocksToDb = function insertStocksToDb(stocks){
@@ -34,4 +40,4 @@ function DbHandler(dbPath){
 }
 
 
-module.exports.DbHandler = DbHandler;
+module.exports = DbHandler;

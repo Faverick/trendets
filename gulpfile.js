@@ -15,9 +15,8 @@ var gulp = require('gulp'),
     reload = browserSync.reload;
 
 //  for 'data' task
-var dataGenerator = require('./server/data-generator');
 var TrendetsDb = require('./server/db');
-var quotesRetriever = require('./server/quotes-retriever');
+var eventsRetriever = require('./server/parsers/parse_investing');
 require('date-utils');
 var q = require('q');
 
@@ -137,42 +136,42 @@ gulp.task('clean', function (cb) {
 
 gulp.task('default', ['build', 'webserver', 'watch']);
 
-gulp.task('data', ['update-database'], function () {
-    var db = new TrendetsDb(),
-        startPromise = db.exists() ? 'ok' : db.create();
-    //db.delete();
-    return q(startPromise).then(db.connect)
-                          .then(function () {
-                              return db.Quotes.all();
-                          })
-                          .then(function (quotes) {
-                              var lastQuote = quotes.sort(function (a, b) { return b.date - a.date })[0];
-                              return lastQuote;
-                          })
-                          .then(function (lastQuote) {
-                              var from = lastQuote ? lastQuote.date.addDays(1).clearTime() : new Date(2014, 0, 1),
-                                  to = Date.today();
-                              if (from < to) {
-                                  console.log('Requesting quotes from', from, 'to', to);
-                                  return quotesRetriever.getQuotes(from, to)
-                              } else {
-                                  console.log('Quotes are up to date');
-                                  return []
-                              }
-                          })
-                          .then(function (newQuotes) {
-                              var promises = [];
-                              if (newQuotes.length > 0)
-                                  console.log(newQuotes.length + ' Quotes received.');
-                              for (var i = 0; i < newQuotes.length; i++) {
-                                  promises.push(db.Quotes.create(newQuotes[i]));
-                              }
-                              return q.all(promises).then(function () {
-                                  console.log(newQuotes.length + ' Quotes inserted into db.');
-                              }, console.error);
-                          })
-                          .then(function () {
-                              console.log('Generating data file.');
-                              return dataGenerator.generate('./web/js/data.js', true);
-                          }, console.error);
-});
+// gulp.task('data', ['update-database'], function () {
+//     var db = new TrendetsDb(),
+//         startPromise = db.exists() ? 'ok' : db.create();
+//     //db.delete();
+//     return q(startPromise).then(db.connect)
+//                           .then(function () {
+//                               return db.Events.all();
+//                           })
+//                           .then(function (events) {
+//                               var lastEvent = events.sort(function (a, b) { return b.date - a.date })[0];
+//                               return lastEvent;
+//                           })
+//                           .then(function (lastEvent) {
+//                               var from = lastEvent ? lastEvent.date.addDays(1).clearTime() : new Date(2014, 0, 1),
+//                                   to = Date.today();
+//                               if (from < to) {
+//                                   console.log('Requesting events from', from, 'to', to);
+//                                   return quotesRetriever.getQuotes(from, to)
+//                               } else {
+//                                   console.log('Quotes are up to date');
+//                                   return []
+//                               }
+//                           })
+//                           .then(function (newQuotes) {
+//                               var promises = [];
+//                               if (newQuotes.length > 0)
+//                                   console.log(newQuotes.length + ' Quotes received.');
+//                               for (var i = 0; i < newQuotes.length; i++) {
+//                                   promises.push(db.Quotes.create(newQuotes[i]));
+//                               }
+//                               return q.all(promises).then(function () {
+//                                   console.log(newQuotes.length + ' Quotes inserted into db.');
+//                               }, console.error);
+//                           })
+//                           .then(function () {
+//                               console.log('Generating data file.');
+//                               return dataGenerator.generate('./web/js/data.js', true);
+//                           }, console.error);
+// });

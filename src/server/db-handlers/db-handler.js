@@ -1,23 +1,50 @@
+var rek = require('rekuire');
+var TrendetsDb = rek('db');
+var q = require('q');
 
-function insert_events_todb(events){
-	/*events.forEach(function(entry){
-		console.log(entry['time']+' '+entry['descriptrion']);
-	})*/
-}
+function DbHandler(dbPath){
 
-function insert_stocks_todb(stocks){
+	var db = new TrendetsDb(dbPath);
+	//var startPromise = db.exists() ? 'ok' : db.create();
+	this.isHandlerReady = function(){ return db.exists() ? 'ok' : db.create();}
 	
+	// this.connect = function connect(){
+	// 	var asd = db.connect();
+	// }
+
+	// this.disconnect = function functionName (argument) {
+	// 	db.disconnect();
+	// }
+
+	this.insertEventsToDb = function insertEventsToDb(events){
+		var promises = [];
+
+		q(this.isHandlerReady).then(db.connect)
+						.then(function (db) {
+			                events.forEach(function(event){
+			                	//console.log(event);
+								promises.push(db.Events.create(event));
+							})
+							//db.disconnect(db);
+			            })
+		q.all(promises).then(function () {
+                                   console.log(newQuotes.length + ' Events inserted into db.');
+                             }, console.error);
+		
+	}
+
+	this.insertStocksToDb = function insertStocksToDb(stocks){
+		
+	}
+
+	this.extractEventsFromDb = function extractEventsFromDb(file_params){
+
+	}
+
+	this.extractStocksFromDb = function extractStocksFromDb(file_params){
+
+	}
 }
 
-function extract_events_fromdb(file_params){
 
-}
-
-function extract_stocks_fromdb(file_params){
-
-}
-
-module.exports.insert_events_todb = insert_events_todb;
-module.exports.insert_stocks_todb = insert_stocks_todb;
-module.exports.extract_events_fromdb = extract_events_fromdb;
-module.exports.extract_stocks_fromdb = extract_stocks_fromdb;
+module.exports = DbHandler;

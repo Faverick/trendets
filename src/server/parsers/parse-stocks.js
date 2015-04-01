@@ -1,7 +1,7 @@
 
-function parse_stocks(fromDate, toDate, sendto_func){
+function parseStocks(fromDate, toDate, sendToFunc){
 	var allStocks = [];
 	return allStocks;
 }
 
-module.exports.parse_stocks = parse_stocks;
+module.exports.parseStocks = parseStocks;

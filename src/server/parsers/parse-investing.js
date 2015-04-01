@@ -45,14 +45,15 @@ parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(
 var request = require('request'),
 	cheerio = require('cheerio');
 
-function parse_investing(lang, fromDate, toDate, sendto_func){ 
-	var lang_url = {
+function parseInvesting(lang, fromDate, toDate, sendToFunc){ 
+	var langUrl = {
 		'en': 'www',
 		'ru' : 'ru'
 	};
 
+	console.log("entered parseInvesting");
 	var options = {
-		url: 'http://'+lang_url[lang]+'.investing.com/economic-calendar/filter',
+		url: 'http://'+langUrl[lang]+'.investing.com/economic-calendar/filter',
 		headers: {
 			'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36',
 			'X-Requested-With': 'XMLHttpRequest'
@@ -62,10 +63,11 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 			dateTo: toDate,
 			quotes_search_text: '',
 			timeZone:1 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
-		}
+		},
 	};
 
 	function callback(error, response, body) {
+		console.log("entered callback");
 		if (!error && response.statusCode == 200) {
 			var allEvents = [];
 			var json = JSON.parse(body);
@@ -88,14 +90,17 @@ function parse_investing(lang, fromDate, toDate, sendto_func){
 					allEvents.push(econ_event)				
 				})
 			}
-			sendto_func(allEvents);
+			console.log("about to call sendToFunc");
+			sendToFunc(allEvents);
 		} else{
-			// console.log('Error' + response.statusCode);
+			 //console.log('Error' + response.statusCode);
 			// TODO: raise exception. console.log(response.statusCod)
 		}
 		
 	}
+	console.log("about to send request");
+	
 	request.post(options, callback);
 }
 
-module.exports.parse_investing = parse_investing;
+module.exports.parseInvesting = parseInvesting;

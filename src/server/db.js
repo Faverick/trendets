@@ -35,6 +35,7 @@ function TrendetsDb(dbPath) {
             throw new Error('Database at ' + dbPath + ' already exists.');
 
         var res = connect().then(createTables)
+                           .then(defineModels)
                            .then(disconnect);
 
         console.info('Database at ' + dbPath + ' created.');

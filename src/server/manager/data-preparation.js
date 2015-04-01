@@ -2,20 +2,22 @@ var rek = require('rekuire');
 var investing = rek('parse-investing'),
 	stocks = rek('parse-stocks'),
 	DbHandler = rek('db-handler');
-
+var q = require('q');
 
 function downloadEvents(eventsParams){
 	console.log('Downloading Events');
 	var TrendetsHandler = new DbHandler();
-
 	//TrendetsHandler.connect()
 	function sendToDb(events){
 		// call db function
-		console.log("enetered sendToDb");
+		console.log("enetered insertToDb");
 		TrendetsHandler.insertEventsToDb(events);
+		console.log("left insertToDb");
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
-	investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
+	 q.allSettled(TrendetsHandler.isHandlerReady)
+	 	.then(investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb));
+	//investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
 	console.log("left downloadEvents")
 	//TrendetsHandler.disconnect()
 }

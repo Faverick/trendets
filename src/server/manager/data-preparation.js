@@ -8,7 +8,8 @@ function downloadEvents(eventsParams){
 	console.log('Downloading Events');
 	var TrendetsHandler = new DbHandler();
 	//TrendetsHandler.connect()
-	function sendToDb(events){
+	function sendToDb(error, events){
+		//events.forEach(function(event_p){console.log(event_p['time'])});
 		// call db function
 		console.log("enetered insertToDb");
 		TrendetsHandler.insertEventsToDb(events);

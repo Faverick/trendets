@@ -14,7 +14,9 @@ describe('Parse Investing', function(){
     this.timeout(15000);
 
 		var tests = [
-			{args: ['en', '2015-03-26', '2015-03-26']}
+			{args: ['en', '2015-03-26', '2015-03-26']},
+      {args: ['en', '2015-03-23', '2015-03-26']},
+      {args: ['en', '2015-03-26', '2015-04-26']}
 		];
 
     tests.forEach(function(test){

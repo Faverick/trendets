@@ -52,7 +52,6 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 		'ru' : 'ru'
 	};
 
-	console.log("entered parseInvesting");
 	var options = {
 		url: 'http://'+langUrl[lang]+'.investing.com/economic-calendar/filter',
 		headers: {
@@ -68,7 +67,6 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 	};
 
 	function callback(error, response, body) {
-		console.log("entered callback");
 		if (!error && response.statusCode == 200) {
 			var allEvents = [];
 			var json = JSON.parse(body);
@@ -91,7 +89,6 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 					allEvents.push(econ_event)				
 				})
 			}
-			console.log("about to call sendToFunc");
 			sendToFunc(null, allEvents);
 		} else{
 			sendToFunc(error)
@@ -100,7 +97,6 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 		}
 		
 	}
-	console.log("about to send request");
 	
 	request.post(options, callback);
 }

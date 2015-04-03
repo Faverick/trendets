@@ -64,7 +64,7 @@ function parseInvesting(lang, fromDate, toDate){
 			dateFrom: fromDate,
 			dateTo: toDate,
 			quotes_search_text: '',
-			timeZone:1 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
+			timeZone:55 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
 		},
 	};
 

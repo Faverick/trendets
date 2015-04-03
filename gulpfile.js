@@ -137,8 +137,8 @@ gulp.task('clean', function (cb) {
 
 gulp.task('default', ['build', 'webserver', 'watch']);
 
-gulp.task('data', function(){
-    startDefault.downloadData();
+gulp.task('data', function(cb){
+    return startDefault.downloadData();
 });
 
 // gulp.task('data', ['update-database'], function () {

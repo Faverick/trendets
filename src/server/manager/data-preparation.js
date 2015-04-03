@@ -11,15 +11,22 @@ function downloadEvents(eventsParams){
 	function sendToDb(events){
 		// call db function
 		console.log("enetered insertToDb");
-		TrendetsHandler.insertEventsToDb(events);
-		console.log("left insertToDb");
+		return TrendetsHandler.insertEventsToDb(events)
+			.then(function  (argument) {
+				console.log("left insertToDb");
+				// body...
+			});
+		
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
-	 q.allSettled(TrendetsHandler.isHandlerReady)
-	 	.then(investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb));
+	var promise = q.when(TrendetsHandler.isHandlerReady())
+	 	.then(investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo']))
+	 	.then(sendToDb);
 	//investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
 	console.log("left downloadEvents")
 	//TrendetsHandler.disconnect()
+
+	return promise;
 }
 
 function downloadStocks(stocksParams){

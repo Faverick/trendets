@@ -17,8 +17,10 @@ var defaultParameters={
 }
 
 function downloadData(){
-	preparation.downloadEvents(defaultParameters['investing']);
-	preparation.downloadStocks(defaultParameters['stocks']);
+	return preparation.downloadEvents(defaultParameters['investing'])
+		.then(function () {
+			return preparation.downloadStocks(defaultParameters['stocks']);
+		});
 }
 
 module.exports.downloadData = downloadData;

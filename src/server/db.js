@@ -5,6 +5,9 @@ var orm = require("orm");
 var q = require('q');
 
 var defaultDbPath = path.join(__dirname, 'trendets.db');
+//var defaultDbPath = path.join('C:\\bmstu\\8 sem', 'trendets.db');
+//var path = require('path');
+//var defaultDbPath = path.resolve(__dirname);
 
 function TrendetsDb(dbPath) {
 
@@ -17,10 +20,14 @@ function TrendetsDb(dbPath) {
         var d = q.defer();
         connect().then(defineModels)
                  .then(function (db) {
-                     for (var f in db.models) {
-                         self[f] = db.models[f];
-                         promisifyModel(self[f]);
-                     }
+                    Object.keys(db.models).forEach(function (modelName) {
+                        self[modelName] = db.models[modelName];
+                        //promisifyModel(self[modelName]); // TODO: create a promise-shell for db.model || db
+                    })
+                     // for (var f in db.models) {
+                     //     self[f] = db.models[f];
+                     // }
+                         
                      d.resolve(self);
                  }, d.reject);
         return d.promise;
@@ -36,27 +43,14 @@ function TrendetsDb(dbPath) {
 
         var res = connect().then(createTables)
                            .then(defineModels)
-                           .then(disconnect);
+                           .then(disconnect).then(function(){console.log('creating finished')});
 
         console.info('Database at ' + dbPath + ' created.');
 
         return res;
     }
 
-    this.insert = function insert(model, obj) {
-        if (obj instanceof Array) {
-            var promises = [];
-            for (var i = 0; i < obj.length; i++) {
-                promises.push(insert(model, obj[i]));
-            }
-            return q.all(promises);
-        } else {
-            var d = q.defer();
-            model.create([obj], resolveDeferred(d));
-            return d.promise;
-        }
-    }
-
+    
     this.delete = function deleteDb() {
         if (this.exists()) {
             fs.unlinkSync(dbPath);
@@ -73,6 +67,7 @@ function TrendetsDb(dbPath) {
     // }
 
     function disconnect(db) {
+        console.log('Disconnecting')
         var d = q.defer();
         db.close(resolveDeferred(d));
         return d.promise.then(function () {
@@ -99,20 +94,38 @@ function TrendetsDb(dbPath) {
 
 
     function createTables(db) {
+        console.log('creating Tables');
         return runSqlFile(db, path.join(__dirname, 'tables.sql'));
     }
 
     function runSqlFile(db, filePath) {
+        console.log(filePath);
         var sql = fs.readFileSync(filePath, { encoding: 'utf8' }),
             d = q.defer();
         db.driver.db.exec(sql, resolveDeferred(d, db));
         return d.promise;
     }
 
+    this.insert =  function insert(model, obj) {
+        if (obj instanceof Array) {
+            var promises = [];
+            for (var i = 0; i < obj.length; i++) {
+                promises.push(insert(model, obj[i]));
+            }
+            return q.all(promises);
+        } else {
+            var d = q.defer();
+            model.create([obj], resolveDeferred(d));
+            return d.promise;
+        }
+    }
+
+
     function defineModels(db) {
 
         var d = q.defer();
 
+        console.log('ORM models start initializing.');
         var Events = db.define('Events', getColumnMapping({
             dateTime: { type: 'date', mapsTo: 'DateTime' },
             country : { type: 'text', mapsTo: 'Country' },

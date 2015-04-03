@@ -6,7 +6,9 @@ function DbHandler(dbPath){
 
 	var db = new TrendetsDb(dbPath);
 	//var startPromise = db.exists() ? 'ok' : db.create();
-	this.isHandlerReady = function(){ return db.exists() ? 'ok' : db.create();}
+	this.isHandlerReady = function(){ 
+		return db.exists() ? 'ok' : db.create();
+	}
 	
 	// this.connect = function connect(){
 	// 	var asd = db.connect();
@@ -17,19 +19,23 @@ function DbHandler(dbPath){
 	// }
 
 	this.insertEventsToDb = function insertEventsToDb(events){
-		var promises = [];
+		// var promises = [];
 
-		q(this.isHandlerReady).then(db.connect)
-						.then(function (db) {
-			                events.forEach(function(event){
-			                	//console.log(event);
-								promises.push(db.Events.create(event));
-							})
-							//db.disconnect(db);
-			            })
-		q.all(promises).then(function () {
-                                   console.log(newQuotes.length + ' Events inserted into db.');
-                             }, console.error);
+		// db.connect().then(function (db) {
+		//                 events.forEach(function(event){
+		//                 	//console.log(event);
+		// 					promises.push(db.Events.create(event));
+		// 				})
+						
+		//             }).done();
+		// q.all(promises).then(function () {
+  //                                  console.log(promises.length + ' Events inserted into db.');
+  //                            }, console.error);
+		//console.log(events);
+		return db.connect()
+			.then(function () {				
+				return db.insert(db.Events, events)
+			});
 		
 	}
 

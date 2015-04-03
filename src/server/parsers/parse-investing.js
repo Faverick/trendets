@@ -44,14 +44,16 @@ parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(
 
 var request = require('request'),
 	cheerio = require('cheerio'),
-	moment = require('moment');
+	q = require('q');
 
-function parseInvesting(lang, fromDate, toDate, sendToFunc){ 
+function parseInvesting(lang, fromDate, toDate){ 
 	var langUrl = {
 		'en': 'www',
 		'ru' : 'ru'
-	};
+	},
+		d = q.defer();
 
+	console.log("entered parseInvesting");
 	var options = {
 		url: 'http://'+langUrl[lang]+'.investing.com/economic-calendar/filter',
 		headers: {
@@ -62,11 +64,12 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 			dateFrom: fromDate,
 			dateTo: toDate,
 			quotes_search_text: '',
-			timeZone:55 // (GMT) Coordinated Universal Time on investing Filter.	    
+			timeZone:1 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
 		},
 	};
 
 	function callback(error, response, body) {
+		console.log("entered callback");
 		if (!error && response.statusCode == 200) {
 			var allEvents = [];
 			var json = JSON.parse(body);
@@ -89,16 +92,19 @@ function parseInvesting(lang, fromDate, toDate, sendToFunc){
 					allEvents.push(econ_event)				
 				})
 			}
-			sendToFunc(null, allEvents);
+			d.resolve(allEvents);
 		} else{
-			sendToFunc(error)
 			 //console.log('Error' + response.statusCode);
 			// TODO: raise exception. console.log(response.statusCod)
+			d.reject();
 		}
 		
 	}
+	console.log("about to send request");
 	
 	request.post(options, callback);
+
+	return d.promise;
 }
 
 module.exports.parseInvesting = parseInvesting;

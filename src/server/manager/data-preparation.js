@@ -8,7 +8,7 @@ function downloadEvents(eventsParams){
 	console.log('Downloading Events');
 	var TrendetsHandler = new DbHandler();
 	//TrendetsHandler.connect()
-	function sendToDb(error, events){
+	function sendToDb(events){
 		//events.forEach(function(event_p){console.log(event_p['time'])});
 		// call db function
 		console.log("enetered insertToDb");
@@ -21,8 +21,12 @@ function downloadEvents(eventsParams){
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
 	var promise = q.when(TrendetsHandler.isHandlerReady())
-	 	.then(investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo']))
-	 	.then(sendToDb);
+	 	.then(function () {
+	 		investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'])
+	 			.then(function (events){
+	 				sendToDb(events);
+	 			});
+	 	});
 	//investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
 	console.log("left downloadEvents")
 	//TrendetsHandler.disconnect()

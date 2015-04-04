@@ -22,7 +22,7 @@ function TrendetsDb(dbPath) {
                  .then(function (db) {
                     Object.keys(db.models).forEach(function (modelName) {
                         self[modelName] = db.models[modelName];
-                        //promisifyModel(self[modelName]); // TODO: create a promise-shell for db.model || db
+                        promisifyModel(self[modelName]); // TODO: create a promise-shell for db.model || db
                     })
                      // for (var f in db.models) {
                      //     self[f] = db.models[f];
@@ -48,6 +48,21 @@ function TrendetsDb(dbPath) {
         console.info('Database at ' + dbPath + ' created.');
 
         return res;
+    }
+
+    this.insert =  function insert(model, obj) {
+        if (obj instanceof Array) {
+            var promises = [];
+            for (var i = 0; i < obj.length; i++) {
+                promises.push(insert(model, obj[i]));
+            }
+            return q.all(promises);
+        } else {
+            var d = q.defer();
+            console.log(obj);
+            model.create([obj], resolveDeferred(d));
+            return d.promise;
+        }
     }
 
     
@@ -106,20 +121,6 @@ function TrendetsDb(dbPath) {
         return d.promise;
     }
 
-    this.insert =  function insert(model, obj) {
-        if (obj instanceof Array) {
-            var promises = [];
-            for (var i = 0; i < obj.length; i++) {
-                promises.push(insert(model, obj[i]));
-            }
-            return q.all(promises);
-        } else {
-            var d = q.defer();
-            model.create([obj], resolveDeferred(d));
-            return d.promise;
-        }
-    }
-
 
     function defineModels(db) {
 
@@ -127,7 +128,8 @@ function TrendetsDb(dbPath) {
 
         console.log('ORM models start initializing.');
         var Events = db.define('Events', getColumnMapping({
-            dateTime: { type: 'date', mapsTo: 'DateTime' },
+            eventId: { type: 'number', mapsTo: 'EventId' },
+            time: { type: 'date', mapsTo: 'DateTime' },
             country : { type: 'text', mapsTo: 'Country' },
             currency : { type: 'text', mapsTo: 'Currency' },
             importance : { type: 'text', mapsTo: 'Importance' },

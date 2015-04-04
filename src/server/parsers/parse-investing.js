@@ -50,8 +50,8 @@ function parseInvesting(lang, fromDate, toDate){
 	var langUrl = {
 		'en': 'www',
 		'ru' : 'ru'
-	},
-		d = q.defer();
+	};
+	var d = q.defer();
 
 	console.log("entered parseInvesting");
 	var options = {
@@ -79,12 +79,12 @@ function parseInvesting(lang, fromDate, toDate){
 				$('tr[event_attr_id]').each(function() {
 					var cols = $(this).find('td')
 					var econ_event = {
-						id: $(this).attr('id').replace('eventRowId_',''),
+						eventId: $(this).attr('id').replace('eventRowId_',''),
 						time: $(this).attr('event_timestamp'),
 						country: $(cols['1']).find('span').attr('title'),
 						currency: $(cols['1']).text().trim(),
 						importance: $(cols['2']).attr('data-img_key'),
-				        descriptrion: $(cols['3']).text().trim(),
+				        description: $(cols['3']).text().trim(),
 				        actual: $(cols['4']).text(),
 				        forecast: $(cols['5']).text(),
 				        previous: $(cols['6']).text()

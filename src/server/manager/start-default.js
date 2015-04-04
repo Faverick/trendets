@@ -3,7 +3,7 @@ var preparation = rek('data-preparation')
 
 var defaultParameters={
 	investing:{
-		language: 'ru',
+		language: 'en',
 		dateFrom:'2015-03-25',
 		dateTo: '2015-03-25',
 		country: [],

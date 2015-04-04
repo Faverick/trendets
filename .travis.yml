@@ -5,15 +5,14 @@ notifications:
   email: false
 before_install:
 - openssl aes-256-cbc -K $encrypted_ca96f6bc6cbe_key -iv $encrypted_ca96f6bc6cbe_iv
-  -in .travis/id_rsa.enc -out .travis/id_rsa -d
+  -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
 before_script:
   - git config --global user.email "a.a.pakhomoff@gmail.com"
   - git config --global user.name "Travis-CI"
-  - mv .travis/id_rsa ~/.ssh/
 after_success:
 - chmod 600 ~/.ssh/id_rsa
 - eval "$(ssh-agent)"
-- ssh-add
+- ssh-add ~/.ssh/id_rsa &>/dev/null
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
 - git commit -m "Documentation updated"

@@ -4,6 +4,7 @@ node_js:
 notifications:
   email: false
 after_success:
+  - mkdir .travis
   - > .travis/deploy_key.pem
   - chmod 600 .travis/deploy_key.pem
   - ssh-add .travis/deploy_key.pem

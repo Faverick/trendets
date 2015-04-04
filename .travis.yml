@@ -13,9 +13,8 @@ after_success:
 - chmod 600 .travis/id_rsa
 - eval "$(ssh-agent)"
 - ssh-add .travis/id_rsa
-- trendets
-- 
-- 
+- echo trendets
+- echo
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
 - git commit -m "Documentation updated"

@@ -12,7 +12,7 @@ before_script:
 after_success:
 - chmod 600 .travis/id_rsa
 - eval "$(ssh-agent)"
-- yes trendets | ssh-add .travis/id_rsa
+- ssh-add .travis/id_rsa
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
 - git commit -m "Documentation updated"

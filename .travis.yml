@@ -12,7 +12,9 @@ before_script:
 after_success:
 - chmod 600 .travis/id_rsa
 - eval "$(ssh-agent)"
-- ssh-add .travis/id_rsa < echo trendets
+- spawn ssh-add .travis/id_rsa
+- expect "Enter passphrase for /home/sansanch/.ssh/id_rsa: "
+- send "trendets"
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
 - git commit -m "Documentation updated"

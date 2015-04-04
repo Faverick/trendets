@@ -3,3 +3,10 @@ node_js:
   - "0.12"
 notifications:
   email: false
+after_success:
+  - chmod 600 .travis/deploy_key.pem
+  - ssh-add .travis/deploy_key.pem
+  - git remote add deploy https://github.com/Faverick/trendets.git
+  - git add doc/*
+  - git commit -am "Documentation updated"
+  - git push deploy feature/travis-ci_TD-21

@@ -8,8 +8,10 @@ before_install:
   -in .travis/id_rsa.enc -out .travis/id_rsa -d
 after_success:
 - chmod 600 .travis/id_rsa
+- eval "$(ssh-agent)"
 - ssh-add .travis/id_rsa
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
+- git config user.name "SanSanch5"
 - git commit -m "Documentation updated"
 - git push deploy feature/travis-ci_TD-21

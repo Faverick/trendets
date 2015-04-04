@@ -6,5 +6,5 @@ notifications:
 after_success:
   - chmod 600 .travis/deploy_key.pem
   - ssh-add .travis/deploy_key.pem
-  - git remote add deploy https://github.com/Faverick/trendets.git
+  - git remote add deploy git@github.com:Faverick/trendets.git
   - git push deploy feature/travis-ci_TD-21

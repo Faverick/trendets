@@ -12,6 +12,17 @@ var defaultParameters={
 	},
 	stocks:{
 		// fill in
+	},
+	//The format of filter data shown below. Keep in mind that if key country or importance are empty there will be no event reterned
+	//If dateTo is not provided it is set to DateTime.Now.
+	//If dateFrom is not provided it will return all events from the first event to the events of dateTo
+	//If dateTo and dateFrom are not provided it will return all events from the first event to the events of today
+	filter:{
+		dateFrom:'2015-03-25',
+		dateTo: '2015-03-25',
+		country: ["Italy", "Japan"],
+		importance: ["bull1"],
+		descriptionText: ""
 	}
 
 }
@@ -23,4 +34,13 @@ function downloadData(){
 		});
 }
 
+function uploadData(){
+	return preparation.getEventsByFilter(defaultParameters['filter']);
+}
+
+function removeData(){
+	return preparation.removeEventsByFilter(defaultParameters['filter']);
+}
+
 module.exports.downloadData = downloadData;
+module.exports.uploadData = uploadData;

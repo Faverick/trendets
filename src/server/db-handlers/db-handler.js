@@ -5,36 +5,16 @@ var q = require('q');
 function DbHandler(dbPath){
 
 	var db = new TrendetsDb(dbPath);
-	//var startPromise = db.exists() ? 'ok' : db.create();
+
 	this.isHandlerReady = function(){ 
 		return db.exists() ? 'ok' : db.create();
 	}
-	
-	// this.connect = function connect(){
-	// 	var asd = db.connect();
-	// }
-
-	// this.disconnect = function functionName (argument) {
-	// 	db.disconnect();
-	// }
 
 	this.insertEventsToDb = function insertEventsToDb(events){
-		// var promises = [];
 
-		// db.connect().then(function (db) {
-		//                 events.forEach(function(event){
-		//                 	//console.log(event);
-		// 					promises.push(db.Events.create(event));
-		// 				})
-						
-		//             }).done();
-		// q.all(promises).then(function () {
-  //                                  console.log(promises.length + ' Events inserted into db.');
-  //                            }, console.error);
-		//console.log(events);
 		return db.connect()
 			.then(function () {				
-				return db.insert(db.Events, events)
+				return db.insert(db.Events, events);
 			});
 		
 	}
@@ -49,6 +29,25 @@ function DbHandler(dbPath){
 
 	this.extractStocksFromDb = function extractStocksFromDb(file_params){
 
+	}
+
+	this.getEventsByFilter = function getEventsByFilter(filerParams){
+
+		return db.connect()
+			.then(function () {
+				return db.get(db.Events, filerParams);
+			}).catch(function (err){
+				console.error(err);
+			});
+	}
+
+	this.removeEvents = function removeEvents(events){
+		return db.connect()
+			.then(function(){
+				return db.remove(db.Events, filterParams);
+				}).catch(function (err){
+				console.error(err);
+			});
 	}
 }
 

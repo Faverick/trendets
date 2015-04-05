@@ -137,9 +137,28 @@ gulp.task('clean', function (cb) {
 
 gulp.task('default', ['build', 'webserver', 'watch']);
 
-gulp.task('data', function(cb){
+gulp.task('downloadData', function(cb){
     return startDefault.downloadData();
 });
+
+
+gulp.task('uploadData', function(cb){
+    return startDefault.uploadData()
+    .then(function (events){
+        if (events instanceof Array) {
+        for (var i = 0; i < events.length; i++) {
+            console.log(events[i]['description']);
+        }
+        return events;
+        }   
+    });
+    // return startDefault.uploadData();
+});
+
+gulp.task('removeData', function(cb){
+    return startDefault.uploadData();
+});
+
 
 // gulp.task('data', ['update-database'], function () {
 //     var db = new TrendetsDb(),

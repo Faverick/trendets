@@ -5,9 +5,6 @@ var orm = require("orm");
 var q = require('q');
 
 var defaultDbPath = path.join(__dirname, 'trendets.db');
-//var defaultDbPath = path.join('C:\\bmstu\\8 sem', 'trendets.db');
-//var path = require('path');
-//var defaultDbPath = path.resolve(__dirname);
 
 function TrendetsDb(dbPath) {
 
@@ -24,9 +21,6 @@ function TrendetsDb(dbPath) {
                         self[modelName] = db.models[modelName];
                         promisifyModel(self[modelName]); // TODO: create a promise-shell for db.model || db
                     })
-                     // for (var f in db.models) {
-                     //     self[f] = db.models[f];
-                     // }
                          
                      d.resolve(self);
                  }, d.reject);
@@ -59,8 +53,69 @@ function TrendetsDb(dbPath) {
             return q.all(promises);
         } else {
             var d = q.defer();
-            console.log(obj);
             model.create([obj], resolveDeferred(d));
+            return d.promise;
+        }
+    }
+
+    this.get = function get(model, filterParam) {
+        // var promises = [];
+        // Object.keys(filterParam).forEach(function (key) {
+        //     console.log(key,'is ',filterParam[key]);
+        // });
+        
+        //description: orm.like("%"+filterParam['descriptionText']+"%")
+        //country: filterParam['country']
+        //importance: filterParam['importance']
+
+        if(filterParam['importance'].length <= 0 || filterParam['country'].length <= 0)
+        {
+            throw new Error("Provided bad parameters for importance or country");
+        }
+
+        var date = new Date();
+        if(filterParam['dateTo'] !== ''){
+            date = new Date(filterParam['dateTo']);
+            date.setDate(date.getDate() + 1);
+        }
+
+        var d = q.defer();
+        model.find({time: orm.gte(filterParam['dateFrom']) && orm.lte(date.toISOString())
+                , country: filterParam['country'], importance: filterParam['importance']
+                , description: orm.like("%"+filterParam['descriptionText']+"%")}, (function (error, events){
+            if (error) {
+                console.error(error);
+                d.reject(errror);
+            } else
+            {
+                d.resolve(events);
+            }   
+        }));
+        
+        //model.find({time: orm.gte(filterParam['dateFrom']) && orm.lte(filterParam['dateTo'])}).where
+        
+        return d.promise;
+    }
+
+    this.remove = function remove(model, obj) {
+        if (obj instanceof Array) {
+            var promises = [];
+            for (var i = 0; i < obj.length; i++) {
+                promises.push(remove(model, obj[i]));
+            }
+            return q.all(promises);
+        } else {
+            var d = q.defer();
+            obj.remove(function (err){
+                if(err) {
+                    console.error(err);
+                    d.reject(err);
+                }
+                else {
+                    console.log(obj, "removed");
+                    d.resolve();
+                }
+            });
             return d.promise;
         }
     }
@@ -74,14 +129,8 @@ function TrendetsDb(dbPath) {
             console.info('Database at ' + dbPath + ' not found - nothing to delete.');
     }
 
-    // this.disconnect = function(){
-    //     var res = disconnect(connection);
-    //     console.info('Database at ' + dbPath + ' disconnect.');
 
-    //     return res;
-    // }
-
-    function disconnect(db) {
+    this.disconnect = function disconnect(db) {
         console.log('Disconnecting')
         var d = q.defer();
         db.close(resolveDeferred(d));
@@ -89,10 +138,6 @@ function TrendetsDb(dbPath) {
             connection = null;
         });
     }
-
-        //return connect().then(function (db) {
-        //    return new TrendetsDbMigrator(db);
-        //});
 
     function connect() {
         var d = q.defer();
@@ -199,8 +244,8 @@ function TrendetsDb(dbPath) {
 
     function promisifyModel(model) {
         promisifyFunc(model, 'one');
-        promisifyFunc(model, 'get');
-        promisifyFunc(model, 'all');
+        //promisifyFunc(model, 'get');
+        //promisifyFunc(model, 'all');
         promisifyFunc(model, 'create');
     }
 

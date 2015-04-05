@@ -7,15 +7,12 @@ var q = require('q');
 function downloadEvents(eventsParams){
 	console.log('Downloading Events');
 	var TrendetsHandler = new DbHandler();
-	//TrendetsHandler.connect()
+
 	function sendToDb(events){
-		//events.forEach(function(event_p){console.log(event_p['time'])});
-		// call db function
 		console.log("enetered insertToDb");
 		return TrendetsHandler.insertEventsToDb(events)
 			.then(function  (argument) {
 				console.log("left insertToDb");
-				// body...
 			});
 		
 	}
@@ -27,9 +24,7 @@ function downloadEvents(eventsParams){
 	 				sendToDb(events);
 	 			});
 	 	});
-	//investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'], sendToDb);
 	console.log("left downloadEvents")
-	//TrendetsHandler.disconnect()
 
 	return promise;
 }
@@ -55,5 +50,32 @@ function stocksToFiles(fileParams){
 	// db_handler.extract_stocks_fromdb(file_params);
 }
 
+function getEventsByFilter(filterParams){
+	var TrendetsHandler = new DbHandler();
+
+	console.log("enetered getEvenetsByFilter");
+		return TrendetsHandler.getEventsByFilter(filterParams)
+			.then(function (events) {
+				console.log("left getEvenetsByFilter");
+				return events;
+			});
+}
+
+function removeEventsByFilter(filterParams){
+	var TrendetsHandler = new DbHandler();
+
+	return TrendetsHandler.getEventsByFilter(filterParams)
+			.then(function (events) {
+				console.log(events);
+				console.log("enetered removeEvenetsByFilter");
+				return TrendetsHandler.removeEvents(events)
+					.then(function (){
+						console.log("left removeEvenetsByFilter");
+					})
+			});
+
+}
+
 module.exports.downloadEvents = downloadEvents;
 module.exports.downloadStocks = downloadStocks;
+module.exports.getEventsByFilter = getEventsByFilter;

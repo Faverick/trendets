@@ -44,3 +44,4 @@ function removeData(){
 
 module.exports.downloadData = downloadData;
 module.exports.uploadData = uploadData;
+module.exports.removeData = removeData;

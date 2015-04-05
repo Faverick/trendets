@@ -55,18 +55,18 @@ function getEventsByFilter(filterParams){
 
 	console.log("enetered getEvenetsByFilter");
 		return TrendetsHandler.getEventsByFilter(filterParams)
-			.then(function (events) {
+					.then(function (events) {
 				console.log("left getEvenetsByFilter");
 				return events;
 			});
 }
 
+
 function removeEventsByFilter(filterParams){
 	var TrendetsHandler = new DbHandler();
 
 	return TrendetsHandler.getEventsByFilter(filterParams)
-			.then(function (events) {
-				console.log(events);
+			.then(function (events){
 				console.log("enetered removeEvenetsByFilter");
 				return TrendetsHandler.removeEvents(events)
 					.then(function (){
@@ -79,3 +79,4 @@ function removeEventsByFilter(filterParams){
 module.exports.downloadEvents = downloadEvents;
 module.exports.downloadStocks = downloadStocks;
 module.exports.getEventsByFilter = getEventsByFilter;
+module.exports.removeEventsByFilter = removeEventsByFilter;

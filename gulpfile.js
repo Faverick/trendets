@@ -156,7 +156,7 @@ gulp.task('uploadData', function(cb){
 });
 
 gulp.task('removeData', function(cb){
-    return startDefault.uploadData();
+    return startDefault.removeData();
 });
 
 

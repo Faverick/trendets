@@ -17,8 +17,7 @@ after_success:
 - git add doc/*
 - git stash
 - git checkout documentation
-- git rm -rf doc/*
-- git stash apply
+- git merge --squash --strategy-option=theirs stash
 - git stash clear
 - git commit -m "Documentation updated"
 - git push deploy documentation

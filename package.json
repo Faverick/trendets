@@ -19,6 +19,7 @@
     "imagemin-pngquant": "^4.0.0",
     "mocha": "*",
     "moment": "*",
+    "mkdirp": "*",
     "node-inspector": "*",
     "orm": "^2.1.21",
     "q": "^1.1.2",
@@ -26,7 +27,8 @@
     "rekuire":"*",
     "request": "^2.51.0",
     "should": "*",
-    "sqlite3": "^3.0.4"
+    "sqlite3": "^3.0.4",
+    "winston": "*"
   },
   "description": "visual calendar",
   "main": "gulpfile.js",

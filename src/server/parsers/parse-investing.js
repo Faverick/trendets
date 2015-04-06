@@ -45,10 +45,12 @@ parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(
 var request = require('request'),
 	cheerio = require('cheerio'),
 	moment = require('moment'),
-	q = require('q');
+	q = require('q'),
+	rek = require('rekuire'),
+	logger = rek('winstonlog');
 
 function parseWithSplitting(lang, fromDate, toDate){
-	console.log('enter parseWithSplitting');
+	logger.info('enter parseWithSplitting');
 	var prevDate = moment(fromDate),
 		endDate = moment(toDate),
 		stepTime = {month:1},
@@ -82,7 +84,7 @@ function parseInvesting(lang, fromDate, toDate){
 	};
 	var d = q.defer();
 
-	console.log("entered parseInvesting");
+	logger.info("entered parseInvesting");
 	var options = {
 		url: 'http://'+langUrl[lang]+'.investing.com/economic-calendar/filter',
 		headers: {
@@ -98,7 +100,7 @@ function parseInvesting(lang, fromDate, toDate){
 	};
 
 	function callback(error, response, body) {
-		console.log("entered callback");
+		logger.info("entered callback");
 		if (!error && response.statusCode == 200) {
 			var allEvents = [];
 			var json = JSON.parse(body);
@@ -129,7 +131,7 @@ function parseInvesting(lang, fromDate, toDate){
 		}
 		
 	}
-	console.log("about to send request");
+	logger.info("about to send request");
 	
 	request.post(options, callback);
 

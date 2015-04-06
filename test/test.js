@@ -11,6 +11,33 @@ var investing = rek("parse-investing");
 //chai.use(chaiAsPromised);
 
 describe('Parse Investing', function(){
+  describe('#parseWithSplitting', function(){
+    this.timeout(100000);
+
+    var tests = [
+      {args: ['ru', '2014-01-01', '2015-01-01']}
+    ];
+
+    tests.forEach(function(test){
+      it('responds for filter: '+test.args+' with correct events', function(done){
+        investing.parseWithSplitting(test.args[0], test.args[1], test.args[2])
+          .then(function(res){
+            console.log('Test func')
+            console.log(res[0]['time']);
+            res.forEach(function(it){
+              moment(it['time']).should.be.within(moment(test.args[1]), moment(test.args[2]).add(1, 'days'));
+            })
+            done();
+        }, function(res, err){
+          console.error(err);
+          done(err);
+        })
+        
+      })
+    })
+    
+  })
+
 	describe('#parseInvesting', function(){
     this.timeout(10000);
 

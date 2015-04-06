@@ -44,7 +44,36 @@ parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(
 
 var request = require('request'),
 	cheerio = require('cheerio'),
+	moment = require('moment'),
 	q = require('q');
+
+function parseWithSplitting(lang, fromDate, toDate){
+	console.log('enter parseWithSplitting');
+	var prevDate = moment(fromDate),
+		endDate = moment(toDate),
+		stepTime = {month:1},
+		curDate = moment(fromDate).add(stepTime);
+	var promises = [ ];
+
+	while (curDate<endDate){
+		promises.push(parseInvesting(lang, prevDate.format('YYYY-MM-DD'), curDate.format('YYYY-MM-DD')));
+		prevDate.add(stepTime);
+		curDate.add(stepTime);
+	}
+	promises.push(parseInvesting(lang, prevDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD')));
+
+	var allPromise = q.defer();
+	q.all(promises).then(function(results){
+		results.forEach(function (result) {
+			var merged = [];
+			merged = merged.concat.apply(merged, result);
+			allPromise.resolve(merged);
+	    });
+	}, function(result, error){
+		allPromise.reject();	
+	})
+	return allPromise.promise;
+}	
 
 function parseInvesting(lang, fromDate, toDate){ 
 	var langUrl = {
@@ -108,3 +137,4 @@ function parseInvesting(lang, fromDate, toDate){
 }
 
 module.exports.parseInvesting = parseInvesting;
+module.exports.parseWithSplitting = parseWithSplitting;

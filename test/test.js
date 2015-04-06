@@ -16,6 +16,7 @@ describe('Parse Investing', function(){
     this.timeout(40000);
 
     var tests = [
+      {args: ['en', '2015-03-26', '2015-03-26']},
       {args: ['ru', '2014-01-01', '2015-01-01']}
     ];
 
@@ -24,6 +25,7 @@ describe('Parse Investing', function(){
         investing.parseWithSplitting(test.args[0], test.args[1], test.args[2])
           .then(function(res){
             res.forEach(function(it){
+              logger.info(it['time']);
               moment(it['time']).should.be.within(moment(test.args[1]), moment(test.args[2]).add(1, 'days'));
             })
             done();

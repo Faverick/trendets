@@ -22,7 +22,7 @@ function downloadEvents(eventsParams){
 	// добавить разбиение запроса в investing'e по неделям для русского языка
 	var promise = q.when(TrendetsHandler.isHandlerReady())
 	 	.then(function () {
-	 		investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'])
+	 		investing.parseWithSplitting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'])
 	 			.then(function (events){
 	 				sendToDb(events);
 	 			});

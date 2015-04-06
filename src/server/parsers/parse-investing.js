@@ -66,11 +66,9 @@ function parseWithSplitting(lang, fromDate, toDate){
 
 	var allPromise = q.defer();
 	q.all(promises).then(function(results){
-		results.forEach(function (result) {
 			var merged = [];
-			merged = merged.concat.apply(merged, result);
+			merged = merged.concat.apply(merged, results);
 			allPromise.resolve(merged);
-	    });
 	}, function(result, error){
 		allPromise.reject();	
 	})

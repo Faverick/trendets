@@ -4,8 +4,8 @@ var preparation = rek('data-preparation')
 var defaultParameters={
 	investing:{
 		language: 'en',
-		dateFrom:'2015-03-25',
-		dateTo: '2015-03-25',
+		dateFrom:'2014-01-01',
+		dateTo: '2015-01-01',
 		country: [],
 		importance: [],
 		quotes_search_text: ''
@@ -18,8 +18,8 @@ var defaultParameters={
 	//If dateFrom is not provided it will return all events from the first event to the events of dateTo
 	//If dateTo and dateFrom are not provided it will return all events from the first event to the events of today
 	filter:{
-		dateFrom:'2015-03-25',
-		dateTo: '2015-03-25',
+		dateFrom:'2014-01-01',
+		dateTo: '2015-01-01',
 		country: ["Italy", "Japan"],
 		importance: ["bull1"],
 		descriptionText: ""

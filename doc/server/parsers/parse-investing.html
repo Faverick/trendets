@@ -34,16 +34,45 @@ Responce event looks like this:
 parse_investing(&#39;ru&#39;, &#39;2015-02-01&#39;, &#39;2015-03-01&#39;, function(event_p){console.log(event_p)})
 parse_investing(&#39;en&#39;, &#39;2015-02-01&#39;, &#39;2015-03-01&#39;, function(event_p){console.log(event_p[&#39;time&#39;])})</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request'</span>),
 	cheerio = <span class="hljs-built_in">require</span>(<span class="hljs-string">'cheerio'</span>),
-	q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>);
+	moment = <span class="hljs-built_in">require</span>(<span class="hljs-string">'moment'</span>),
+	q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>),
+	rek = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rekuire'</span>),
+	logger = rek(<span class="hljs-string">'winstonlog'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseWithSplitting</span><span class="hljs-params">(lang, fromDate, toDate)</span></span>{
+	logger.info(<span class="hljs-string">'enter parseWithSplitting'</span>);
+	<span class="hljs-keyword">var</span> prevDate = moment(fromDate),
+		endDate = moment(toDate),
+		stepTime = {month:<span class="hljs-number">1</span>},
+		curDate = moment(fromDate).add(stepTime);
+	<span class="hljs-keyword">var</span> promises = [ ];
+
+	<span class="hljs-keyword">while</span> (curDate&lt;endDate){
+		promises.push(parseInvesting(lang, prevDate.format(<span class="hljs-string">'YYYY-MM-DD'</span>), curDate.format(<span class="hljs-string">'YYYY-MM-DD'</span>)));
+		prevDate.add(stepTime);
+		curDate.add(stepTime);
+	}
+	promises.push(parseInvesting(lang, prevDate.format(<span class="hljs-string">'YYYY-MM-DD'</span>), endDate.format(<span class="hljs-string">'YYYY-MM-DD'</span>)));
+
+	<span class="hljs-keyword">var</span> allPromise = q.defer();
+	q.all(promises).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span></span>{
+			<span class="hljs-keyword">var</span> merged = [];
+			merged = merged.concat.apply(merged, results);
+			allPromise.resolve(merged);
+	}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result, error)</span></span>{
+		allPromise.reject();	
+	})
+	<span class="hljs-keyword">return</span> allPromise.promise;
+}	
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseInvesting</span><span class="hljs-params">(lang, fromDate, toDate)</span></span>{ 
 	<span class="hljs-keyword">var</span> langUrl = {
 		<span class="hljs-string">'en'</span>: <span class="hljs-string">'www'</span>,
 		<span class="hljs-string">'ru'</span> : <span class="hljs-string">'ru'</span>
-	},
-		d = q.defer();
+	};
+	<span class="hljs-keyword">var</span> d = q.defer();
 
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"entered parseInvesting"</span>);
+	logger.info(<span class="hljs-string">"entered parseInvesting"</span>);
 	<span class="hljs-keyword">var</span> options = {
 		url: <span class="hljs-string">'http://'</span>+langUrl[lang]+<span class="hljs-string">'.investing.com/economic-calendar/filter'</span>,
 		headers: {
@@ -59,7 +88,7 @@ parse_investing(&#39;en&#39;, &#39;2015-02-01&#39;, &#39;2015-03-01&#39;, functi
 	};
 
 	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span><span class="hljs-params">(error, response, body)</span> </span>{
-		<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"entered callback"</span>);
+		logger.info(<span class="hljs-string">"entered callback"</span>);
 		<span class="hljs-keyword">if</span> (!error &amp;&amp; response.statusCode == <span class="hljs-number">200</span>) {
 			<span class="hljs-keyword">var</span> allEvents = [];
 			<span class="hljs-keyword">var</span> json = <span class="hljs-built_in">JSON</span>.parse(body);
@@ -69,12 +98,12 @@ parse_investing(&#39;en&#39;, &#39;2015-02-01&#39;, &#39;2015-03-01&#39;, functi
 				$(<span class="hljs-string">'tr[event_attr_id]'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
 					<span class="hljs-keyword">var</span> cols = $(<span class="hljs-keyword">this</span>).find(<span class="hljs-string">'td'</span>)
 					<span class="hljs-keyword">var</span> econ_event = {
-						id: $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">'id'</span>).replace(<span class="hljs-string">'eventRowId_'</span>,<span class="hljs-string">''</span>),
+						eventId: $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">'id'</span>).replace(<span class="hljs-string">'eventRowId_'</span>,<span class="hljs-string">''</span>),
 						time: $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">'event_timestamp'</span>),
 						country: $(cols[<span class="hljs-string">'1'</span>]).find(<span class="hljs-string">'span'</span>).attr(<span class="hljs-string">'title'</span>),
 						currency: $(cols[<span class="hljs-string">'1'</span>]).text().trim(),
 						importance: $(cols[<span class="hljs-string">'2'</span>]).attr(<span class="hljs-string">'data-img_key'</span>),
-				        descriptrion: $(cols[<span class="hljs-string">'3'</span>]).text().trim(),
+				        description: $(cols[<span class="hljs-string">'3'</span>]).text().trim(),
 				        actual: $(cols[<span class="hljs-string">'4'</span>]).text(),
 				        forecast: $(cols[<span class="hljs-string">'5'</span>]).text(),
 				        previous: $(cols[<span class="hljs-string">'6'</span>]).text()
@@ -88,11 +117,12 @@ parse_investing(&#39;en&#39;, &#39;2015-02-01&#39;, &#39;2015-03-01&#39;, functi
 		}
 		
 	}
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"about to send request"</span>);
+	logger.info(<span class="hljs-string">"about to send request"</span>);
 	
 	request.post(options, callback);
 
 	<span class="hljs-keyword">return</span> d.promise;
 }
 
-<span class="hljs-built_in">module</span>.exports.parseInvesting = parseInvesting;</div></div></div></div></body></html>
+<span class="hljs-built_in">module</span>.exports.parseInvesting = parseInvesting;
+<span class="hljs-built_in">module</span>.exports.parseWithSplitting = parseWithSplitting;</div></div></div></div></body></html>

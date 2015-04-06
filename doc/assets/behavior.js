@@ -30,26 +30,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       "depth": 1,
       "children": [
         {
-          "type": "file",
-          "data": {
-            "language": {
-              "nameMatchers": [".js"],
-              "pygmentsLexer": "javascript",
-              "multiLineComment": ["/*", "*", "*/"],
-              "singleLineComment": ["//"],
-              "ignorePrefix": "}",
-              "foldPrefix": "^",
-              "name": "JavaScript"
-            },
-            "sourcePath": "/home/travis/build/Faverick/trendets/src/server/db.js",
-            "projectPath": "src/server/db.js",
-            "targetPath": "server/db",
-            "pageTitle": "server/db",
-            "title": "db"
-          },
-          "depth": 2,
-          "outline": []
-        }, {
           "type": "folder",
           "data": {
             "path": "server/db-handlers",
@@ -74,6 +54,36 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "targetPath": "server/db-handlers/db-handler",
                 "pageTitle": "server/db-handlers/db-handler",
                 "title": "db-handler"
+              },
+              "depth": 3,
+              "outline": []
+            }
+          ]
+        }, {
+          "type": "folder",
+          "data": {
+            "path": "server/db",
+            "title": "db"
+          },
+          "depth": 2,
+          "children": [
+            {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/home/travis/build/Faverick/trendets/src/server/db/db.js",
+                "projectPath": "src/server/db/db.js",
+                "targetPath": "server/db/db",
+                "pageTitle": "server/db/db",
+                "title": "db"
               },
               "depth": 3,
               "outline": []

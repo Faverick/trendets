@@ -16,5 +16,9 @@ after_success:
 - ssh-add
 - git remote add deploy git@github.com:Faverick/trendets.git
 - git add doc/*
-- git commit -am "Documentation updated"
-- git push deploy
+- git stash
+- git checkout feature/travis-ci_TD-21
+- git merge --squash --strategy-option=theirs stash
+- git stash clear
+- git commit -m "Documentation updated"
+- git push deploy feature/travis-ci_TD-21

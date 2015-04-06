@@ -141,7 +141,6 @@ gulp.task('downloadData', function(cb){
     return startDefault.downloadData();
 });
 
-
 gulp.task('uploadData', function(cb){
     return startDefault.uploadData()
     .then(function (events){

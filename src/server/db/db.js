@@ -92,8 +92,6 @@ function TrendetsDb(dbPath) {
             }   
         }));
         
-        //model.find({time: orm.gte(filterParam['dateFrom']) && orm.lte(filterParam['dateTo'])}).where
-        
         return d.promise;
     }
 

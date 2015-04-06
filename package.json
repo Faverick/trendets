@@ -17,7 +17,6 @@
     "gulp-uglify": "^1.1.0",
     "gulp-watch": "*",
     "imagemin-pngquant": "^4.0.0",
-    "mocha": "*",
     "moment": "*",
     "mkdirp": "*",
     "node-inspector": "*",
@@ -28,12 +27,16 @@
     "request": "^2.51.0",
     "should": "*",
     "sqlite3": "^3.0.4",
-    "winston": "*"
+    "winston": "*",
+    "cheerio": "*",
+    "mocha": "*",
+    "groc": "*"
   },
   "description": "visual calendar",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "posttest": "groc"
   },
   "repository": {
     "type": "git",

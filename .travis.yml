@@ -1,5 +1,27 @@
 language: node_js
 node_js:
-  - "0.12"
+- '0.12'
 notifications:
   email: false
+before_install:
+- openssl aes-256-cbc -K $encrypted_ca96f6bc6cbe_key -iv $encrypted_ca96f6bc6cbe_iv
+  -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+- git rm -rf doc/*
+before_script:
+- git config --global user.email $MY_MAIL
+- git config --global user.name "Travis-CI"
+after_success:
+- chmod 600 ~/.ssh/id_rsa
+- eval "$(ssh-agent)"
+- ssh-add
+- git remote add deploy git@github.com:Faverick/trendets.git
+- git add doc/*
+- git stash
+- git checkout develop
+- git merge --squash --strategy-option=theirs stash
+- git stash clear
+- git commit -m "Documentation updated"
+- git push deploy develop
+env:
+  global:
+    secure: h4uLA8Fu/ncekMDeYYS7kI8Nh0FIv+XaQ2DAW5AuRsA3dqcgxvlnOA0vnkYmnvGmZ8amcRYqNq7MX/apzPwtv7GkXf7WcGgDnCfoxLcZiva/e4P51ZU62B4iYbIQ1OMCKkQvenS+Ajtk7yxKYqiEEhRyjoCpLJMzzNd0uQR5uH0=

@@ -37,7 +37,7 @@ function TrendetsDb(dbPath) {
 
         var res = connect().then(createTables)
                            .then(defineModels)
-                           .then(disconnect).then(function(){console.log('creating finished')});
+                           .then(this.disconnect).then(function(){console.log('creating finished')});
 
         console.info('Database at ' + dbPath + ' created.');
 

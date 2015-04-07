@@ -19,6 +19,7 @@ after_success:
 - git stash
 - git checkout develop
 - git merge --squash --strategy-option=theirs stash
+- find doc/ -type f -name *.html -exec cat {} > full_documentation.htm \;
 - git stash clear
 - git commit -m "Documentation updated"
 - git push deploy develop

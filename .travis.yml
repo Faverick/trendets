@@ -18,8 +18,8 @@ after_success:
 - git remote add deploy git@github.com:Faverick/trendets.git
 - cp doc/index.html doc/documentation.md
 - cp report/index.html report/report.md
-- git add doc/*
-- git add report/*
+- git add --ignore-removal doc/*
+- git add --ignore-removal report/*
 - git stash
 - git checkout develop
 - git merge --squash --strategy-option=theirs stash

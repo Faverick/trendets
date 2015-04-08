@@ -36,14 +36,14 @@ var path = {
         fonts: 'build/fonts/'
     },
     src: { //Пути откуда брать исходники
-        html: public_path+'*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
+        html: public_path+'html/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
         js: public_path+'js/main.js',//В стилях и скриптах нам понадобятся только main файлы
         style: public_path+'style/main.scss',
         img: public_path+'img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
         fonts: public_path+'fonts/**/*.*'
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
-        html: public_path+'**/*.html',
+        html: public_path+'html**/*.html',
         js: public_path+'js/**/*.js',
         style: public_path+'style/**/*.scss',
         img: public_path+'img/**/*.*',
@@ -134,17 +134,8 @@ gulp.task('watch', function(){
 });
 
 gulp.task('webserver', function () {
-    // browserSync({
-    //     server: {
-    //         baseDir: './dist'
-    //     }
-    // }, function (err, bs) {
-    //     if (err)
-    //         console.error(err);
-    //     else {
     rek('server');
     open('http://localhost:' + settings.port + '/');
-    //    }
     //browserSync(config);
 });
 

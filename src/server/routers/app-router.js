@@ -8,10 +8,8 @@ var settings = rek('settings'),
 
 var app = express();
 
-// app.get(/^\/admin/, function (res, res) {
-//     res.sendFile(path.join(settings.path, '/web/admin/html/admin.html'));
-// });
-app.use(express.static(path.join(settings.path, '/web/public')));
+// Задаем путь к ресурсам, который будет использоваться в html файлах  
+app.use(express.static(path.join(settings.path, '/web/public'))); 
 
 /************************************************************************/
 /*                              REST API                                */

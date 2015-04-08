@@ -12,19 +12,13 @@ var router = express.Router();
 router.get('/', function (req, res) {
     logger.info('GET Router');
     res.send('LOL');
-    //res.sendFile(path.join(settings.path, '/web/public/index.html'));
-    //res.json({ message: 'Welcome to Qoollo Trendets API' });
 });
 router.use(express.static(path.join(settings.path, '/web/public')))
-// router.use(function (req, res, next) {
-//     console.log('// [' + req.method + '] ' + req.originalUrl);
-//     next();
-// });
 
 addRestResource('Stocks');
 addRestResource('Events');
 
-//  Adds REST resouce for db model with GET, POST, UPDATE, DELETE handlers
+//  Adds REST resouce for db model with GET, POST handlers
 function addRestResource(name) {
 
     var settings = {

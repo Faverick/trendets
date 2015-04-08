@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="en"><head><title>web/public/js/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="web/public/js/index"><meta name="groc-project-path" content="src/web/public/js/index.js"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/web/public/js/index.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> app = angular.module(<span class="hljs-string">'TrendetsApp'</span>, [<span class="hljs-string">'ng'</span>, <span class="hljs-string">'ngRoute'</span>, <span class="hljs-string">'ngResource'</span>, <span class="hljs-string">'ngAnimate'</span>]);
+
+app.controller(<span class="hljs-string">'formCtrl'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope)</span> </span>{
+    $scope.master = {firstName: <span class="hljs-string">"John"</span>, lastName: <span class="hljs-string">"Doe"</span>};
+    $scope.reset = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        $scope.user = angular.copy($scope.master);
+    };
+    $scope.reset();
+});
+
+app.run();</div></div></div></div></body></html>

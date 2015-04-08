@@ -189,6 +189,96 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "outline": []
             }
           ]
+        }, {
+          "type": "folder",
+          "data": {
+            "path": "server/routers",
+            "title": "routers"
+          },
+          "depth": 2,
+          "children": [
+            {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/home/travis/build/Faverick/trendets/src/server/routers/app-router.js",
+                "projectPath": "src/server/routers/app-router.js",
+                "targetPath": "server/routers/app-router",
+                "pageTitle": "server/routers/app-router",
+                "title": "app-router"
+              },
+              "depth": 3,
+              "outline": []
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/home/travis/build/Faverick/trendets/src/server/routers/resource-router.js",
+                "projectPath": "src/server/routers/resource-router.js",
+                "targetPath": "server/routers/resource-router",
+                "pageTitle": "server/routers/resource-router",
+                "title": "resource-router"
+              },
+              "depth": 3,
+              "outline": []
+            }
+          ]
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".js"],
+              "pygmentsLexer": "javascript",
+              "multiLineComment": ["/*", "*", "*/"],
+              "singleLineComment": ["//"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "JavaScript"
+            },
+            "sourcePath": "/home/travis/build/Faverick/trendets/src/server/server.js",
+            "projectPath": "src/server/server.js",
+            "targetPath": "server/server",
+            "pageTitle": "server/server",
+            "title": "server"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".js"],
+              "pygmentsLexer": "javascript",
+              "multiLineComment": ["/*", "*", "*/"],
+              "singleLineComment": ["//"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "JavaScript"
+            },
+            "sourcePath": "/home/travis/build/Faverick/trendets/src/server/settings.js",
+            "projectPath": "src/server/settings.js",
+            "targetPath": "server/settings",
+            "pageTitle": "server/settings",
+            "title": "settings"
+          },
+          "depth": 2,
+          "outline": []
         }
       ]
     }, {
@@ -232,31 +322,41 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
         {
           "type": "folder",
           "data": {
-            "path": "web/js",
-            "title": "js"
+            "path": "web/public",
+            "title": "public"
           },
           "depth": 2,
           "children": [
             {
-              "type": "file",
+              "type": "folder",
               "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
-                "sourcePath": "/home/travis/build/Faverick/trendets/src/web/js/main.js",
-                "projectPath": "src/web/js/main.js",
-                "targetPath": "web/js/main",
-                "pageTitle": "web/js/main",
-                "title": "main"
+                "path": "web/public/js",
+                "title": "js"
               },
               "depth": 3,
-              "outline": []
+              "children": [
+                {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".js"],
+                      "pygmentsLexer": "javascript",
+                      "multiLineComment": ["/*", "*", "*/"],
+                      "singleLineComment": ["//"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "JavaScript"
+                    },
+                    "sourcePath": "/home/travis/build/Faverick/trendets/src/web/public/js/index.js",
+                    "projectPath": "src/web/public/js/index.js",
+                    "targetPath": "web/public/js/index",
+                    "pageTitle": "web/public/js/index",
+                    "title": "index"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }
+              ]
             }
           ]
         }

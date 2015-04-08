@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - src/server/parsers/parse-investing.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/server/parsers/parse-investing.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">62.21</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">96</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">19.31</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.08</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* ---GETTING PARSED DATA---
+
+Function request investing.com economic calendar and parse the responce. Parsed events then sends to the sendto_db function
+
+---LANGUAGE---
+To change language you need to chang URL in options variable
+
+---FILTER---
+Filter on investing.com looks like this:
+form:{
+	  	dateFrom: &#039;2015-03-25&#039;,
+	    dateTo: &#039;2015-03-25&#039;,
+	    timeZone: 18,
+	    quotes_search_text: &#039;&#039;,
+	    country: [4, 5,6,7,9,10,11,12,14,15,17,20,21,22,23,24,25,26,27,29,32,33,34,35,36,37,38,39,41,42,43,
+					44,45,46,48,51,52,53,54,55,56,57,59,60,61,63,68,70,71,72,75,80,84,85,87,89,90,92,93,94,96,97,100,103,
+					105,106,107,109,110,111,112,113,121,122,123,125,138,143,145,162,163,170,172,178,188,193,202],
+	    importance: [1,2,3]
+	    category: [...]
+	    timeFilter:  &#039;timeRemain&#039;,
+	    timeFrame: &#039;tomorrow&#039;
+	  }
+
+If it&#039;ll be needed you can modify code below so that it contained more fields from filter.
+In get all values(for fields with arrays) without filtering, just set the field to the empty array []
+
+---RESPONSE---
+Responce event looks like this:
+{ id: &#039;55378&#039;,
+  time: &#039;2015-03-27 19:30:00&#039;,
+  country: &#039;Канада&#039;,
+  currency: &#039;CAD&#039;,
+  importance: &#039;bull2&#039;,
+  descriptrion: &#039;Количество чистых спекулятивных позиций по CAD от CFTC&#039;,
+  actual: &#039;-32,7K&#039;,
+  forecast: &#039; &#039;,
+  previous: &#039;-32,8K&#039; }
+
+---TESTING---
+parse_investing(&#039;ru&#039;, &#039;2015-02-01&#039;, &#039;2015-03-01&#039;, function(event_p){console.log(event_p)})
+parse_investing(&#039;en&#039;, &#039;2015-02-01&#039;, &#039;2015-03-01&#039;, function(event_p){console.log(event_p[&#039;time&#039;])})
+
+*/
+
+var request = require(&#039;request&#039;),
+	cheerio = require(&#039;cheerio&#039;),
+	moment = require(&#039;moment&#039;),
+	q = require(&#039;q&#039;),
+	rek = require(&#039;rekuire&#039;),
+	logger = rek(&#039;winstonlog&#039;);
+
+function parseWithSplitting(lang, fromDate, toDate){
+	logger.info(&#039;enter parseWithSplitting&#039;);
+	var prevDate = moment(fromDate),
+		endDate = moment(toDate),
+		stepTime = {month:1},
+		curDate = moment(fromDate).add(stepTime);
+	var promises = [ ];
+
+	while (curDate&lt;endDate){
+		promises.push(parseInvesting(lang, prevDate.format(&#039;YYYY-MM-DD&#039;), curDate.format(&#039;YYYY-MM-DD&#039;)));
+		prevDate.add(stepTime);
+		curDate.add(stepTime);
+	}
+	promises.push(parseInvesting(lang, prevDate.format(&#039;YYYY-MM-DD&#039;), endDate.format(&#039;YYYY-MM-DD&#039;)));
+
+	var allPromise = q.defer();
+	q.all(promises).then(function(results){
+			var merged = [];
+			merged = merged.concat.apply(merged, results);
+			allPromise.resolve(merged);
+	}, function(result, error){
+		allPromise.reject();	
+	})
+	return allPromise.promise;
+}	
+
+function parseInvesting(lang, fromDate, toDate){ 
+	var langUrl = {
+		&#039;en&#039;: &#039;www&#039;,
+		&#039;ru&#039; : &#039;ru&#039;
+	};
+	var d = q.defer();
+
+	logger.info(&quot;entered parseInvesting&quot;);
+	var options = {
+		url: &#039;http://&#039;+langUrl[lang]+&#039;.investing.com/economic-calendar/filter&#039;,
+		headers: {
+			&#039;User-Agent&#039;: &#039;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36&#039;,
+			&#039;X-Requested-With&#039;: &#039;XMLHttpRequest&#039;
+		},
+		form:{
+			dateFrom: fromDate,
+			dateTo: toDate,
+			quotes_search_text: &#039;&#039;,
+			timeZone:55 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
+		},
+	};
+
+	function callback(error, response, body) {
+		logger.info(&quot;entered callback&quot;);
+		if (!error &amp;&amp; response.statusCode == 200) {
+			var allEvents = [];
+			var json = JSON.parse(body);
+			if (json[&#039;renderedFilteredEvents&#039;] != null){
+				var $ = cheerio.load(json[&#039;renderedFilteredEvents&#039;]);
+
+				$(&#039;tr[event_attr_id]&#039;).each(function() {
+					var cols = $(this).find(&#039;td&#039;)
+					var econ_event = {
+						eventId: $(this).attr(&#039;id&#039;).replace(&#039;eventRowId_&#039;,&#039;&#039;),
+						time: $(this).attr(&#039;event_timestamp&#039;),
+						country: $(cols[&#039;1&#039;]).find(&#039;span&#039;).attr(&#039;title&#039;),
+						currency: $(cols[&#039;1&#039;]).text().trim(),
+						importance: $(cols[&#039;2&#039;]).attr(&#039;data-img_key&#039;),
+				        description: $(cols[&#039;3&#039;]).text().trim(),
+				        actual: $(cols[&#039;4&#039;]).text(),
+				        forecast: $(cols[&#039;5&#039;]).text(),
+				        previous: $(cols[&#039;6&#039;]).text()
+					}
+					allEvents.push(econ_event)				
+				})
+			}
+			d.resolve(allEvents);
+		} else{
+			 //console.log(&#039;Error&#039; + response.statusCode);
+			// TODO: raise exception. console.log(response.statusCod)
+			d.reject();
+		}
+		
+	}
+	logger.info(&quot;about to send request&quot;);
+	
+	request.post(options, callback);
+
+	return d.promise;
+}
+
+module.exports.parseInvesting = parseInvesting;
+module.exports.parseWithSplitting = parseWithSplitting;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

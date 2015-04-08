@@ -13,7 +13,7 @@ var investing = rek("parse-investing"),
 
 describe('Parse Investing', function(){
   describe('#parseWithSplitting', function(){
-    this.timeout(40000);
+    this.timeout(60000);
 
     var tests = [
       {args: ['en', '2015-03-26', '2015-03-26']},
@@ -40,7 +40,7 @@ describe('Parse Investing', function(){
   })
 
 	describe('#parseInvesting', function(){
-    this.timeout(10000);
+    this.timeout(40000);
 
 		var tests = [
 			{args: ['en', '2015-03-26', '2015-03-26']},

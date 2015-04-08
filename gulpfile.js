@@ -13,13 +13,19 @@ var gulp = require('gulp'),
     rimraf = require('rimraf'),
     browserSync = require("browser-sync"),
     rek = require('rekuire'),
-    reload = browserSync.reload;
+    open = require('open'),
+    q = require('q');
 
+var reload = browserSync.reload;
 //  for 'data' task
-var TrendetsDb = rek('db');
 require('date-utils');
-var startDefault = rek('start-default');
-var q = require('q');
+
+var TrendetsDb = rek('db'),
+    startDefault = rek('start-default'),
+    settings = rek('settings');
+
+
+var public_path = 'src/web/public/';
 
 var path = {
     build: { //Тут мы укажем куда складывать готовые после сборки файлы
@@ -30,18 +36,18 @@ var path = {
         fonts: 'build/fonts/'
     },
     src: { //Пути откуда брать исходники
-        html: 'src/web/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
-        js: 'src/web/js/main.js',//В стилях и скриптах нам понадобятся только main файлы
-        style: 'src/web/style/main.scss',
-        img: 'src/web/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
-        fonts: 'src/web/fonts/**/*.*'
+        html: public_path+'html/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
+        js: public_path+'js/main.js',//В стилях и скриптах нам понадобятся только main файлы
+        style: public_path+'style/main.scss',
+        img: public_path+'img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
+        fonts: public_path+'fonts/**/*.*'
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
-        html: 'src/web/**/*.html',
-        js: 'src/web/js/**/*.js',
-        style: 'src/web/style/**/*.scss',
-        img: 'src/web/img/**/*.*',
-        fonts: 'src/web/fonts/**/*.*'
+        html: public_path+'html**/*.html',
+        js: public_path+'js/**/*.js',
+        style: public_path+'style/**/*.scss',
+        img: public_path+'img/**/*.*',
+        fonts: public_path+'fonts/**/*.*'
     },
     clean: './build'
 };
@@ -128,7 +134,9 @@ gulp.task('watch', function(){
 });
 
 gulp.task('webserver', function () {
-    browserSync(config);
+    rek('server');
+    open('http://localhost:' + settings.port + '/');
+    //browserSync(config);
 });
 
 gulp.task('clean', function (cb) {

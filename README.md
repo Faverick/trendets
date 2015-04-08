@@ -10,5 +10,5 @@ Visual calendar
 
 E-mail: a.a.pakhomoff@gmail.com
 
-[Bug tracking] (https://trendets.myjetbrains.com/youtrack)   
-[Continuous Integration] (https://travis-ci.org/Faverick/trendets)
+[Bug tracking](https://trendets.myjetbrains.com/youtrack)   
+[Continuous Integration](https://travis-ci.org/Faverick/trendets)

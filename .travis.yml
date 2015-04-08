@@ -15,8 +15,10 @@ after_success:
 - eval "$(ssh-agent)"
 - ssh-add
 - git remote add deploy git@github.com:Faverick/trendets.git
-- find doc/ -type f -name *.html -exec cat {} > doc/full_documentation.htm \;
+- cp doc/index.html doc/documentation.md
+- cp report/index.html report/report.md
 - git add doc/*
+- git add report/*
 - git stash
 - git checkout develop
 - git merge --squash --strategy-option=theirs stash

@@ -30,13 +30,14 @@
     "winston": "*",
     "cheerio": "*",
     "mocha": "*",
-    "groc": "*"
+    "groc": "*",
+	"plato": "*"
   },
   "description": "visual calendar",
   "main": "gulpfile.js",
   "scripts": {
     "test": "mocha",
-    "posttest": "groc"
+    "posttest": "groc && plato -r -d report src test"
   },
   "repository": {
     "type": "git",

@@ -16,8 +16,6 @@ after_success:
 - eval "$(ssh-agent)"
 - ssh-add
 - git remote add deploy git@github.com:Faverick/trendets.git
-- cp doc/index.html doc/documentation.md
-- cp report/index.html report/report.md
 - git add --ignore-removal doc/*
 - git add --ignore-removal report/*
 - git stash

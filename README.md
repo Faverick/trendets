@@ -1,12 +1,14 @@
 Visual calendar
 
-[![Develop build status](https://travis-ci.org/Faverick/trendets.svg?branch=feature%2FServer_creating)](https://travis-ci.org/Faverick/trendets)
+[![Develop build status](https://travis-ci.org/Faverick/trendets.svg?branch=feature%2FServer_creating)](https://travis-ci.org/Faverick/trendets)    
+[![Issues](http://trendets.myjetbrains.com/youtrack/_classpath/smartui/img/default/youtrack-sign-48.svg)](http://trendets.myjetbrains.com/youtrack)
 
-Команда разработчиков:  
+
+**Developers:**  
 * Mushits S.I.
+* Pakhomov A.A.
 * Pavlov V.M.
 * Rudnev D.N.
-* Pakhomov A.A.
 
 E-mail: a.a.pakhomoff@gmail.com
 

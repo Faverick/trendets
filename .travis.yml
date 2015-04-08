@@ -7,6 +7,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_ca96f6bc6cbe_key -iv $encrypted_ca96f6bc6cbe_iv
   -in .travis/id_rsa.enc -out ~/.ssh/id_rsa -d
 - git rm -rf doc/*
+- git rm -rf report/*
 before_script:
 - git config --global user.email $MY_MAIL
 - git config --global user.name "Travis-CI"

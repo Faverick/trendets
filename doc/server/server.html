@@ -7,7 +7,7 @@ logger.info(<span class="hljs-string">'Starting Express server...'</span>);
     app = rek(<span class="hljs-string">'app-router'</span>),
     resource = rek(<span class="hljs-string">'resource-router'</span>);
 
-app.use(<span class="hljs-string">'/resources'</span>, resource);
+app.use(<span class="hljs-string">'/api'</span>, resource);
 app.listen(settings.port);
 
 logger.info(<span class="hljs-string">'Express server running.'</span>);</div></div></div></div></body></html>

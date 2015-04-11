@@ -4,7 +4,8 @@
     path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
 
 <span class="hljs-keyword">var</span> settings = rek(<span class="hljs-string">'settings'</span>),
-    logger = rek(<span class="hljs-string">'winstonlog'</span>);
+    logger = rek(<span class="hljs-string">'winstonlog'</span>),
+    dbHandler = rek(<span class="hljs-string">'db-handler'</span>);
 
 <span class="hljs-keyword">var</span> app = express();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Задаем путь к ресурсам, который будет использоваться в html файлах  </p></div></div><div class="code"><div class="wrapper">app.use(express.static(path.join(settings.path, <span class="hljs-string">'/web/public'</span>))); 
 
@@ -17,5 +18,9 @@ app.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span 
     logger.info(<span class="hljs-string">'GET App'</span>);
     res.sendFile(path.join(settings.path, <span class="hljs-string">'/web/public/html/index.html'</span>));
 });
+
+app.post(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
+    dbHandler.getEventsByFilter(req.body);
+})
 
 <span class="hljs-built_in">module</span>.exports = app;</div></div></div></div></body></html>

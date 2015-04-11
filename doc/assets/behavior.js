@@ -355,6 +355,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   },
                   "depth": 4,
                   "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".js"],
+                      "pygmentsLexer": "javascript",
+                      "multiLineComment": ["/*", "*", "*/"],
+                      "singleLineComment": ["//"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "JavaScript"
+                    },
+                    "sourcePath": "/home/travis/build/Faverick/trendets/src/web/public/js/interaction.js",
+                    "projectPath": "src/web/public/js/interaction.js",
+                    "targetPath": "web/public/js/interaction",
+                    "pageTitle": "web/public/js/interaction",
+                    "title": "interaction"
+                  },
+                  "depth": 4,
+                  "outline": []
                 }
               ]
             }

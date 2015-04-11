@@ -9,4 +9,10 @@ app.controller('formCtrl', function($scope) {
     $scope.reset();
 });
 
+app.controller('FormController',['$scope', '$data', function($scope, $data){
+  
+}])
+
+app.
+
 app.run();

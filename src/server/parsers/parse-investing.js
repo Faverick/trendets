@@ -118,7 +118,7 @@ function parseInvesting(lang, fromDate, toDate){
 				        forecast: $(cols['5']).text(),
 				        previous: $(cols['6']).text()
 					}
-					allEvents.push(econ_event)				
+					allEvents.push(econ_event);			
 				})
 			}
 			d.resolve(allEvents);
@@ -126,6 +126,7 @@ function parseInvesting(lang, fromDate, toDate){
 			 //console.log('Error' + response.statusCode);
 			// TODO: raise exception. console.log(response.statusCod)
 			d.reject();
+			logger.error(error);
 		}
 		
 	}

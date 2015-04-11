@@ -14,7 +14,8 @@ var gulp = require('gulp'),
     browserSync = require("browser-sync"),
     rek = require('rekuire'),
     open = require('open'),
-    q = require('q');
+    q = require('q'),
+    logger = rek('winstonlog');
 
 var reload = browserSync.reload;
 //  for 'data' task
@@ -154,7 +155,7 @@ gulp.task('uploadData', function(cb){
     .then(function (events){
         if (events instanceof Array) {
         for (var i = 0; i < events.length; i++) {
-            console.log(events[i]['description']);
+            logger.info(events[i]['description']);
         }
         return events;
         }   

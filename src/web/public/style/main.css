@@ -1,0 +1,32 @@
+.filter-group {
+	display: inline-block;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	border:1px solid black;
+}
+
+.dropdown {
+	display: inline-block;
+}
+
+.dropdown-menu {
+	min-width: auto;
+	/*text-align: center;*/
+}
+
+.btn-group > .btn-group {
+	float: none;
+}
+
+.timeFrame-group {
+	margin-left: 5px;
+}
+
+.filter-btn {
+	margin: 5px;
+}
+
+.glyphicon {
+	vertical-align: middle;
+}

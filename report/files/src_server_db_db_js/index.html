@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">69.65</p>
+      <p class="stat">70.36</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">276</p>
+      <p class="stat">290</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,7 +62,7 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">43.51</p>
+      <p class="stat">42.14</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
@@ -94,6 +94,8 @@ var path = require(&#039;path&#039;);
 var sqlite3 = require(&#039;sqlite3&#039;).verbose();
 var orm = require(&quot;orm&quot;);
 var q = require(&#039;q&#039;);
+var rek = require(&#039;rekuire&#039;);
+var logger = rek(&#039;winstonlog&#039;);
 
 var defaultDbPath = path.join(__dirname, &#039;trendets.db&#039;);
 
@@ -128,7 +130,7 @@ function TrendetsDb(dbPath) {
 
         var res = connect().then(createTables)
                            .then(defineModels)
-                           .then(disconnect).then(function(){console.log(&#039;creating finished&#039;)});
+                           .then(this.disconnect).then(function(){console.log(&#039;creating finished&#039;)});
 
         console.info(&#039;Database at &#039; + dbPath + &#039; created.&#039;);
 
@@ -136,17 +138,29 @@ function TrendetsDb(dbPath) {
     }
 
     this.insert =  function insert(model, obj) {
-        if (obj instanceof Array) {
-            var promises = [];
-            for (var i = 0; i &lt; obj.length; i++) {
-                promises.push(insert(model, obj[i]));
-            }
-            return q.all(promises);
-        } else {
-            var d = q.defer();
-            model.create([obj], resolveDeferred(d));
-            return d.promise;
-        }
+        // if (obj instanceof Array) {
+        //     var d = q.defer();
+        //     logger.info(&quot;Inserting in array of length&quot;, obj.length);
+        //     for (var i = 0; i &lt; obj.length; i++) {
+        //         insert(model, obj[i]);
+        //     }
+        //     d.resolve();
+        //     return d.promise;
+        // } else {
+        //     var d = q.defer();
+        //     model.create([obj], resolveDeferred(d));
+        //     logger.info(&quot;Object inserted&quot;);
+        //     return d.promise;
+        // }
+        var d = q.defer();
+            
+            logger.info(&quot;Inserting in array of length&quot;, obj.length);
+            model.create(obj, function (err, items){
+                logger.error(err);
+                logger.info(items);
+                resolveDeferred(d);
+        });
+        return d.promise;
     }
 
     this.get = function get(model, filterParam) {
@@ -335,7 +349,7 @@ function TrendetsDb(dbPath) {
         promisifyFunc(model, &#039;one&#039;);
         //promisifyFunc(model, &#039;get&#039;);
         //promisifyFunc(model, &#039;all&#039;);
-        promisifyFunc(model, &#039;create&#039;);
+        //promisifyFunc(model, &#039;create&#039;);
     }
 
     function promisifyFunc(obj, funcName) {

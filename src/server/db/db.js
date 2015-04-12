@@ -3,6 +3,8 @@ var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 var orm = require("orm");
 var q = require('q');
+var rek = require('rekuire');
+var logger = rek('winstonlog');
 
 var defaultDbPath = path.join(__dirname, 'trendets.db');
 
@@ -37,7 +39,7 @@ function TrendetsDb(dbPath) {
 
         var res = connect().then(createTables)
                            .then(defineModels)
-                           .then(disconnect).then(function(){console.log('creating finished')});
+                           .then(this.disconnect).then(function(){console.log('creating finished')});
 
         console.info('Database at ' + dbPath + ' created.');
 
@@ -45,17 +47,29 @@ function TrendetsDb(dbPath) {
     }
 
     this.insert =  function insert(model, obj) {
-        if (obj instanceof Array) {
-            var promises = [];
-            for (var i = 0; i < obj.length; i++) {
-                promises.push(insert(model, obj[i]));
-            }
-            return q.all(promises);
-        } else {
-            var d = q.defer();
-            model.create([obj], resolveDeferred(d));
-            return d.promise;
-        }
+        // if (obj instanceof Array) {
+        //     var d = q.defer();
+        //     logger.info("Inserting in array of length", obj.length);
+        //     for (var i = 0; i < obj.length; i++) {
+        //         insert(model, obj[i]);
+        //     }
+        //     d.resolve();
+        //     return d.promise;
+        // } else {
+        //     var d = q.defer();
+        //     model.create([obj], resolveDeferred(d));
+        //     logger.info("Object inserted");
+        //     return d.promise;
+        // }
+        var d = q.defer();
+            
+            logger.info("Inserting in array of length", obj.length);
+            model.create(obj, function (err, items){
+                logger.error(err);
+                logger.info(items);
+                resolveDeferred(d);
+        });
+        return d.promise;
     }
 
     this.get = function get(model, filterParam) {
@@ -91,8 +105,6 @@ function TrendetsDb(dbPath) {
                 d.resolve(events);
             }   
         }));
-        
-        //model.find({time: orm.gte(filterParam['dateFrom']) && orm.lte(filterParam['dateTo'])}).where
         
         return d.promise;
     }
@@ -246,7 +258,7 @@ function TrendetsDb(dbPath) {
         promisifyFunc(model, 'one');
         //promisifyFunc(model, 'get');
         //promisifyFunc(model, 'all');
-        promisifyFunc(model, 'create');
+        //promisifyFunc(model, 'create');
     }
 
     function promisifyFunc(obj, funcName) {

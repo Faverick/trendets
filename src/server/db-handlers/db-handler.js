@@ -44,7 +44,7 @@ function DbHandler(dbPath){
 	this.removeEvents = function removeEvents(events){
 		return db.connect()
 			.then(function(){
-				return db.remove(db.Events, filterParams);
+				return db.remove(db.Events, events);
 				}).catch(function (err){
 				console.error(err);
 			});

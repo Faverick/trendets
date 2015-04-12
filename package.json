@@ -2,11 +2,13 @@
   "name": "Trendets",
   "version": "1.0.0",
   "dependencies": {
+    "body-parser": "*",
     "browser-sync": "^2.2.3",
     "chai": "*",
     "chai-as-promised": "*",
     "cheerio": "*",
     "date-utils": "^1.2.16",
+    "express": "*",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-imagemin": "^2.2.1",
@@ -17,21 +19,29 @@
     "gulp-uglify": "^1.1.0",
     "gulp-watch": "*",
     "imagemin-pngquant": "^4.0.0",
-    "mocha": "*",
     "moment": "*",
+    "mkdirp": "*",
     "node-inspector": "*",
+    "open": "*",
     "orm": "^2.1.21",
+    "path": "*",
     "q": "^1.1.2",
     "rimraf": "^2.3.1",
     "rekuire":"*",
     "request": "^2.51.0",
     "should": "*",
-    "sqlite3": "^3.0.4"
+    "sqlite3": "^3.0.4",
+    "winston": "*",
+    "cheerio": "*",
+    "mocha": "*",
+    "groc": "*",
+	"plato": "*"
   },
   "description": "visual calendar",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "posttest": "groc && plato -r -d report src test"
   },
   "repository": {
     "type": "git",

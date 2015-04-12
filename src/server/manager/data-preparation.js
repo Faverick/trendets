@@ -1,30 +1,33 @@
-var rek = require('rekuire');
-var investing = rek('parse-investing'),
+var rek = require('rekuire'),
+	q = require('q');
+
+
+var logger = rek('winstonlog'),
+	investing = rek('parse-investing'),
 	stocks = rek('parse-stocks'),
 	DbHandler = rek('db-handler');
-var q = require('q');
 
 function downloadEvents(eventsParams){
-	console.log('Downloading Events');
+	logger.info('Downloading Events');
 	var TrendetsHandler = new DbHandler();
 
 	function sendToDb(events){
-		console.log("enetered insertToDb");
+		logger.info("enetered insertToDb");
 		return TrendetsHandler.insertEventsToDb(events)
 			.then(function  (argument) {
-				console.log("left insertToDb");
+				logger.info("left insertToDb");
 			});
 		
 	}
 	// добавить разбиение запроса в investing'e по неделям для русского языка
 	var promise = q.when(TrendetsHandler.isHandlerReady())
 	 	.then(function () {
-	 		investing.parseInvesting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'])
+	 		investing.parseWithSplitting(eventsParams['language'], eventsParams['dateFrom'], eventsParams['dateTo'])
 	 			.then(function (events){
 	 				sendToDb(events);
 	 			});
 	 	});
-	console.log("left downloadEvents")
+	logger.info("left downloadEvents")
 
 	return promise;
 }
@@ -55,18 +58,18 @@ function getEventsByFilter(filterParams){
 
 	console.log("enetered getEvenetsByFilter");
 		return TrendetsHandler.getEventsByFilter(filterParams)
-			.then(function (events) {
+					.then(function (events) {
 				console.log("left getEvenetsByFilter");
 				return events;
 			});
 }
 
+
 function removeEventsByFilter(filterParams){
 	var TrendetsHandler = new DbHandler();
 
 	return TrendetsHandler.getEventsByFilter(filterParams)
-			.then(function (events) {
-				console.log(events);
+			.then(function (events){
 				console.log("enetered removeEvenetsByFilter");
 				return TrendetsHandler.removeEvents(events)
 					.then(function (){
@@ -79,3 +82,4 @@ function removeEventsByFilter(filterParams){
 module.exports.downloadEvents = downloadEvents;
 module.exports.downloadStocks = downloadStocks;
 module.exports.getEventsByFilter = getEventsByFilter;
+module.exports.removeEventsByFilter = removeEventsByFilter;

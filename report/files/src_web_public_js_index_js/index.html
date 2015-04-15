@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">83.26</p>
+      <p class="stat">44.71</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">17</p>
+      <p class="stat">116</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">7.04</p>
+      <p class="stat">20.59</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.12</p>
+      <p class="stat">2.05</p>
     </div>
   </div>
 </div>
@@ -91,19 +91,118 @@
   <div class="row">
     <textarea id="file-source" class="col-md-12">var app = angular.module(&#039;TrendetsApp&#039;, [&#039;ng&#039;, &#039;ngRoute&#039;, &#039;ngResource&#039;, &#039;ngAnimate&#039;]);
 
-app.controller(&#039;formCtrl&#039;, function($scope) {
-    $scope.master = {firstName: &quot;John&quot;, lastName: &quot;Doe&quot;};
-    $scope.reset = function() {
-        $scope.user = angular.copy($scope.master);
-    };
-    $scope.reset();
+app.filter(&#039;range&#039;, function() {
+  return function(input, from, to) {
+    from = parseInt(from);
+    to = parseInt(to);
+    var newInput = [];
+    for (var i=from; i&lt;to; i++)
+      newInput.push(input[i]);
+
+    return newInput;
+  };
 });
 
-app.controller(&#039;FormController&#039;,[&#039;$scope&#039;, &#039;$data&#039;, function($scope, $data){
-  
-}])
+app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, function($scope){
+	$scope.filterFormVisibility = false;
 
-app.
+	$scope.btnFilterClick = function() {
+		if($scope.filterFormVisibility == true)
+			$scope.filterFormVisibility = false;
+		else
+			$scope.filterFormVisibility = true;
+	}
+
+	$scope.countries = [
+		{fullName: &quot;Argentina&quot;, currency: &quot;ARS&quot;},
+		{fullName: &quot;Australia&quot;, currency: &quot;AUD&quot;},
+		{fullName: &quot;Austria&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Bahrain&quot;, currency: &quot;BHD&quot;},
+		{fullName: &quot;Belgium&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Botswana&quot;, currency: &quot;BWA&quot;},
+		{fullName: &quot;Brasil&quot;, currency: &quot;BRA&quot;},
+		{fullName: &quot;Bulgaria&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Canada&quot;, currency: &quot;CAD&quot;},
+		{fullName: &quot;Chile&quot;, currency: &quot;CLP&quot;},
+		{fullName: &quot;China&quot;, currency: &quot;CNY&quot;},
+		{fullName: &quot;Colombia&quot;, currency: &quot;COP&quot;},
+		{fullName: &quot;Costa Rica&quot;, currency: &quot;CRI&quot;},
+		{fullName: &quot;Croatia&quot;, currency: &quot;KUN&quot;},
+		{fullName: &quot;Cyprus&quot;, currency: &quot;CYP&quot;},
+		{fullName: &quot;Czech Republic&quot;, currency: &quot;CZK&quot;},
+		{fullName: &quot;Denmark&quot;, currency: &quot;DKK&quot;},
+		{fullName: &quot;Ecuador&quot;, currency: &quot;ECU&quot;},
+		{fullName: &quot;Egypt&quot;, currency: &quot;EGP&quot;},
+		{fullName: &quot;Estonia&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Euro Zone&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Finland&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;France&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Germany&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Greece&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Hong Kong&quot;, currency: &quot;HKD&quot;},
+		{fullName: &quot;Hungary&quot;, currency: &quot;HUF&quot;},
+		{fullName: &quot;Iceland&quot;, currency: &quot;ISK&quot;},
+		{fullName: &quot;India&quot;, currency: &quot;INR&quot;},
+		{fullName: &quot;Indonesia&quot;, currency: &quot;IDR&quot;},
+		{fullName: &quot;Ireland&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Israel&quot;, currency: &quot;ILS&quot;},
+		{fullName: &quot;Italy&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Japan&quot;, currency: &quot;JPY&quot;},
+		{fullName: &quot;Jordan&quot;, currency: &quot;JOD&quot;},
+		{fullName: &quot;Kenya&quot;, currency: &quot;KES&quot;},
+		{fullName: &quot;Kuwait&quot;, currency: &quot;KWD&quot;},
+		{fullName: &quot;Latvia&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Lebanon&quot;, currency: &quot;LBP&quot;},
+		{fullName: &quot;Lithuania&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Luxembourg&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Malawi&quot;, currency: &quot;MWK&quot;},
+		{fullName: &quot;Malaysia&quot;, currency: &quot;MYR&quot;},
+		{fullName: &quot;Malta&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Mauritius&quot;, currency: &quot;MUR&quot;},
+		{fullName: &quot;Mexico&quot;, currency: &quot;MXN&quot;},
+		{fullName: &quot;Morocco&quot;, currency: &quot;MAD&quot;},
+		{fullName: &quot;Namibia&quot;, currency: &quot;NAD&quot;},
+		{fullName: &quot;Netherlands&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;New Zealand&quot;, currency: &quot;NZD&quot;},
+		{fullName: &quot;Nigeria&quot;, currency: &quot;NGN&quot;},
+		{fullName: &quot;Norway&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Oman&quot;, currency: &quot;OMR&quot;},
+		{fullName: &quot;Pakistan&quot;, currency: &quot;PKR&quot;},
+		{fullName: &quot;Palestinian Territory&quot;, currency: &quot;&quot;},
+		{fullName: &quot;Peru&quot;, currency: &quot;PEN&quot;},
+		{fullName: &quot;Philippines&quot;, currency: &quot;PHP&quot;},
+		{fullName: &quot;Poland&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Portugal&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Qatar&quot;, currency: &quot;QAR&quot;},
+		{fullName: &quot;Romania&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Russia&quot;, currency: &quot;RUB&quot;},
+		{fullName: &quot;Rwanda&quot;, currency: &quot;RWF&quot;},
+		{fullName: &quot;Saudi Arabia&quot;, currency: &quot;SAR&quot;},
+		{fullName: &quot;Singapore&quot;, currency: &quot;SGD&quot;},
+		{fullName: &quot;Slovakia&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Slovenia&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;South Africa&quot;, currency: &quot;RND&quot;},
+		{fullName: &quot;South Korea&quot;, currency: &quot;KRW&quot;},
+		{fullName: &quot;Spain&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Sri Lanka&quot;, currency: &quot;LKR&quot;},
+		{fullName: &quot;Sweden&quot;, currency: &quot;EUR&quot;},
+		{fullName: &quot;Switzerland&quot;, currency: &quot;CHF&quot;},
+		{fullName: &quot;Taiwan&quot;, currency: &quot;TWD&quot;},
+		{fullName: &quot;Tanzania&quot;, currency: &quot;TZS&quot;},
+		{fullName: &quot;Thailand&quot;, currency: &quot;THB&quot;},
+		{fullName: &quot;Tunisia&quot;, currency: &quot;TND&quot;},
+		{fullName: &quot;Turkey&quot;, currency: &quot;TRY&quot;},
+		{fullName: &quot;Uganda&quot;, currency: &quot;UGX&quot;},
+		{fullName: &quot;Ukraine&quot;, currency: &quot;UAH&quot;},
+		{fullName: &quot;United Arab Emirates&quot;, currency: &quot;AED&quot;},
+		{fullName: &quot;United Kingdom&quot;, currency: &quot;GBP&quot;},
+		{fullName: &quot;United States&quot;, currency: &quot;USD&quot;},
+		{fullName: &quot;Venezuela&quot;, currency: &quot;VEF&quot;},
+		{fullName: &quot;Vietnam&quot;, currency: &quot;VND&quot;},
+		{fullName: &quot;Zambia&quot;, currency: &quot;ZMK&quot;},
+		{fullName: &quot;Zimbabwe&quot;, currency: &quot;ZWD&quot;}
+	]
+}]);
 
 app.run();</textarea>
   </div>

@@ -1,9 +1,15 @@
 .filter-group {
+	width: 681px; 
+	border:1px solid black;
+	margin-left: 25%;
+}
+
+.filterButtonLine {
 	display: inline-block;
+	margin-left: 20%;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
-	border:1px solid black;
 }
 
 .dropdown {
@@ -30,3 +36,42 @@
 .glyphicon {
 	vertical-align: middle;
 }
+
+/*.filterWrapper{
+	width: 679px;
+}*/
+#filterWrapper{
+	position: relative;
+}
+
+.countryOption{
+	list-style-type: none;
+}
+
+.filterBox .right .countryOption {
+    float: left;
+}
+
+.filterBox .right {
+    width: 568px;
+}
+
+.FilterBox .left {
+    width: 77px;
+}
+
+.filterBox {
+    background-color: #F2F2F2;
+    border-top: 1px solid #FFF;
+    padding: 17px;
+}
+
+.float_lang_base_2 {
+    float: right;
+}
+
+.float_lang_base_1 {
+    float: left;
+}
+
+div.clear { clear: both; display: block; }

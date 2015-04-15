@@ -10,57 +10,59 @@
     <link rel="stylesheet" href="/style/main.css">
 </head>
 <body>
-    
-    <div class="container">
-      <div ng-include="'/html/form-partial.html'"></div>
-    </div>
 
-    <div class="container">
+    <!-- <div class="container">
       <div ng-include="'/html/stocks-partial.html'"></div>
       <div ng-include="'/html/events-partial.html'"></div>
-    </div>
+    </div> -->
 
-    <div class="filter-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default filter-btn">
-            Фильтр <span class="glyphicon glyphicon glyphicon-filter" aria-hidden="true"></span>
-        </button>
+    <div class="filter-group"  ng-controller="FormController">
+      <div class="filterButtonLine" >
 
-        <div class="dropdown">
-          <button class="btn btn-default filter-btn dropdown-toggle" type="button" id="stocksDropdownMenu" data-toggle="dropdown" aria-expanded="true">
-            <!-- instead of dropdown should be one of the stocks. It should be binded with ng-model. -->
-            Dropdown
-            <span class="caret"></span>
+          <button type="button" class="btn btn-default filter-btn" ng-click="btnFilterClick()">
+              Filter <span class="glyphicon glyphicon glyphicon-filter" aria-hidden="true"></span>
           </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="stocksDropdownMenu">
-            <!-- below should be used ng-repeat -->
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-          </ul>
-        </div>
 
-        <div class="btn-group timeFrame-group" role="group" aria-label="...">
-          <button type="button" class="btn btn-default">5</button>
-          <button type="button" class="btn btn-default">15</button>
-          <button type="button" class="btn btn-default active">30</button>
-          <button type="button" class="btn btn-default">1H</button>
-
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;
+          <div class="dropdown">
+            <button class="btn btn-default filter-btn dropdown-toggle" type="button" id="stocksDropdownMenu" data-toggle="dropdown" aria-expanded="true">
+              <!-- instead of dropdown should be one of the stocks. It should be binded with ng-model. -->
+              Dropdown
               <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><button type="button" class="btn btn-default">5</button></li>
-              <li><button type="button" class="btn btn-default">15</button></li>
-              <li><button type="button" class="btn btn-default">30</button></li>
-              <li><button type="button" class="btn btn-default">1H</button></li>
-              <li><button type="button" class="btn btn-default">4H</button></li>
-              <li><button type="button" class="btn btn-default">1D</button></li>
-              <li><button type="button" class="btn btn-default">1W</button></li>
-              <li><button type="button" class="btn btn-default">1M</button></li>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="stocksDropdownMenu">
+              <!-- below should be used ng-repeat -->
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
             </ul>
           </div>
+
+          <div class="btn-group timeFrame-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default">5</button>
+            <button type="button" class="btn btn-default">15</button>
+            <button type="button" class="btn btn-default active">30</button>
+            <button type="button" class="btn btn-default">1H</button>
+
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><button type="button" class="btn btn-default">5</button></li>
+                <li><button type="button" class="btn btn-default">15</button></li>
+                <li><button type="button" class="btn btn-default">30</button></li>
+                <li><button type="button" class="btn btn-default">1H</button></li>
+                <li><button type="button" class="btn btn-default">4H</button></li>
+                <li><button type="button" class="btn btn-default">1D</button></li>
+                <li><button type="button" class="btn btn-default">1W</button></li>
+                <li><button type="button" class="btn btn-default">1M</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="filterWrapper" ng-model="filterForm" ng-show="filterFormVisibility">
+          <div ng-include="'/html/form-partial.html'"></div>
         </div>
     </div>
 

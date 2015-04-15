@@ -1,227 +1,40 @@
-<div ng-controller="formCtrl">
-    <form novalidate>
-        First Name:<br>
-        <input type="text" ng-model="user.firstName"><br>
-        Last Name:<br>
-        <input type="text" ng-model="user.lastName">
-        <br><br>
-        <button ng-click="reset()">RESET</button>
-    </form>
-    <p>form = {{user}}</p>
-    <p>master = {{master}}</p>
-</div>
 
-
-<div id="filtersWrapper" class="displayNone" style="display: block;">
-        <div id="filtersArrowIndicator" class="arrowIndicator"></div>
-        <div id="ecoSearchBox" class="ecoSearchBox align_center ">
-          <span onclick="changeFiltersVisibility();" class="float_lang_base_2 bugCloseIcon">&nbsp;</span>
-            <div class="searchTitle inlineblock arial_14 bold">Search:&nbsp;</div>
-            <div id="economicCalendarSearchTextContainer" class="combineSearchBox newInput inputTextBox inlineblock">
-                <div id="searchBoxTop" class="inlineblock"><input type="text" onkeypress="return checkEnterForEcSearch(event);" autocomplete="off" name="quotes_search_text" id="economicCalendarSearchText" class="searchText alignTop" placeholder="Event Name" value"event="" name"=""></div><div id="search_0bottom" class="inlineblock combineSearchOption combineSearchOptionSelected alignTop"><span class="searchGlassIcon"></span></div>
-                <div id="economicCalendarSearchPopupResults" class="searchPopupResults economicCalendarSearchPopupResults text_align_lang_base_1 dirSearchResults displayNone">
-                </div>
+<div id="filtersWrapper">
+        <div id="SearchBox" class="SearchBox align_center">
+            
         </div>
-            <div class="displayNone" id="doc_direconomicCalendarSearchPopupResults">ltr</div>
-            <div class="displayNone" id="total_resultseconomicCalendarSearchPopupResults">0</div>
-        </div>
-        <div id="ecoFilterBoxCountry" class="ecoFilterBox">
+        <div id="filterBoxCountry" class="filterBox">
             <div class="left float_lang_base_1">
               <p class="arial_14 bold">Country:</p>
               <a href="javascript:void(0);" id="selectAllCountry" onclick="selectAll('country[]');">Select All</a><br>
               <a href="javascript:void(0);" id="clearAllCountry" onclick="clearAll('country[]');">Clear</a>
             </div>
             <div class="right float_lang_base_2">
-            <ul class="countryOption">
-                            
-                <li><input id="country29" name="country[]" type="checkbox" value="29"> <span class="ceFlags Argentina">&nbsp;</span> <label for="country29">Argentina</label></li>
-                                
-                <li><input id="country25" name="country[]" type="checkbox" value="25" checked="checked"> <span class="ceFlags Australia">&nbsp;</span> <label for="country25">Australia</label></li>
-                                
-                <li><input id="country54" name="country[]" type="checkbox" value="54"> <span class="ceFlags Austria">&nbsp;</span> <label for="country54">Austria</label></li>
-                                
-                <li><input id="country145" name="country[]" type="checkbox" value="145"> <span class="ceFlags Bahrain">&nbsp;</span> <label for="country145">Bahrain</label></li>
-                                
-                <li><input id="country34" name="country[]" type="checkbox" value="34"> <span class="ceFlags Belgium">&nbsp;</span> <label for="country34">Belgium</label></li>
-                                
-                <li><input id="country163" name="country[]" type="checkbox" value="163"> <span class="ceFlags Botswana">&nbsp;</span> <label for="country163">Botswana</label></li>
-                                
-                <li><input id="country32" name="country[]" type="checkbox" value="32" checked="checked"> <span class="ceFlags Brazil">&nbsp;</span> <label for="country32">Brazil</label></li>
-                                
-                <li><input id="country70" name="country[]" type="checkbox" value="70"> <span class="ceFlags Bulgaria">&nbsp;</span> <label for="country70">Bulgaria</label></li>
-                                
-                <li><input id="country6" name="country[]" type="checkbox" value="6" checked="checked"> <span class="ceFlags Canada">&nbsp;</span> <label for="country6">Canada</label></li>
-                                
-                <li><input id="country27" name="country[]" type="checkbox" value="27"> <span class="ceFlags Chile">&nbsp;</span> <label for="country27">Chile</label></li>
-                                
-                <li><input id="country37" name="country[]" type="checkbox" value="37" checked="checked"> <span class="ceFlags China">&nbsp;</span> <label for="country37">China</label></li>
-                                
-                <li><input id="country122" name="country[]" type="checkbox" value="122"> <span class="ceFlags Colombia">&nbsp;</span> <label for="country122">Colombia</label></li>
-                                
-                <li><input id="country15" name="country[]" type="checkbox" value="15"> <span class="ceFlags Costa_Rica">&nbsp;</span> <label for="country15">Costa Rica</label></li>
-                                
-                <li><input id="country113" name="country[]" type="checkbox" value="113"> <span class="ceFlags Croatia">&nbsp;</span> <label for="country113">Croatia</label></li>
-                                
-                <li><input id="country107" name="country[]" type="checkbox" value="107"> <span class="ceFlags Cyprus">&nbsp;</span> <label for="country107">Cyprus</label></li>
-                                
-                <li><input id="country55" name="country[]" type="checkbox" value="55"> <span class="ceFlags Czech_Republic">&nbsp;</span> <label for="country55">Czech Republic</label></li>
-                                
-                <li><input id="country24" name="country[]" type="checkbox" value="24"> <span class="ceFlags Denmark">&nbsp;</span> <label for="country24">Denmark</label></li>
-                                
-                <li><input id="country121" name="country[]" type="checkbox" value="121"> <span class="ceFlags Ecuador">&nbsp;</span> <label for="country121">Ecuador</label></li>
-                                
-                <li><input id="country59" name="country[]" type="checkbox" value="59"> <span class="ceFlags Egypt">&nbsp;</span> <label for="country59">Egypt</label></li>
-                                
-                <li><input id="country89" name="country[]" type="checkbox" value="89"> <span class="ceFlags Estonia">&nbsp;</span> <label for="country89">Estonia</label></li>
-                                
-                <li><input id="country72" name="country[]" type="checkbox" value="72" checked="checked"> <span class="ceFlags Europe">&nbsp;</span> <label for="country72">Euro Zone</label></li>
-                                
-                <li><input id="country71" name="country[]" type="checkbox" value="71"> <span class="ceFlags Finland">&nbsp;</span> <label for="country71">Finland</label></li>
-                                
-                <li><input id="country22" name="country[]" type="checkbox" value="22" checked="checked"> <span class="ceFlags France">&nbsp;</span> <label for="country22">France</label></li>
-                                
-                <li><input id="country17" name="country[]" type="checkbox" value="17" checked="checked"> <span class="ceFlags Germany">&nbsp;</span> <label for="country17">Germany</label></li>
-                                
-                <li><input id="country51" name="country[]" type="checkbox" value="51"> <span class="ceFlags Greece">&nbsp;</span> <label for="country51">Greece</label></li>
-                                
-                <li><input id="country39" name="country[]" type="checkbox" value="39" checked="checked"> <span class="ceFlags Hong_Kong">&nbsp;</span> <label for="country39">Hong Kong</label></li>
-                                
-                <li><input id="country93" name="country[]" type="checkbox" value="93"> <span class="ceFlags Hungary">&nbsp;</span> <label for="country93">Hungary</label></li>
-                                
-                <li><input id="country106" name="country[]" type="checkbox" value="106"> <span class="ceFlags Iceland">&nbsp;</span> <label for="country106">Iceland</label></li>
-                                
-                <li><input id="country14" name="country[]" type="checkbox" value="14" checked="checked"> <span class="ceFlags India">&nbsp;</span> <label for="country14">India</label></li>
-                </ul><ul class="countryOption">             
-                <li><input id="country48" name="country[]" type="checkbox" value="48"> <span class="ceFlags Indonesia">&nbsp;</span> <label for="country48">Indonesia</label></li>
-                                
-                <li><input id="country33" name="country[]" type="checkbox" value="33"> <span class="ceFlags Ireland">&nbsp;</span> <label for="country33">Ireland</label></li>
-                                
-                <li><input id="country23" name="country[]" type="checkbox" value="23"> <span class="ceFlags Israel">&nbsp;</span> <label for="country23">Israel</label></li>
-                                
-                <li><input id="country10" name="country[]" type="checkbox" value="10" checked="checked"> <span class="ceFlags Italy">&nbsp;</span> <label for="country10">Italy</label></li>
-                                
-                <li><input id="country35" name="country[]" type="checkbox" value="35" checked="checked"> <span class="ceFlags Japan">&nbsp;</span> <label for="country35">Japan</label></li>
-                                
-                <li><input id="country92" name="country[]" type="checkbox" value="92"> <span class="ceFlags Jordan">&nbsp;</span> <label for="country92">Jordan</label></li>
-                                
-                <li><input id="country57" name="country[]" type="checkbox" value="57"> <span class="ceFlags Kenya">&nbsp;</span> <label for="country57">Kenya</label></li>
-                                
-                <li><input id="country94" name="country[]" type="checkbox" value="94"> <span class="ceFlags Kuwait">&nbsp;</span> <label for="country94">Kuwait</label></li>
-                                
-                <li><input id="country97" name="country[]" type="checkbox" value="97"> <span class="ceFlags Latvia">&nbsp;</span> <label for="country97">Latvia</label></li>
-                                
-                <li><input id="country68" name="country[]" type="checkbox" value="68"> <span class="ceFlags Lebanon">&nbsp;</span> <label for="country68">Lebanon</label></li>
-                                
-                <li><input id="country96" name="country[]" type="checkbox" value="96"> <span class="ceFlags Lithuania">&nbsp;</span> <label for="country96">Lithuania</label></li>
-                                
-                <li><input id="country103" name="country[]" type="checkbox" value="103"> <span class="ceFlags Luxembourg">&nbsp;</span> <label for="country103">Luxembourg</label></li>
-                                
-                <li><input id="country111" name="country[]" type="checkbox" value="111"> <span class="ceFlags Malawi">&nbsp;</span> <label for="country111">Malawi</label></li>
-                                
-                <li><input id="country42" name="country[]" type="checkbox" value="42"> <span class="ceFlags Malaysia">&nbsp;</span> <label for="country42">Malaysia</label></li>
-                                
-                <li><input id="country109" name="country[]" type="checkbox" value="109"> <span class="ceFlags Malta">&nbsp;</span> <label for="country109">Malta</label></li>
-                                
-                <li><input id="country188" name="country[]" type="checkbox" value="188"> <span class="ceFlags Mauritius">&nbsp;</span> <label for="country188">Mauritius</label></li>
-                                
-                <li><input id="country7" name="country[]" type="checkbox" value="7"> <span class="ceFlags Mexico">&nbsp;</span> <label for="country7">Mexico</label></li>
-                                
-                <li><input id="country105" name="country[]" type="checkbox" value="105"> <span class="ceFlags Morocco">&nbsp;</span> <label for="country105">Morocco</label></li>
-                                
-                <li><input id="country172" name="country[]" type="checkbox" value="172"> <span class="ceFlags Namibia">&nbsp;</span> <label for="country172">Namibia</label></li>
-                                
-                <li><input id="country21" name="country[]" type="checkbox" value="21"> <span class="ceFlags Netherlands">&nbsp;</span> <label for="country21">Netherlands</label></li>
-                                
-                <li><input id="country43" name="country[]" type="checkbox" value="43" checked="checked"> <span class="ceFlags New_Zealand">&nbsp;</span> <label for="country43">New Zealand</label></li>
-                                
-                <li><input id="country20" name="country[]" type="checkbox" value="20"> <span class="ceFlags Nigeria">&nbsp;</span> <label for="country20">Nigeria</label></li>
-                                
-                <li><input id="country60" name="country[]" type="checkbox" value="60"> <span class="ceFlags Norway">&nbsp;</span> <label for="country60">Norway</label></li>
-                                
-                <li><input id="country87" name="country[]" type="checkbox" value="87"> <span class="ceFlags Oman">&nbsp;</span> <label for="country87">Oman</label></li>
-                                
-                <li><input id="country44" name="country[]" type="checkbox" value="44"> <span class="ceFlags Pakistan">&nbsp;</span> <label for="country44">Pakistan</label></li>
-                                
-                <li><input id="country193" name="country[]" type="checkbox" value="193"> <span class="ceFlags Palestine">&nbsp;</span> <label for="country193">Palestinian Territory</label></li>
-                                
-                <li><input id="country125" name="country[]" type="checkbox" value="125"> <span class="ceFlags Peru">&nbsp;</span> <label for="country125">Peru</label></li>
-                                
-                <li><input id="country45" name="country[]" type="checkbox" value="45"> <span class="ceFlags Philippines">&nbsp;</span> <label for="country45">Philippines</label></li>
-                                
-                <li><input id="country53" name="country[]" type="checkbox" value="53"> <span class="ceFlags Poland">&nbsp;</span> <label for="country53">Poland</label></li>
-                </ul><ul class="countryOption">             
-                <li><input id="country38" name="country[]" type="checkbox" value="38"> <span class="ceFlags Portugal">&nbsp;</span> <label for="country38">Portugal</label></li>
-                                
-                <li><input id="country170" name="country[]" type="checkbox" value="170"> <span class="ceFlags Qatar">&nbsp;</span> <label for="country170">Qatar</label></li>
-                                
-                <li><input id="country100" name="country[]" type="checkbox" value="100"> <span class="ceFlags Romania">&nbsp;</span> <label for="country100">Romania</label></li>
-                                
-                <li><input id="country56" name="country[]" type="checkbox" value="56" checked="checked"> <span class="ceFlags Russian_Federation">&nbsp;</span> <label for="country56">Russia</label></li>
-                                
-                <li><input id="country80" name="country[]" type="checkbox" value="80"> <span class="ceFlags Rwanda">&nbsp;</span> <label for="country80">Rwanda</label></li>
-                                
-                <li><input id="country52" name="country[]" type="checkbox" value="52"> <span class="ceFlags Saudi_Arabia">&nbsp;</span> <label for="country52">Saudi Arabia</label></li>
-                                
-                <li><input id="country36" name="country[]" type="checkbox" value="36" checked="checked"> <span class="ceFlags Singapore">&nbsp;</span> <label for="country36">Singapore</label></li>
-                                
-                <li><input id="country90" name="country[]" type="checkbox" value="90"> <span class="ceFlags Slovakia">&nbsp;</span> <label for="country90">Slovakia</label></li>
-                                
-                <li><input id="country112" name="country[]" type="checkbox" value="112"> <span class="ceFlags Slovenia">&nbsp;</span> <label for="country112">Slovenia</label></li>
-                                
-                <li><input id="country110" name="country[]" type="checkbox" value="110" checked="checked"> <span class="ceFlags South_Africa">&nbsp;</span> <label for="country110">South Africa</label></li>
-                                
-                <li><input id="country11" name="country[]" type="checkbox" value="11" checked="checked"> <span class="ceFlags South_Korea">&nbsp;</span> <label for="country11">South Korea</label></li>
-                                
-                <li><input id="country26" name="country[]" type="checkbox" value="26" checked="checked"> <span class="ceFlags Spain">&nbsp;</span> <label for="country26">Spain</label></li>
-                                
-                <li><input id="country162" name="country[]" type="checkbox" value="162"> <span class="ceFlags Sri_Lanka">&nbsp;</span> <label for="country162">Sri Lanka</label></li>
-                                
-                <li><input id="country9" name="country[]" type="checkbox" value="9"> <span class="ceFlags Sweden">&nbsp;</span> <label for="country9">Sweden</label></li>
-                                
-                <li><input id="country12" name="country[]" type="checkbox" value="12" checked="checked"> <span class="ceFlags Switzerland">&nbsp;</span> <label for="country12">Switzerland</label></li>
-                                
-                <li><input id="country46" name="country[]" type="checkbox" value="46"> <span class="ceFlags Taiwan">&nbsp;</span> <label for="country46">Taiwan</label></li>
-                                
-                <li><input id="country85" name="country[]" type="checkbox" value="85"> <span class="ceFlags Tanzania">&nbsp;</span> <label for="country85">Tanzania</label></li>
-                                
-                <li><input id="country41" name="country[]" type="checkbox" value="41"> <span class="ceFlags Thailand">&nbsp;</span> <label for="country41">Thailand</label></li>
-                                
-                <li><input id="country202" name="country[]" type="checkbox" value="202"> <span class="ceFlags Tunisia">&nbsp;</span> <label for="country202">Tunisia</label></li>
-                                
-                <li><input id="country63" name="country[]" type="checkbox" value="63"> <span class="ceFlags Turkey">&nbsp;</span> <label for="country63">Turkey</label></li>
-                                
-                <li><input id="country123" name="country[]" type="checkbox" value="123"> <span class="ceFlags Uganda">&nbsp;</span> <label for="country123">Uganda</label></li>
-                                
-                <li><input id="country61" name="country[]" type="checkbox" value="61"> <span class="ceFlags Ukraine">&nbsp;</span> <label for="country61">Ukraine</label></li>
-                                
-                <li><input id="country143" name="country[]" type="checkbox" value="143"> <span class="ceFlags Dubai">&nbsp;</span> <label for="country143">United Arab Emirates</label></li>
-                                
-                <li><input id="country4" name="country[]" type="checkbox" value="4" checked="checked"> <span class="ceFlags UK">&nbsp;</span> <label for="country4">United Kingdom</label></li>
-                                
-                <li><input id="country5" name="country[]" type="checkbox" value="5" checked="checked"> <span class="ceFlags USA">&nbsp;</span> <label for="country5">United States</label></li>
-                                
-                <li><input id="country138" name="country[]" type="checkbox" value="138"> <span class="ceFlags Venezuela">&nbsp;</span> <label for="country138">Venezuela</label></li>
-                                
-                <li><input id="country178" name="country[]" type="checkbox" value="178"> <span class="ceFlags Vietnam">&nbsp;</span> <label for="country178">Vietnam</label></li>
-                                
-                <li><input id="country84" name="country[]" type="checkbox" value="84"> <span class="ceFlags Zambia">&nbsp;</span> <label for="country84">Zambia</label></li>
-                                
-                <li><input id="country75" name="country[]" type="checkbox" value="75"> <span class="ceFlags Zimbabwe">&nbsp;</span> <label for="country75">Zimbabwe</label></li>
-                            </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:0:29">
+                        <input type="checkbox">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label>{{country.fullName}}</label></li>
+                    </li>                
+                </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:29:58">
+                        <input type="checkbox">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label>{{country.fullName}}</label></li>
+                    </li>                
+                </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:58:87">
+                        <input type="checkbox">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label>{{country.fullName}}</label></li>
+                    </li>                
+                </ul>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="ecoFilterBox">
-            <div class="left float_lang_base_1">
-                <span class="arial_14 bold">Time:</span>
-            </div>
-            <div class="right float_lang_base_2">
-                <fieldset><input type="radio" id="timeFiltertimeRemain" name="timeFilter" value="timeRemain" checked="checked"><label for="timeFiltertimeRemain">Display time remaining until announcement</label></fieldset>
-                <fieldset><input type="radio" id="timeFiltertimeOnly" name="timeFilter" value="timeOnly"><label for="timeFiltertimeOnly">Display time only</label></fieldset>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div id="ecoFilterBoxCategory" class="ecoFilterBox">
+        <div id="filterBoxCategory" class="filterBox">
             <div class="left float_lang_base_1">
               <p class="arial_14 bold">Category:</p>
               <a href="javascript:void(0);" id="selectAllCategory" onclick="selectAll('category[]');">Select All</a><br>
@@ -250,7 +63,7 @@
             <div class="clear"></div>
         </div>
         
-        <div id="ecoFilterBoxImportance" class="ecoFilterBox">
+        <div id="filterBoxImportance" class="filterBox">
             <div class="left float_lang_base_1">
                 <span class="arial_14 bold">Importance:</span>
             </div>
@@ -264,7 +77,7 @@
             <div class="clear"></div>
         </div>
         
-        <div id="ecoFilterBoxSubmit" class="ecoFilterBox submitBox align_center">
+        <div id="filterBoxSubmit" class="filterBox submitBox align_center">
             <a href="javascript:void(0);" onclick="economicCalendarFormSubmit();" id="ecSubmitButton" class="newBtn Arrow LightGray">Apply</a>          <a href="javascript:void(0);" id="filterRestoreDefaults" class="restore"><span class="ecoFilterRestoreIcon"></span>Restore Default Settings</a>
         </div>
     </div>

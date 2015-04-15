@@ -4,7 +4,7 @@ angular.module('TrendetsApp.Interaction', [])
     var stocks = {};
 
     var submit = function(form){
-      $http.post('/api/post', $scope.form).
+      $http.post('/api/post', form).
         success(function(data) {
           events = data;
         });

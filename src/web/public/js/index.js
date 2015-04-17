@@ -1,5 +1,5 @@
 
-var app = angular.module('TrendetsApp', ['ng', 'ngRoute', 'ngResource', 'ngAnimate']);
+var app = angular.module('TrendetsApp', ['ng', 'ngRoute', 'ngResource', 'ngAnimate', 'TrendetsApp.Interaction', 'ui.bootstrap']);
 
 app.filter('range', function() {
   return function(input, from, to) {
@@ -13,8 +13,15 @@ app.filter('range', function() {
   };
 });
 
-app.controller('FormController', ["$scope", function($scope){
+app.controller('FormController', ["$scope", 'dataResources', function($scope, dataResources){
 	$scope.filterFormVisibility = false;
+	$scope.formFilter = {
+		dateFrom:'2014-04-09',
+		dateTo: '2014-11-01',
+		country: [],
+		importance: ["bull1"],
+		descriptionText: ""
+	}
 
 	$scope.btnFilterClick = function() {
 		if($scope.filterFormVisibility == true)
@@ -23,94 +30,116 @@ app.controller('FormController', ["$scope", function($scope){
 			$scope.filterFormVisibility = true;
 	}
 
+	$scope.submitForm = function() {
+		dataResources.submit($scope.formFilter);
+		console.log($scope.countries[0].checked);
+		console.log($scope.countries[1].checked);
+	}
+
+	$scope.onCheckboxChecked = function() {
+		console.log("countryName");
+		$scope.formFilter.country.push(countryName);
+	}
+
+	$scope.onCheckboxUnchecked = function(countryName) {
+		var index = $scope.formFilter.country.indexOf(countryName);
+		if (index > -1) {
+    		$scope.formFilter.country.splice(index, 1);
+		}
+	}
+
+	// $scope.onCheckboxChanged = function() {
+	// 	if($scope.checkBoxState == )
+	// }
+
 	$scope.countries = [
-		{fullName: "Argentina", currency: "ARS"},
-		{fullName: "Australia", currency: "AUD"},
-		{fullName: "Austria", currency: "EUR"},
-		{fullName: "Bahrain", currency: "BHD"},
-		{fullName: "Belgium", currency: "EUR"},
-		{fullName: "Botswana", currency: "BWA"},
-		{fullName: "Brasil", currency: "BRA"},
-		{fullName: "Bulgaria", currency: "EUR"},
-		{fullName: "Canada", currency: "CAD"},
-		{fullName: "Chile", currency: "CLP"},
-		{fullName: "China", currency: "CNY"},
-		{fullName: "Colombia", currency: "COP"},
-		{fullName: "Costa Rica", currency: "CRI"},
-		{fullName: "Croatia", currency: "KUN"},
-		{fullName: "Cyprus", currency: "CYP"},
-		{fullName: "Czech Republic", currency: "CZK"},
-		{fullName: "Denmark", currency: "DKK"},
-		{fullName: "Ecuador", currency: "ECU"},
-		{fullName: "Egypt", currency: "EGP"},
-		{fullName: "Estonia", currency: "EUR"},
-		{fullName: "Euro Zone", currency: "EUR"},
-		{fullName: "Finland", currency: "EUR"},
-		{fullName: "France", currency: "EUR"},
-		{fullName: "Germany", currency: "EUR"},
-		{fullName: "Greece", currency: "EUR"},
-		{fullName: "Hong Kong", currency: "HKD"},
-		{fullName: "Hungary", currency: "HUF"},
-		{fullName: "Iceland", currency: "ISK"},
-		{fullName: "India", currency: "INR"},
-		{fullName: "Indonesia", currency: "IDR"},
-		{fullName: "Ireland", currency: "EUR"},
-		{fullName: "Israel", currency: "ILS"},
-		{fullName: "Italy", currency: "EUR"},
-		{fullName: "Japan", currency: "JPY"},
-		{fullName: "Jordan", currency: "JOD"},
-		{fullName: "Kenya", currency: "KES"},
-		{fullName: "Kuwait", currency: "KWD"},
-		{fullName: "Latvia", currency: "EUR"},
-		{fullName: "Lebanon", currency: "LBP"},
-		{fullName: "Lithuania", currency: "EUR"},
-		{fullName: "Luxembourg", currency: "EUR"},
-		{fullName: "Malawi", currency: "MWK"},
-		{fullName: "Malaysia", currency: "MYR"},
-		{fullName: "Malta", currency: "EUR"},
-		{fullName: "Mauritius", currency: "MUR"},
-		{fullName: "Mexico", currency: "MXN"},
-		{fullName: "Morocco", currency: "MAD"},
-		{fullName: "Namibia", currency: "NAD"},
-		{fullName: "Netherlands", currency: "EUR"},
-		{fullName: "New Zealand", currency: "NZD"},
-		{fullName: "Nigeria", currency: "NGN"},
-		{fullName: "Norway", currency: "EUR"},
-		{fullName: "Oman", currency: "OMR"},
-		{fullName: "Pakistan", currency: "PKR"},
-		{fullName: "Palestinian Territory", currency: ""},
-		{fullName: "Peru", currency: "PEN"},
-		{fullName: "Philippines", currency: "PHP"},
-		{fullName: "Poland", currency: "EUR"},
-		{fullName: "Portugal", currency: "EUR"},
-		{fullName: "Qatar", currency: "QAR"},
-		{fullName: "Romania", currency: "EUR"},
-		{fullName: "Russia", currency: "RUB"},
-		{fullName: "Rwanda", currency: "RWF"},
-		{fullName: "Saudi Arabia", currency: "SAR"},
-		{fullName: "Singapore", currency: "SGD"},
-		{fullName: "Slovakia", currency: "EUR"},
-		{fullName: "Slovenia", currency: "EUR"},
-		{fullName: "South Africa", currency: "RND"},
-		{fullName: "South Korea", currency: "KRW"},
-		{fullName: "Spain", currency: "EUR"},
-		{fullName: "Sri Lanka", currency: "LKR"},
-		{fullName: "Sweden", currency: "EUR"},
-		{fullName: "Switzerland", currency: "CHF"},
-		{fullName: "Taiwan", currency: "TWD"},
-		{fullName: "Tanzania", currency: "TZS"},
-		{fullName: "Thailand", currency: "THB"},
-		{fullName: "Tunisia", currency: "TND"},
-		{fullName: "Turkey", currency: "TRY"},
-		{fullName: "Uganda", currency: "UGX"},
-		{fullName: "Ukraine", currency: "UAH"},
-		{fullName: "United Arab Emirates", currency: "AED"},
-		{fullName: "United Kingdom", currency: "GBP"},
-		{fullName: "United States", currency: "USD"},
-		{fullName: "Venezuela", currency: "VEF"},
-		{fullName: "Vietnam", currency: "VND"},
-		{fullName: "Zambia", currency: "ZMK"},
-		{fullName: "Zimbabwe", currency: "ZWD"}
+		{fullName: "Argentina", currency: "ARS", checked: false},
+		{fullName: "Australia", currency: "AUD", checked: false},
+		{fullName: "Austria", currency: "EUR", checked: false},
+		{fullName: "Bahrain", currency: "BHD", checked: false},
+		{fullName: "Belgium", currency: "EUR", checked: false},
+		{fullName: "Botswana", currency: "BWA", checked: false},
+		{fullName: "Brasil", currency: "BRA", checked: false},
+		{fullName: "Bulgaria", currency: "EUR", checked: false},
+		{fullName: "Canada", currency: "CAD", checked: false},
+		{fullName: "Chile", currency: "CLP", checked: false},
+		{fullName: "China", currency: "CNY", checked: false},
+		{fullName: "Colombia", currency: "COP", checked: false},
+		{fullName: "Costa Rica", currency: "CRI", checked: false},
+		{fullName: "Croatia", currency: "KUN", checked: false},
+		{fullName: "Cyprus", currency: "CYP", checked: false},
+		{fullName: "Czech Republic", currency: "CZK", checked: false},
+		{fullName: "Denmark", currency: "DKK", checked: false},
+		{fullName: "Ecuador", currency: "ECU", checked: false},
+		{fullName: "Egypt", currency: "EGP", checked: false},
+		{fullName: "Estonia", currency: "EUR", checked: false},
+		{fullName: "Euro Zone", currency: "EUR", checked: true},
+		{fullName: "Finland", currency: "EUR", checked: false},
+		{fullName: "France", currency: "EUR", checked: false},
+		{fullName: "Germany", currency: "EUR", checked: true},
+		{fullName: "Greece", currency: "EUR", checked: false},
+		{fullName: "Hong Kong", currency: "HKD", checked: false},
+		{fullName: "Hungary", currency: "HUF", checked: false},
+		{fullName: "Iceland", currency: "ISK", checked: false},
+		{fullName: "India", currency: "INR", checked: false},
+		{fullName: "Indonesia", currency: "IDR", checked: false},
+		{fullName: "Ireland", currency: "EUR", checked: false},
+		{fullName: "Israel", currency: "ILS", checked: false},
+		{fullName: "Italy", currency: "EUR", checked: true},
+		{fullName: "Japan", currency: "JPY", checked: false},
+		{fullName: "Jordan", currency: "JOD", checked: false},
+		{fullName: "Kenya", currency: "KES", checked: false},
+		{fullName: "Kuwait", currency: "KWD", checked: false},
+		{fullName: "Latvia", currency: "EUR", checked: false},
+		{fullName: "Lebanon", currency: "LBP", checked: false},
+		{fullName: "Lithuania", currency: "EUR", checked: false},
+		{fullName: "Luxembourg", currency: "EUR", checked: false},
+		{fullName: "Malawi", currency: "MWK", checked: false},
+		{fullName: "Malaysia", currency: "MYR", checked: false},
+		{fullName: "Malta", currency: "EUR", checked: false},
+		{fullName: "Mauritius", currency: "MUR", checked: false},
+		{fullName: "Mexico", currency: "MXN", checked: false},
+		{fullName: "Morocco", currency: "MAD", checked: false},
+		{fullName: "Namibia", currency: "NAD", checked: false},
+		{fullName: "Netherlands", currency: "EUR", checked: false},
+		{fullName: "New Zealand", currency: "NZD", checked: false},
+		{fullName: "Nigeria", currency: "NGN", checked: false},
+		{fullName: "Norway", currency: "EUR", checked: false},
+		{fullName: "Oman", currency: "OMR", checked: false},
+		{fullName: "Pakistan", currency: "PKR", checked: false},
+		{fullName: "Palestinian Territory", currency: false, checked: false},
+		{fullName: "Peru", currency: "PEN", checked: false},
+		{fullName: "Philippines", currency: "PHP", checked: false},
+		{fullName: "Poland", currency: "EUR", checked: false},
+		{fullName: "Portugal", currency: "EUR", checked: false},
+		{fullName: "Qatar", currency: "QAR", checked: false},
+		{fullName: "Romania", currency: "EUR", checked: false},
+		{fullName: "Russia", currency: "RUB", checked: true},
+		{fullName: "Rwanda", currency: "RWF", checked: false},
+		{fullName: "Saudi Arabia", currency: "SAR", checked: false},
+		{fullName: "Singapore", currency: "SGD", checked: false},
+		{fullName: "Slovakia", currency: "EUR", checked: false},
+		{fullName: "Slovenia", currency: "EUR", checked: false},
+		{fullName: "South Africa", currency: "RND", checked: false},
+		{fullName: "South Korea", currency: "KRW", checked: false},
+		{fullName: "Spain", currency: "EUR", checked: false},
+		{fullName: "Sri Lanka", currency: "LKR", checked: false},
+		{fullName: "Sweden", currency: "EUR", checked: false},
+		{fullName: "Switzerland", currency: "CHF", checked: false},
+		{fullName: "Taiwan", currency: "TWD", checked: false},
+		{fullName: "Tanzania", currency: "TZS", checked: false},
+		{fullName: "Thailand", currency: "THB", checked: false},
+		{fullName: "Tunisia", currency: "TND", checked: false},
+		{fullName: "Turkey", currency: "TRY", checked: false},
+		{fullName: "Uganda", currency: "UGX", checked: false},
+		{fullName: "Ukraine", currency: "UAH", checked: false},
+		{fullName: "United Arab Emirates", currency: "AED", checked: false},
+		{fullName: "United Kingdom", currency: "GBP", checked: true},
+		{fullName: "United States", currency: "USD", checked: true},
+		{fullName: "Venezuela", currency: "VEF", checked: false},
+		{fullName: "Vietnam", currency: "VND", checked: false},
+		{fullName: "Zambia", currency: "ZMK", checked: false},
+		{fullName: "Zimbabwe", currency: "ZWD", checked: false}
 	]
 }]);
 

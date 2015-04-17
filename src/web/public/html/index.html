@@ -61,6 +61,22 @@
             </div>
           </div>
         </div>
+         <div class="dropdown datetime">
+                                <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
+                                    <div class="input-append">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="От" value="{{ start_date | date:'dd.MM.yyyy HH:mm:ss' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                                            <div class="cross-icon">
+                                                <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel1">
+                                <datetimepicker data-ng-model="start_date"
+                        data-datetimepicker-config="{ dropdownSelector: '#dLabel1' }"></datetimepicker>
+                                </ul>
+                            </div>
         <div class="filterWrapper" ng-model="filterForm" ng-show="filterFormVisibility">
           <div ng-include="'/html/form-partial.html'"></div>
         </div>
@@ -72,6 +88,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-resource.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-animate.min.js"></script>
+    <script src="/js/ui-bootstrap-0.12.1.min.js"></script>
+    <script src="/js/interaction.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>

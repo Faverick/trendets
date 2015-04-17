@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function(req, res) {
-    dbHandler.getEventsByFilter(req.body);
+    
 })
 
 module.exports = app;

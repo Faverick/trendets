@@ -30,3 +30,5 @@ node_modules
 *.db
 
 Images
+
+bower_components

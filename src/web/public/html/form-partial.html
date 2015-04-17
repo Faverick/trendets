@@ -12,21 +12,21 @@
             <div class="right float_lang_base_2">
                 <ul class="countryOption">
                     <li ng-repeat="country in countries | range:0:29">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
                         <label>{{country.fullName}}</label></li>
                     </li>                
                 </ul>
                 <ul class="countryOption">
                     <li ng-repeat="country in countries | range:29:58">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
                         <label>{{country.fullName}}</label></li>
                     </li>                
                 </ul>
                 <ul class="countryOption">
                     <li ng-repeat="country in countries | range:58:87">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
                         <label>{{country.fullName}}</label></li>
                     </li>                
@@ -78,6 +78,9 @@
         </div>
         
         <div id="filterBoxSubmit" class="filterBox submitBox align_center">
-            <a href="javascript:void(0);" onclick="economicCalendarFormSubmit();" id="ecSubmitButton" class="newBtn Arrow LightGray">Apply</a>          <a href="javascript:void(0);" id="filterRestoreDefaults" class="restore"><span class="ecoFilterRestoreIcon"></span>Restore Default Settings</a>
+            <button type="button" class="btn btn-default filter-btn" ng-click="submitForm()">
+              Submit
+            </button>          
+            <a href="javascript:void(0);" id="filterRestoreDefaults" class="restore"><span class="ecoFilterRestoreIcon"></span>Restore Default Settings</a>
         </div>
     </div>

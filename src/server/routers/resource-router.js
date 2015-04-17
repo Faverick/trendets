@@ -5,7 +5,8 @@ var express = require('express'),
 
 var settings = rek('settings'),
     TrendetsDb = rek('db'),
-    logger = rek('winstonlog');
+    logger = rek('winstonlog'),
+    DbHandler = rek('db-handler');
 
 var router = express.Router();
 
@@ -25,6 +26,9 @@ function addRestResource(name) {
         resource: name,
         model: name
     };
+
+    var dbHandler = new DbHandler();
+
     if (typeof name === 'object') 
         settings = name; 
 
@@ -37,11 +41,10 @@ function addRestResource(name) {
                 .then(responseJson(res), responseError(res));
         })
         .post(function (req, res) {
-            new TrendetsDb().connect()
-                .then(function (db) {
-                    return db[settings.model].create(req.body);
-                })
-                .then(responseJson(res), responseError(res));
+            return dbHandler.getEventsByFilter(req.body)
+                .then(function (events) {
+                    res.json(events);
+                });
         });
 }
 function responseJson(resp) {

@@ -1,10 +1,10 @@
 angular.module('TrendetsApp.Interaction', [])
-  .factory('data', ['$http', '$location',  function($http) {
+  .factory('dataResources', ['$http',  function($http) {
     var events = {};
     var stocks = {};
 
     var submit = function(form){
-      $http.post('/api/post', form).
+      $http.post('/api/events', form).
         success(function(data) {
           events = data;
         });
@@ -15,6 +15,4 @@ angular.module('TrendetsApp.Interaction', [])
       stocks: stocks,
       submit: submit
     };
-}
-    }
-  }])
+}]);

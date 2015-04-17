@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>web/public/js/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="web/public/js/index"><meta name="groc-project-path" content="src/web/public/js/index.js"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/web/public/js/index.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> app = angular.module(<span class="hljs-string">'TrendetsApp'</span>, [<span class="hljs-string">'ng'</span>, <span class="hljs-string">'ngRoute'</span>, <span class="hljs-string">'ngResource'</span>, <span class="hljs-string">'ngAnimate'</span>]);
+<!DOCTYPE html><html lang="en"><head><title>web/public/js/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="web/public/js/index"><meta name="groc-project-path" content="src/web/public/js/index.js"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/web/public/js/index.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> app = angular.module(<span class="hljs-string">'TrendetsApp'</span>, [<span class="hljs-string">'ng'</span>, <span class="hljs-string">'ngRoute'</span>, <span class="hljs-string">'ngResource'</span>, <span class="hljs-string">'ngAnimate'</span>, <span class="hljs-string">'TrendetsApp.Interaction'</span>, <span class="hljs-string">'ui.bootstrap'</span>]);
 
 app.filter(<span class="hljs-string">'range'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input, from, to)</span> </span>{
@@ -12,8 +12,15 @@ app.filter(<span class="hljs-string">'range'</span>, <span class="hljs-function"
   };
 });
 
-app.controller(<span class="hljs-string">'FormController'</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope)</span></span>{
+app.controller(<span class="hljs-string">'FormController'</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">'dataResources'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($scope, dataResources)</span></span>{
 	$scope.filterFormVisibility = <span class="hljs-literal">false</span>;
+	$scope.formFilter = {
+		dateFrom:<span class="hljs-string">'2014-04-09'</span>,
+		dateTo: <span class="hljs-string">'2014-11-01'</span>,
+		country: [],
+		importance: [<span class="hljs-string">"bull1"</span>],
+		descriptionText: <span class="hljs-string">""</span>
+	}
 
 	$scope.btnFilterClick = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
 		<span class="hljs-keyword">if</span>($scope.filterFormVisibility == <span class="hljs-literal">true</span>)
@@ -22,94 +29,113 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 			$scope.filterFormVisibility = <span class="hljs-literal">true</span>;
 	}
 
+	$scope.submitForm = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		dataResources.submit($scope.formFilter);
+		<span class="hljs-built_in">console</span>.log($scope.countries[<span class="hljs-number">0</span>].checked);
+		<span class="hljs-built_in">console</span>.log($scope.countries[<span class="hljs-number">1</span>].checked);
+	}
+
+	$scope.onCheckboxChecked = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"countryName"</span>);
+		$scope.formFilter.country.push(countryName);
+	}
+
+	$scope.onCheckboxUnchecked = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(countryName)</span> </span>{
+		<span class="hljs-keyword">var</span> index = $scope.formFilter.country.indexOf(countryName);
+		<span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
+    		$scope.formFilter.country.splice(index, <span class="hljs-number">1</span>);
+		}
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>$scope.onCheckboxChanged = function() {
+    if($scope.checkBoxState == )</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-comment">// </span>
+
 	$scope.countries = [
-		{fullName: <span class="hljs-string">"Argentina"</span>, currency: <span class="hljs-string">"ARS"</span>},
-		{fullName: <span class="hljs-string">"Australia"</span>, currency: <span class="hljs-string">"AUD"</span>},
-		{fullName: <span class="hljs-string">"Austria"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Bahrain"</span>, currency: <span class="hljs-string">"BHD"</span>},
-		{fullName: <span class="hljs-string">"Belgium"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Botswana"</span>, currency: <span class="hljs-string">"BWA"</span>},
-		{fullName: <span class="hljs-string">"Brasil"</span>, currency: <span class="hljs-string">"BRA"</span>},
-		{fullName: <span class="hljs-string">"Bulgaria"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Canada"</span>, currency: <span class="hljs-string">"CAD"</span>},
-		{fullName: <span class="hljs-string">"Chile"</span>, currency: <span class="hljs-string">"CLP"</span>},
-		{fullName: <span class="hljs-string">"China"</span>, currency: <span class="hljs-string">"CNY"</span>},
-		{fullName: <span class="hljs-string">"Colombia"</span>, currency: <span class="hljs-string">"COP"</span>},
-		{fullName: <span class="hljs-string">"Costa Rica"</span>, currency: <span class="hljs-string">"CRI"</span>},
-		{fullName: <span class="hljs-string">"Croatia"</span>, currency: <span class="hljs-string">"KUN"</span>},
-		{fullName: <span class="hljs-string">"Cyprus"</span>, currency: <span class="hljs-string">"CYP"</span>},
-		{fullName: <span class="hljs-string">"Czech Republic"</span>, currency: <span class="hljs-string">"CZK"</span>},
-		{fullName: <span class="hljs-string">"Denmark"</span>, currency: <span class="hljs-string">"DKK"</span>},
-		{fullName: <span class="hljs-string">"Ecuador"</span>, currency: <span class="hljs-string">"ECU"</span>},
-		{fullName: <span class="hljs-string">"Egypt"</span>, currency: <span class="hljs-string">"EGP"</span>},
-		{fullName: <span class="hljs-string">"Estonia"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Euro Zone"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Finland"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"France"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Germany"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Greece"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Hong Kong"</span>, currency: <span class="hljs-string">"HKD"</span>},
-		{fullName: <span class="hljs-string">"Hungary"</span>, currency: <span class="hljs-string">"HUF"</span>},
-		{fullName: <span class="hljs-string">"Iceland"</span>, currency: <span class="hljs-string">"ISK"</span>},
-		{fullName: <span class="hljs-string">"India"</span>, currency: <span class="hljs-string">"INR"</span>},
-		{fullName: <span class="hljs-string">"Indonesia"</span>, currency: <span class="hljs-string">"IDR"</span>},
-		{fullName: <span class="hljs-string">"Ireland"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Israel"</span>, currency: <span class="hljs-string">"ILS"</span>},
-		{fullName: <span class="hljs-string">"Italy"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Japan"</span>, currency: <span class="hljs-string">"JPY"</span>},
-		{fullName: <span class="hljs-string">"Jordan"</span>, currency: <span class="hljs-string">"JOD"</span>},
-		{fullName: <span class="hljs-string">"Kenya"</span>, currency: <span class="hljs-string">"KES"</span>},
-		{fullName: <span class="hljs-string">"Kuwait"</span>, currency: <span class="hljs-string">"KWD"</span>},
-		{fullName: <span class="hljs-string">"Latvia"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Lebanon"</span>, currency: <span class="hljs-string">"LBP"</span>},
-		{fullName: <span class="hljs-string">"Lithuania"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Luxembourg"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Malawi"</span>, currency: <span class="hljs-string">"MWK"</span>},
-		{fullName: <span class="hljs-string">"Malaysia"</span>, currency: <span class="hljs-string">"MYR"</span>},
-		{fullName: <span class="hljs-string">"Malta"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Mauritius"</span>, currency: <span class="hljs-string">"MUR"</span>},
-		{fullName: <span class="hljs-string">"Mexico"</span>, currency: <span class="hljs-string">"MXN"</span>},
-		{fullName: <span class="hljs-string">"Morocco"</span>, currency: <span class="hljs-string">"MAD"</span>},
-		{fullName: <span class="hljs-string">"Namibia"</span>, currency: <span class="hljs-string">"NAD"</span>},
-		{fullName: <span class="hljs-string">"Netherlands"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"New Zealand"</span>, currency: <span class="hljs-string">"NZD"</span>},
-		{fullName: <span class="hljs-string">"Nigeria"</span>, currency: <span class="hljs-string">"NGN"</span>},
-		{fullName: <span class="hljs-string">"Norway"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Oman"</span>, currency: <span class="hljs-string">"OMR"</span>},
-		{fullName: <span class="hljs-string">"Pakistan"</span>, currency: <span class="hljs-string">"PKR"</span>},
-		{fullName: <span class="hljs-string">"Palestinian Territory"</span>, currency: <span class="hljs-string">""</span>},
-		{fullName: <span class="hljs-string">"Peru"</span>, currency: <span class="hljs-string">"PEN"</span>},
-		{fullName: <span class="hljs-string">"Philippines"</span>, currency: <span class="hljs-string">"PHP"</span>},
-		{fullName: <span class="hljs-string">"Poland"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Portugal"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Qatar"</span>, currency: <span class="hljs-string">"QAR"</span>},
-		{fullName: <span class="hljs-string">"Romania"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Russia"</span>, currency: <span class="hljs-string">"RUB"</span>},
-		{fullName: <span class="hljs-string">"Rwanda"</span>, currency: <span class="hljs-string">"RWF"</span>},
-		{fullName: <span class="hljs-string">"Saudi Arabia"</span>, currency: <span class="hljs-string">"SAR"</span>},
-		{fullName: <span class="hljs-string">"Singapore"</span>, currency: <span class="hljs-string">"SGD"</span>},
-		{fullName: <span class="hljs-string">"Slovakia"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Slovenia"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"South Africa"</span>, currency: <span class="hljs-string">"RND"</span>},
-		{fullName: <span class="hljs-string">"South Korea"</span>, currency: <span class="hljs-string">"KRW"</span>},
-		{fullName: <span class="hljs-string">"Spain"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Sri Lanka"</span>, currency: <span class="hljs-string">"LKR"</span>},
-		{fullName: <span class="hljs-string">"Sweden"</span>, currency: <span class="hljs-string">"EUR"</span>},
-		{fullName: <span class="hljs-string">"Switzerland"</span>, currency: <span class="hljs-string">"CHF"</span>},
-		{fullName: <span class="hljs-string">"Taiwan"</span>, currency: <span class="hljs-string">"TWD"</span>},
-		{fullName: <span class="hljs-string">"Tanzania"</span>, currency: <span class="hljs-string">"TZS"</span>},
-		{fullName: <span class="hljs-string">"Thailand"</span>, currency: <span class="hljs-string">"THB"</span>},
-		{fullName: <span class="hljs-string">"Tunisia"</span>, currency: <span class="hljs-string">"TND"</span>},
-		{fullName: <span class="hljs-string">"Turkey"</span>, currency: <span class="hljs-string">"TRY"</span>},
-		{fullName: <span class="hljs-string">"Uganda"</span>, currency: <span class="hljs-string">"UGX"</span>},
-		{fullName: <span class="hljs-string">"Ukraine"</span>, currency: <span class="hljs-string">"UAH"</span>},
-		{fullName: <span class="hljs-string">"United Arab Emirates"</span>, currency: <span class="hljs-string">"AED"</span>},
-		{fullName: <span class="hljs-string">"United Kingdom"</span>, currency: <span class="hljs-string">"GBP"</span>},
-		{fullName: <span class="hljs-string">"United States"</span>, currency: <span class="hljs-string">"USD"</span>},
-		{fullName: <span class="hljs-string">"Venezuela"</span>, currency: <span class="hljs-string">"VEF"</span>},
-		{fullName: <span class="hljs-string">"Vietnam"</span>, currency: <span class="hljs-string">"VND"</span>},
-		{fullName: <span class="hljs-string">"Zambia"</span>, currency: <span class="hljs-string">"ZMK"</span>},
-		{fullName: <span class="hljs-string">"Zimbabwe"</span>, currency: <span class="hljs-string">"ZWD"</span>}
+		{fullName: <span class="hljs-string">"Argentina"</span>, currency: <span class="hljs-string">"ARS"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Australia"</span>, currency: <span class="hljs-string">"AUD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Austria"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Bahrain"</span>, currency: <span class="hljs-string">"BHD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Belgium"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Botswana"</span>, currency: <span class="hljs-string">"BWA"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Brasil"</span>, currency: <span class="hljs-string">"BRA"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Bulgaria"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Canada"</span>, currency: <span class="hljs-string">"CAD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Chile"</span>, currency: <span class="hljs-string">"CLP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"China"</span>, currency: <span class="hljs-string">"CNY"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Colombia"</span>, currency: <span class="hljs-string">"COP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Costa Rica"</span>, currency: <span class="hljs-string">"CRI"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Croatia"</span>, currency: <span class="hljs-string">"KUN"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Cyprus"</span>, currency: <span class="hljs-string">"CYP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Czech Republic"</span>, currency: <span class="hljs-string">"CZK"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Denmark"</span>, currency: <span class="hljs-string">"DKK"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Ecuador"</span>, currency: <span class="hljs-string">"ECU"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Egypt"</span>, currency: <span class="hljs-string">"EGP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Estonia"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Euro Zone"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"Finland"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"France"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Germany"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"Greece"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Hong Kong"</span>, currency: <span class="hljs-string">"HKD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Hungary"</span>, currency: <span class="hljs-string">"HUF"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Iceland"</span>, currency: <span class="hljs-string">"ISK"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"India"</span>, currency: <span class="hljs-string">"INR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Indonesia"</span>, currency: <span class="hljs-string">"IDR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Ireland"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Israel"</span>, currency: <span class="hljs-string">"ILS"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Italy"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"Japan"</span>, currency: <span class="hljs-string">"JPY"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Jordan"</span>, currency: <span class="hljs-string">"JOD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Kenya"</span>, currency: <span class="hljs-string">"KES"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Kuwait"</span>, currency: <span class="hljs-string">"KWD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Latvia"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Lebanon"</span>, currency: <span class="hljs-string">"LBP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Lithuania"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Luxembourg"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Malawi"</span>, currency: <span class="hljs-string">"MWK"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Malaysia"</span>, currency: <span class="hljs-string">"MYR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Malta"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Mauritius"</span>, currency: <span class="hljs-string">"MUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Mexico"</span>, currency: <span class="hljs-string">"MXN"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Morocco"</span>, currency: <span class="hljs-string">"MAD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Namibia"</span>, currency: <span class="hljs-string">"NAD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Netherlands"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"New Zealand"</span>, currency: <span class="hljs-string">"NZD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Nigeria"</span>, currency: <span class="hljs-string">"NGN"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Norway"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Oman"</span>, currency: <span class="hljs-string">"OMR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Pakistan"</span>, currency: <span class="hljs-string">"PKR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Palestinian Territory"</span>, currency: <span class="hljs-literal">false</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Peru"</span>, currency: <span class="hljs-string">"PEN"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Philippines"</span>, currency: <span class="hljs-string">"PHP"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Poland"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Portugal"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Qatar"</span>, currency: <span class="hljs-string">"QAR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Romania"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Russia"</span>, currency: <span class="hljs-string">"RUB"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"Rwanda"</span>, currency: <span class="hljs-string">"RWF"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Saudi Arabia"</span>, currency: <span class="hljs-string">"SAR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Singapore"</span>, currency: <span class="hljs-string">"SGD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Slovakia"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Slovenia"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"South Africa"</span>, currency: <span class="hljs-string">"RND"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"South Korea"</span>, currency: <span class="hljs-string">"KRW"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Spain"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Sri Lanka"</span>, currency: <span class="hljs-string">"LKR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Sweden"</span>, currency: <span class="hljs-string">"EUR"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Switzerland"</span>, currency: <span class="hljs-string">"CHF"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Taiwan"</span>, currency: <span class="hljs-string">"TWD"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Tanzania"</span>, currency: <span class="hljs-string">"TZS"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Thailand"</span>, currency: <span class="hljs-string">"THB"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Tunisia"</span>, currency: <span class="hljs-string">"TND"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Turkey"</span>, currency: <span class="hljs-string">"TRY"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Uganda"</span>, currency: <span class="hljs-string">"UGX"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Ukraine"</span>, currency: <span class="hljs-string">"UAH"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"United Arab Emirates"</span>, currency: <span class="hljs-string">"AED"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"United Kingdom"</span>, currency: <span class="hljs-string">"GBP"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"United States"</span>, currency: <span class="hljs-string">"USD"</span>, checked: <span class="hljs-literal">true</span>},
+		{fullName: <span class="hljs-string">"Venezuela"</span>, currency: <span class="hljs-string">"VEF"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Vietnam"</span>, currency: <span class="hljs-string">"VND"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Zambia"</span>, currency: <span class="hljs-string">"ZMK"</span>, checked: <span class="hljs-literal">false</span>},
+		{fullName: <span class="hljs-string">"Zimbabwe"</span>, currency: <span class="hljs-string">"ZWD"</span>, checked: <span class="hljs-literal">false</span>}
 	]
 }]);
 

@@ -375,58 +375,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   },
                   "depth": 4,
                   "outline": []
-                }, {
-                  "type": "file",
-                  "data": {
-                    "language": {
-                      "nameMatchers": [".js"],
-                      "pygmentsLexer": "javascript",
-                      "multiLineComment": ["/*", "*", "*/"],
-                      "singleLineComment": ["//"],
-                      "ignorePrefix": "}",
-                      "foldPrefix": "^",
-                      "name": "JavaScript"
-                    },
-                    "sourcePath": "/home/travis/build/Faverick/trendets/src/web/public/js/ui-bootstrap-0.12.1.min.js",
-                    "projectPath": "src/web/public/js/ui-bootstrap-0.12.1.min.js",
-                    "targetPath": "web/public/js/ui-bootstrap-0.12.1.min",
-                    "pageTitle": "web/public/js/ui-bootstrap-0.12.1.min",
-                    "title": "ui-bootstrap-0.12.1.min"
-                  },
-                  "depth": 4,
-                  "outline": []
                 }
               ]
-            }
-          ]
-        }, {
-          "type": "folder",
-          "data": {
-            "path": "web/scripts",
-            "title": "scripts"
-          },
-          "depth": 2,
-          "children": [
-            {
-              "type": "file",
-              "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
-                "sourcePath": "/home/travis/build/Faverick/trendets/src/web/scripts/ui-bootstrap-0.12.1.min.js",
-                "projectPath": "src/web/scripts/ui-bootstrap-0.12.1.min.js",
-                "targetPath": "web/scripts/ui-bootstrap-0.12.1.min",
-                "pageTitle": "web/scripts/ui-bootstrap-0.12.1.min",
-                "title": "ui-bootstrap-0.12.1.min"
-              },
-              "depth": 3,
-              "outline": []
             }
           ]
         }

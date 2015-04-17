@@ -6,7 +6,7 @@
 
 .filterButtonLine {
 	display: inline-block;
-	margin-left: 20%;
+	/*margin-left: 20%;*/
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
@@ -75,3 +75,20 @@
 }
 
 div.clear { clear: both; display: block; }
+
+.datetime {
+    margin: 8px 0px 0px 10px;
+}
+
+.cross-icon {
+    position: absolute;
+    right: 15px;
+    top: 8px;
+    cursor: pointer; 
+    background-color: #FFFFFF;
+}
+
+input[type="text"] {
+   width: 120px;
+   height: 34px;
+}

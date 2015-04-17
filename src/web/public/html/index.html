@@ -59,28 +59,29 @@
               </ul>
             </div>
           </div>
+
+          <div class="dropdown datetime">
+            <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
+              <div class="input-append">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="From" value="{{ start_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                  <div class="cross-icon">
+                    <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel1">
+              <datetimepicker data-ng-model="start_date"
+              data-datetimepicker-config="{ startView:'day', minView:'day', dropdownSelector: '#dLabel1' }"></datetimepicker>
+            </ul>
+          </div>
         </div>
-         
+
         <div class="filterWrapper" ng-model="filterForm" ng-show="filterFormVisibility">
           <div ng-include="'/html/form-partial.html'"></div>
         </div>
     </div>
-    <div class="dropdown datetime">
-                                <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
-                                    <div class="input-append">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="От" value="{{ start_date | date:'dd.MM.yyyy HH:mm:ss' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
-                                            <div class="cross-icon">
-                                                <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </span>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel1">
-                                <datetimepicker data-ng-model="start_date"
-                        data-datetimepicker-config="{ dropdownSelector: '#dLabel1' }"></datetimepicker>
-                                </ul>
-                            </div>
 
     <script src="/bower_components/angular/angular.min.js"></script>
     <script src="/bower_components/angular-route/angular-route.min.js"></script>

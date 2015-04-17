@@ -37,21 +37,14 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		console.log($scope.countries[1].checked);
 	}
 
-	$scope.onCheckboxChecked = function() {
-		console.log("countryName");
-		$scope.formFilter.country.push(countryName);
-	}
+	$scope.clearStartDate = function() {
+        $scope.start_date = null;
+        return false;
+    }
 
-	$scope.onCheckboxUnchecked = function(countryName) {
-		var index = $scope.formFilter.country.indexOf(countryName);
-		if (index > -1) {
-    		$scope.formFilter.country.splice(index, 1);
-		}
-	}
-
-	// $scope.onCheckboxChanged = function() {
-	// 	if($scope.checkBoxState == )
-	// }
+    $scope.clearStopDate = function() {
+        $scope.stop_date = null;
+    }
 
 	$scope.countries = [
 		{fullName: "Argentina", currency: "ARS", checked: false},

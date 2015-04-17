@@ -1,5 +1,6 @@
 
-var app = angular.module('TrendetsApp', ['ng', 'ngRoute', 'ngResource', 'ngAnimate', 'TrendetsApp.Interaction', 'ui.bootstrap']);
+var app = angular.module('TrendetsApp', ['ng', 'ngRoute', 'ngResource', 'ngAnimate', 'TrendetsApp.Interaction',
+											'ui.bootstrap.datetimepicker']);
 
 app.filter('range', function() {
   return function(input, from, to) {

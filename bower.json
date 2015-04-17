@@ -14,6 +14,16 @@
     "tests"
   ],
   "dependencies": {
-    "angular-bootstrap-datetimepicker": "latest"
+    "angular": "~1.2.26",
+    "angular-mocks": "~1.2.26",
+    "angular-route": "~1.2.26",
+    "angular-resource": "~1.2.26",
+    "angular-animate": "~1.2.26",
+    "jquery": "latest",
+    "bootstrap": "~3.3.0",
+    "angular-bootstrap-datetimepicker": "~0.3.8"
+  },
+  "resolutions": {
+    "angular": "1.2.28"
   }
 }

@@ -10,7 +10,8 @@ var settings = rek('settings'),
 var app = express();
 
 // Задаем путь к ресурсам, который будет использоваться в html файлах  
-app.use(express.static(path.join(settings.path, '/web/public'))); 
+app.use(express.static(path.join(settings.path, 'src/web/public'))); 
+app.use('/bower_components',  express.static(path.join(settings.path, '/bower_components')));
 
 /************************************************************************/
 /*                              REST API                                */
@@ -21,7 +22,7 @@ app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
     logger.info('GET App');
-    res.sendFile(path.join(settings.path, '/web/public/html/index.html'));
+    res.sendFile(path.join(settings.path, 'src/web/public/html/index.html'));
 });
 
 app.post('/', function(req, res) {

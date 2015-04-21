@@ -89,34 +89,36 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">/* ---GETTING PARSED DATA---
+    <textarea id="file-source" class="col-md-12">/* 
+## GETTING PARSED DATA
 
 Function request investing.com economic calendar and parse the responce. Parsed events then sends to the sendto_db function
 
----LANGUAGE---
+### LANGUAGE
 To change language you need to chang URL in options variable
 
----FILTER---
+### FILTER
 Filter on investing.com looks like this:
+```javascript
 form:{
 	  	dateFrom: &#039;2015-03-25&#039;,
 	    dateTo: &#039;2015-03-25&#039;,
 	    timeZone: 18,
 	    quotes_search_text: &#039;&#039;,
-	    country: [4, 5,6,7,9,10,11,12,14,15,17,20,21,22,23,24,25,26,27,29,32,33,34,35,36,37,38,39,41,42,43,
-					44,45,46,48,51,52,53,54,55,56,57,59,60,61,63,68,70,71,72,75,80,84,85,87,89,90,92,93,94,96,97,100,103,
-					105,106,107,109,110,111,112,113,121,122,123,125,138,143,145,162,163,170,172,178,188,193,202],
+	    country: [],
 	    importance: [1,2,3]
 	    category: [...]
 	    timeFilter:  &#039;timeRemain&#039;,
 	    timeFrame: &#039;tomorrow&#039;
 	  }
+```
 
 If it&#039;ll be needed you can modify code below so that it contained more fields from filter.
 In get all values(for fields with arrays) without filtering, just set the field to the empty array []
 
----RESPONSE---
+### RESPONSE
 Responce event looks like this:
+```javascript
 { id: &#039;55378&#039;,
   time: &#039;2015-03-27 19:30:00&#039;,
   country: &#039;Канада&#039;,
@@ -125,11 +127,9 @@ Responce event looks like this:
   descriptrion: &#039;Количество чистых спекулятивных позиций по CAD от CFTC&#039;,
   actual: &#039;-32,7K&#039;,
   forecast: &#039; &#039;,
-  previous: &#039;-32,8K&#039; }
-
----TESTING---
-parse_investing(&#039;ru&#039;, &#039;2015-02-01&#039;, &#039;2015-03-01&#039;, function(event_p){console.log(event_p)})
-parse_investing(&#039;en&#039;, &#039;2015-02-01&#039;, &#039;2015-03-01&#039;, function(event_p){console.log(event_p[&#039;time&#039;])})
+  previous: &#039;-32,8K&#039; 
+  }
+```
 
 */
 

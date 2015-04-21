@@ -166,7 +166,44 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "parse-investing"
               },
               "depth": 3,
-              "outline": []
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "GETTING PARSED DATA",
+                    "slug": "getting-parsed-data"
+                  },
+                  "depth": 2,
+                  "children": [
+                    {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "LANGUAGE",
+                        "slug": "language"
+                      },
+                      "depth": 3
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "FILTER",
+                        "slug": "filter"
+                      },
+                      "depth": 3
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "RESPONSE",
+                        "slug": "response"
+                      },
+                      "depth": 3
+                    }
+                  ]
+                }
+              ]
             }, {
               "type": "file",
               "data": {

@@ -5,8 +5,7 @@
 
 <span class="hljs-keyword">var</span> settings = rek(<span class="hljs-string">'settings'</span>),
     TrendetsDb = rek(<span class="hljs-string">'db'</span>),
-    logger = rek(<span class="hljs-string">'winstonlog'</span>),
-    DbHandler = rek(<span class="hljs-string">'db-handler'</span>);
+    logger = rek(<span class="hljs-string">'winstonlog'</span>);
 
 <span class="hljs-keyword">var</span> router = express.Router();
 
@@ -23,9 +22,6 @@ addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><di
         resource: name,
         model: name
     };
-
-    <span class="hljs-keyword">var</span> dbHandler = <span class="hljs-keyword">new</span> DbHandler();
-
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">'object'</span>) 
         settings = name; 
 
@@ -38,10 +34,11 @@ addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><di
                 .then(responseJson(res), responseError(res));
         })
         .post(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> </span>{
-            <span class="hljs-keyword">return</span> dbHandler.getEventsByFilter(req.body)
-                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(events)</span> </span>{
-                    res.json(events);
-                });
+            <span class="hljs-keyword">new</span> TrendetsDb().connect()
+                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(db)</span> </span>{
+                    <span class="hljs-keyword">return</span> db[settings.model].create(req.body);
+                })
+                .then(responseJson(res), responseError(res));
         });
 }
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseJson</span><span class="hljs-params">(resp)</span> </span>{

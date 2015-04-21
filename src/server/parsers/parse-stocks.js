@@ -2,14 +2,23 @@
 //TODO: написать доки
 var request = require('request'),
 	moment = require('moment'),
-	q = require('q');
+	q = require('q'),
+	rek = require('rekuire'),
+	logger = rek('winstonlog');
 
-function parseStocks(quote, fromDate, toDate, granularity, sendToFunc){
+function parseStocks(quote, dateFrom, dateTo, granularity, sendToFunc){
 	var d = q.defer();
+	var momentFrom = moment(dateFrom),
+		momentTo = moment(dateTo);
+
+	if (!momentFrom.isValid() || !momentTo.isValid() || !momentFrom.isBefore(momentTo)){
+		throw new Error('Date parameters have a bad value.');
+	}
+
 	//TODO: проверка параметров, преобразование времени к http запросу
 	var url = 'http://api-sandbox.oanda.com/v1/' +
-		'candles?instrument=' + quote + '&granularity=' + granularity + '&start=' + encodeURIComponent(fromDate) +
-		'&end=' + encodeURIComponent(toDate) + '&candleFormat=midpoint';
+		'candles?instrument=' + quote + '&granularity=' + granularity + '&start=' + encodeURIComponent(dateFrom) +
+		'&end=' + encodeURIComponent(dateTo) + '&candleFormat=midpoint';
 	//TODO: отдельно написать колбэк
 	request(url, function(error, response, body){
 		if (error) {
@@ -21,6 +30,10 @@ function parseStocks(quote, fromDate, toDate, granularity, sendToFunc){
 		}
 	})
 	d.promise;
+}
+
+parseCurrencyQuotes(quote, fromDate, toDate, granularity){
+
 }
 
 function parseQuotes(responseBody){

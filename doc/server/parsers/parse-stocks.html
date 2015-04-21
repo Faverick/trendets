@@ -1,14 +1,23 @@
 <!DOCTYPE html><html lang="en"><head><title>server/parsers/parse-stocks</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="server/parsers/parse-stocks"><meta name="groc-project-path" content="src/server/parsers/parse-stocks.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/server/parsers/parse-stocks.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-comment">//TODO: написать доки</span>
 <span class="hljs-keyword">var</span> request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request'</span>),
 	moment = <span class="hljs-built_in">require</span>(<span class="hljs-string">'moment'</span>),
-	q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>);
+	q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>),
+	rek = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rekuire'</span>),
+	logger = rek(<span class="hljs-string">'winstonlog'</span>);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStocks</span><span class="hljs-params">(quote, fromDate, toDate, granularity, sendToFunc)</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStocks</span><span class="hljs-params">(quote, dateFrom, dateTo, granularity, sendToFunc)</span></span>{
 	<span class="hljs-keyword">var</span> d = q.defer();
+	<span class="hljs-keyword">var</span> momentFrom = moment(dateFrom),
+		momentTo = moment(dateTo);
+
+	<span class="hljs-keyword">if</span> (!momentFrom.isValid() || !momentTo.isValid() || !momentFrom.isBefore(momentTo)){
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Date parameters have a bad value.'</span>);
+	}
+
 	<span class="hljs-comment">//TODO: проверка параметров, преобразование времени к http запросу</span>
 	<span class="hljs-keyword">var</span> url = <span class="hljs-string">'http://api-sandbox.oanda.com/v1/'</span> +
-		<span class="hljs-string">'candles?instrument='</span> + quote + <span class="hljs-string">'&amp;granularity='</span> + granularity + <span class="hljs-string">'&amp;start='</span> + <span class="hljs-built_in">encodeURIComponent</span>(fromDate) +
-		<span class="hljs-string">'&amp;end='</span> + <span class="hljs-built_in">encodeURIComponent</span>(toDate) + <span class="hljs-string">'&amp;candleFormat=midpoint'</span>;
+		<span class="hljs-string">'candles?instrument='</span> + quote + <span class="hljs-string">'&amp;granularity='</span> + granularity + <span class="hljs-string">'&amp;start='</span> + <span class="hljs-built_in">encodeURIComponent</span>(dateFrom) +
+		<span class="hljs-string">'&amp;end='</span> + <span class="hljs-built_in">encodeURIComponent</span>(dateTo) + <span class="hljs-string">'&amp;candleFormat=midpoint'</span>;
 	<span class="hljs-comment">//TODO: отдельно написать колбэк</span>
 	request(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error, response, body)</span></span>{
 		<span class="hljs-keyword">if</span> (error) {
@@ -20,6 +29,10 @@
 		}
 	})
 	d.promise;
+}
+
+parseCurrencyQuotes(quote, fromDate, toDate, granularity){
+
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseQuotes</span><span class="hljs-params">(responseBody)</span></span>{

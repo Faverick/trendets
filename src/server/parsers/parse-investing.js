@@ -1,31 +1,33 @@
-/* ---GETTING PARSED DATA---
+/* 
+## GETTING PARSED DATA
 
 Function request investing.com economic calendar and parse the responce. Parsed events then sends to the sendto_db function
 
----LANGUAGE---
+### LANGUAGE
 To change language you need to chang URL in options variable
 
----FILTER---
+### FILTER
 Filter on investing.com looks like this:
+```javascript
 form:{
 	  	dateFrom: '2015-03-25',
 	    dateTo: '2015-03-25',
 	    timeZone: 18,
 	    quotes_search_text: '',
-	    country: [4, 5,6,7,9,10,11,12,14,15,17,20,21,22,23,24,25,26,27,29,32,33,34,35,36,37,38,39,41,42,43,
-					44,45,46,48,51,52,53,54,55,56,57,59,60,61,63,68,70,71,72,75,80,84,85,87,89,90,92,93,94,96,97,100,103,
-					105,106,107,109,110,111,112,113,121,122,123,125,138,143,145,162,163,170,172,178,188,193,202],
+	    country: [],
 	    importance: [1,2,3]
 	    category: [...]
 	    timeFilter:  'timeRemain',
 	    timeFrame: 'tomorrow'
 	  }
+```
 
 If it'll be needed you can modify code below so that it contained more fields from filter.
 In get all values(for fields with arrays) without filtering, just set the field to the empty array []
 
----RESPONSE---
+### RESPONSE
 Responce event looks like this:
+```javascript
 { id: '55378',
   time: '2015-03-27 19:30:00',
   country: 'Канада',
@@ -34,11 +36,9 @@ Responce event looks like this:
   descriptrion: 'Количество чистых спекулятивных позиций по CAD от CFTC',
   actual: '-32,7K',
   forecast: ' ',
-  previous: '-32,8K' }
-
----TESTING---
-parse_investing('ru', '2015-02-01', '2015-03-01', function(event_p){console.log(event_p)})
-parse_investing('en', '2015-02-01', '2015-03-01', function(event_p){console.log(event_p['time'])})
+  previous: '-32,8K' 
+  }
+```
 
 */
 

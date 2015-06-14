@@ -8,20 +8,20 @@
 
 <span class="hljs-keyword">var</span> defaultDbPath = path.join(__dirname, <span class="hljs-string">'trendets.db'</span>);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TrendetsDb</span><span class="hljs-params">(dbPath)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TrendetsDb</span>(<span class="hljs-params">dbPath</span>) </span>{
 
     dbPath = dbPath || defaultDbPath;
 
     <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
         connection = <span class="hljs-literal">null</span>;
 
-    <span class="hljs-keyword">this</span>.connect = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.connect = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">var</span> d = q.defer();
         connect().then(defineModels)
-                 .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(db)</span> </span>{
-                    <span class="hljs-built_in">Object</span>.keys(db.models).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modelName)</span> </span>{
+                 .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">db</span>) </span>{
+                    <span class="hljs-built_in">Object</span>.keys(db.models).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">modelName</span>) </span>{
                         self[modelName] = db.models[modelName];
-                        promisifyModel(self[modelName]); <span class="hljs-comment">// TODO: create a promise-shell for db.model || db</span>
+                        promisifyModel(self[modelName]); <span class="hljs-comment">// <span class="hljs-doctag"><span class="hljs-keyword">TODO</span></span>: create a promise-shell for db.model || db</span>
                     })
                          
                      d.resolve(self);
@@ -29,24 +29,24 @@
         <span class="hljs-keyword">return</span> d.promise;
     }
 
-    <span class="hljs-keyword">this</span>.exists = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exists</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.exists = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exists</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> fs.existsSync(dbPath);
     }
 
-    <span class="hljs-keyword">this</span>.create = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.create = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.exists())
             <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Database at '</span> + dbPath + <span class="hljs-string">' already exists.'</span>);
 
         <span class="hljs-keyword">var</span> res = connect().then(createTables)
                            .then(defineModels)
-                           .then(<span class="hljs-keyword">this</span>.disconnect).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'creating finished'</span>)});
+                           .then(<span class="hljs-keyword">this</span>.disconnect).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'creating finished'</span>)});
 
         <span class="hljs-built_in">console</span>.info(<span class="hljs-string">'Database at '</span> + dbPath + <span class="hljs-string">' created.'</span>);
 
         <span class="hljs-keyword">return</span> res;
     }
 
-    <span class="hljs-keyword">this</span>.insert =  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insert</span><span class="hljs-params">(model, obj)</span> </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if (obj instanceof Array) {
+    <span class="hljs-keyword">this</span>.insert =  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insert</span>(<span class="hljs-params">model, obj</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if (obj instanceof Array) {
     var d = q.defer();
     logger.info(&quot;Inserting in array of length&quot;, obj.length);
     for (var i = 0; i &lt; obj.length; i++) {
@@ -60,7 +60,7 @@ return d.promise;</code></pre></div></div><div class="code"><div class="wrapper"
         <span class="hljs-keyword">var</span> d = q.defer();
             
             logger.info(<span class="hljs-string">"Inserting in array of length"</span>, obj.length);
-            model.create(obj, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err, items)</span></span>{
+            model.create(obj, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, items</span>)</span>{
                 logger.error(err);
                 logger.info(items);
                 resolveDeferred(d);
@@ -68,7 +68,7 @@ return d.promise;</code></pre></div></div><div class="code"><div class="wrapper"
         <span class="hljs-keyword">return</span> d.promise;
     }
 
-    <span class="hljs-keyword">this</span>.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span><span class="hljs-params">(model, filterParam)</span> </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var promises = [];
+    <span class="hljs-keyword">this</span>.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params">model, filterParam</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var promises = [];
 Object.keys(filterParam).forEach(function (key) {
     console.log(key,&#39;is &#39;,filterParam[key]);</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-comment">// );</span>
         
@@ -90,7 +90,7 @@ Object.keys(filterParam).forEach(function (key) {
         <span class="hljs-keyword">var</span> d = q.defer();
         model.find({time: orm.gte(filterParam[<span class="hljs-string">'dateFrom'</span>]) &amp;&amp; orm.lte(date.toISOString())
                 , country: filterParam[<span class="hljs-string">'country'</span>], importance: filterParam[<span class="hljs-string">'importance'</span>]
-                , description: orm.like(<span class="hljs-string">"%"</span>+filterParam[<span class="hljs-string">'descriptionText'</span>]+<span class="hljs-string">"%"</span>)}, (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(error, events)</span></span>{
+                , description: orm.like(<span class="hljs-string">"%"</span>+filterParam[<span class="hljs-string">'descriptionText'</span>]+<span class="hljs-string">"%"</span>)}, (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error, events</span>)</span>{
             <span class="hljs-keyword">if</span> (error) {
                 <span class="hljs-built_in">console</span>.error(error);
                 d.reject(errror);
@@ -103,7 +103,7 @@ Object.keys(filterParam).forEach(function (key) {
         <span class="hljs-keyword">return</span> d.promise;
     }
 
-    <span class="hljs-keyword">this</span>.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span><span class="hljs-params">(model, obj)</span> </span>{
+    <span class="hljs-keyword">this</span>.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>(<span class="hljs-params">model, obj</span>) </span>{
         <span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Array</span>) {
             <span class="hljs-keyword">var</span> promises = [];
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; obj.length; i++) {
@@ -112,7 +112,7 @@ Object.keys(filterParam).forEach(function (key) {
             <span class="hljs-keyword">return</span> q.all(promises);
         } <span class="hljs-keyword">else</span> {
             <span class="hljs-keyword">var</span> d = q.defer();
-            obj.remove(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span></span>{
+            obj.remove(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
                 <span class="hljs-keyword">if</span>(err) {
                     <span class="hljs-built_in">console</span>.error(err);
                     d.reject(err);
@@ -127,7 +127,7 @@ Object.keys(filterParam).forEach(function (key) {
     }
 
     
-    <span class="hljs-keyword">this</span>.delete = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteDb</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">this</span>.delete = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteDb</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.exists()) {
             fs.unlinkSync(dbPath);
             <span class="hljs-built_in">console</span>.info(<span class="hljs-string">'Database at '</span> + dbPath + <span class="hljs-string">' deleted.'</span>);
@@ -136,35 +136,35 @@ Object.keys(filterParam).forEach(function (key) {
     }
 
 
-    <span class="hljs-keyword">this</span>.disconnect = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disconnect</span><span class="hljs-params">(db)</span> </span>{
+    <span class="hljs-keyword">this</span>.disconnect = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disconnect</span>(<span class="hljs-params">db</span>) </span>{
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Disconnecting'</span>)
         <span class="hljs-keyword">var</span> d = q.defer();
         db.close(resolveDeferred(d));
-        <span class="hljs-keyword">return</span> d.promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> d.promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
             connection = <span class="hljs-literal">null</span>;
         });
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">connect</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">connect</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">var</span> d = q.defer();
         <span class="hljs-keyword">if</span> (connection !== <span class="hljs-literal">null</span>) {
             d.resolve(connection);
             <span class="hljs-keyword">return</span> d.promise;
         }
         orm.connect(<span class="hljs-string">'sqlite://'</span> + dbPath, resolveDeferred(d));
-        <span class="hljs-keyword">return</span> d.promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(db)</span> </span>{
+        <span class="hljs-keyword">return</span> d.promise.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">db</span>) </span>{
             connection = db;
             <span class="hljs-keyword">return</span> db;
         });
     }
 
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTables</span><span class="hljs-params">(db)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTables</span>(<span class="hljs-params">db</span>) </span>{
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'creating Tables'</span>);
         <span class="hljs-keyword">return</span> runSqlFile(db, path.join(__dirname, <span class="hljs-string">'tables.sql'</span>));
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runSqlFile</span><span class="hljs-params">(db, filePath)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runSqlFile</span>(<span class="hljs-params">db, filePath</span>) </span>{
         <span class="hljs-built_in">console</span>.log(filePath);
         <span class="hljs-keyword">var</span> sql = fs.readFileSync(filePath, { encoding: <span class="hljs-string">'utf8'</span> }),
             d = q.defer();
@@ -173,7 +173,7 @@ Object.keys(filterParam).forEach(function (key) {
     }
 
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defineModels</span><span class="hljs-params">(db)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defineModels</span>(<span class="hljs-params">db</span>) </span>{
 
         <span class="hljs-keyword">var</span> d = q.defer();
 
@@ -197,7 +197,7 @@ Object.keys(filterParam).forEach(function (key) {
         <span class="hljs-keyword">return</span> d.promise;
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getColumnMapping</span><span class="hljs-params">(additionalColumnMapping)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getColumnMapping</span>(<span class="hljs-params">additionalColumnMapping</span>) </span>{
         <span class="hljs-keyword">var</span> commonMap = {
             id: { type: <span class="hljs-string">'serial'</span>, key: <span class="hljs-literal">true</span>, mapsTo: <span class="hljs-string">'Id'</span> }
         };
@@ -210,53 +210,53 @@ Object.keys(filterParam).forEach(function (key) {
     }
 
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">one</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">one</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'one'</span>, args);
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'find'</span>, args);
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">all</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">all</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'all'</span>, args);
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'get'</span>, args);
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">count</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">count</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'count'</span>, args);
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exists</span><span class="hljs-params">(model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span>)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exists</span>(<span class="hljs-params">model<span class="hljs-comment">/*, arg1, arg2, ..., argN */</span></span>) </span>{
         <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
         <span class="hljs-keyword">return</span> deferFunc(model, <span class="hljs-string">'exists'</span>, args);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> wraps obj[funcName] function into promise and calls.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deferFunc</span><span class="hljs-params">(obj, funcName, argsArray)</span> </span>{
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> wraps obj[funcName] function into promise and calls.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deferFunc</span>(<span class="hljs-params">obj, funcName, argsArray</span>) </span>{
         <span class="hljs-keyword">var</span> d = q.defer();
         argsArray.push(resolveDeferred(d));
         obj[funcName].apply(obj, argsArray);
         <span class="hljs-keyword">return</span> d.promise;
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">promisifyModel</span><span class="hljs-params">(model)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">promisifyModel</span>(<span class="hljs-params">model</span>) </span>{
         promisifyFunc(model, <span class="hljs-string">'one'</span>);
         <span class="hljs-comment">//promisifyFunc(model, 'get');</span>
         <span class="hljs-comment">//promisifyFunc(model, 'all');</span>
         <span class="hljs-comment">//promisifyFunc(model, 'create');</span>
     }
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">promisifyFunc</span><span class="hljs-params">(obj, funcName)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">promisifyFunc</span>(<span class="hljs-params">obj, funcName</span>) </span>{
         <span class="hljs-keyword">var</span> original = {},
             originalFunc = obj[funcName];
         original[funcName] = obj[funcName];
-        obj[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        obj[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>),
                 d = q.defer();
             args.push(resolveDeferred(d));
@@ -267,8 +267,8 @@ Object.keys(filterParam).forEach(function (key) {
     }
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolveDeferred</span><span class="hljs-params">(deferred, resolveValue)</span> </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err, res)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolveDeferred</span>(<span class="hljs-params">deferred, resolveValue</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, res</span>) </span>{
         <span class="hljs-keyword">if</span> (err) {
             <span class="hljs-built_in">console</span>.error(err);
             deferred.reject(err);

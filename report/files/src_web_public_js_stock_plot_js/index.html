@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Plato - src/server/parsers/parse-investing.js</title>
+  <title>Plato - src/web/public/js/stock-plot.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -36,7 +36,7 @@
 
 <div class="jumbotron">
   <div class="container">
-    <h1>src/server/parsers/parse-investing.js</h1>
+    <h1>src/web/public/js/stock-plot.js</h1>
   </div>
 </div>
 
@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">61.99</p>
+      <p class="stat">65.82</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">97</p>
+      <p class="stat">139</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">19.54</p>
+      <p class="stat">16.84</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.09</p>
+      <p class="stat">1.63</p>
     </div>
   </div>
 </div>
@@ -89,147 +89,145 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">/* 
-## GETTING PARSED DATA
+    <textarea id="file-source" class="col-md-12">function init_plot(){
+    var margin = {top: 20, right: 50, bottom: 30, left: 50},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
 
-Function request investing.com economic calendar and parse the responce. Parsed events then sends to the sendto_db function
+    var parseDate = d3.time.format(&quot;%d-%b-%y&quot;).parse;
 
-### LANGUAGE
-To change language you need to chang URL in options variable
+    var x = techan.scale.financetime()
+            .range([0, width]);
 
-### FILTER
-Filter on investing.com looks like this:
-```javascript
-form:{
-	  	dateFrom: &#039;2015-03-25&#039;,
-	    dateTo: &#039;2015-03-25&#039;,
-	    timeZone: 18,
-	    quotes_search_text: &#039;&#039;,
-	    country: [],
-	    importance: [1,2,3]
-	    category: [...]
-	    timeFilter:  &#039;timeRemain&#039;,
-	    timeFrame: &#039;tomorrow&#039;
-	  }
-```
+    var y = d3.scale.linear()
+            .range([height, 0]);
 
-If it&#039;ll be needed you can modify code below so that it contained more fields from filter.
-In get all values(for fields with arrays) without filtering, just set the field to the empty array []
+    var candlestick = techan.plot.candlestick()
+            .xScale(x)
+            .yScale(y);
 
-### RESPONSE
-Responce event looks like this:
-```javascript
-{ id: &#039;55378&#039;,
-  time: &#039;2015-03-27 19:30:00&#039;,
-  country: &#039;Канада&#039;,
-  currency: &#039;CAD&#039;,
-  importance: &#039;bull2&#039;,
-  descriptrion: &#039;Количество чистых спекулятивных позиций по CAD от CFTC&#039;,
-  actual: &#039;-32,7K&#039;,
-  forecast: &#039; &#039;,
-  previous: &#039;-32,8K&#039; 
-  }
-```
+    var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient(&quot;bottom&quot;);
 
-*/
+    var xTopAxis = d3.svg.axis()
+            .scale(x)
+            .orient(&quot;top&quot;);
 
-var request = require(&#039;request&#039;),
-	cheerio = require(&#039;cheerio&#039;),
-	moment = require(&#039;moment&#039;),
-	q = require(&#039;q&#039;),
-	rek = require(&#039;rekuire&#039;),
-	logger = rek(&#039;winstonlog&#039;);
+    var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient(&quot;left&quot;);
 
-function parseWithSplitting(lang, fromDate, toDate){
-	logger.info(&#039;enter parseWithSplitting&#039;);
-	var prevDate = moment(fromDate),
-		endDate = moment(toDate),
-		stepTime = {month:1},
-		curDate = moment(fromDate).add(stepTime);
-	var promises = [ ];
+    var yRightAxis = d3.svg.axis()
+            .scale(y)
+            .orient(&quot;right&quot;);
 
-	while (curDate&lt;endDate){
-		promises.push(parseInvesting(lang, prevDate.format(&#039;YYYY-MM-DD&#039;), curDate.format(&#039;YYYY-MM-DD&#039;)));
-		prevDate.add(stepTime);
-		curDate.add(stepTime);
-	}
-	promises.push(parseInvesting(lang, prevDate.format(&#039;YYYY-MM-DD&#039;), endDate.format(&#039;YYYY-MM-DD&#039;)));
+    var ohlcAnnotation = techan.plot.axisannotation()
+            .axis(yAxis)
+            .format(d3.format(&#039;,.2fs&#039;));
 
-	var allPromise = q.defer();
-	q.all(promises).then(function(results){
-			var merged = [];
-			merged = merged.concat.apply(merged, results);
-			allPromise.resolve(merged);
-	}, function(result, error){
-		allPromise.reject();	
-	})
-	return allPromise.promise;
-}	
+    var ohlcRightAnnotation = techan.plot.axisannotation()
+            .axis(yRightAxis)
+            .translate([width, 0]);
 
-function parseInvesting(lang, fromDate, toDate){ 
-	var langUrl = {
-		&#039;en&#039;: &#039;www&#039;,
-		&#039;ru&#039; : &#039;ru&#039;
-	};
-	var d = q.defer();
+    var timeAnnotation = techan.plot.axisannotation()
+            .axis(xAxis)
+            .format(d3.time.format(&#039;%Y-%m-%d&#039;))
+            .width(65)
+            .translate([0, height]);
 
-	logger.info(&quot;entered parseInvesting&quot;);
-	var options = {
-		url: &#039;http://&#039;+langUrl[lang]+&#039;.investing.com/economic-calendar/filter&#039;,
-		headers: {
-			&#039;User-Agent&#039;: &#039;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36&#039;,
-			&#039;X-Requested-With&#039;: &#039;XMLHttpRequest&#039;
-		},
-		form:{
-			dateFrom: fromDate,
-			dateTo: toDate,
-			quotes_search_text: &#039;&#039;,
-			timeZone:55 // must be in form to get response without errors. cant be equal to 0. i dont know why. just is.	    
-		},
-	};
+    var timeTopAnnotation = techan.plot.axisannotation()
+            .axis(xTopAxis);
 
-	function callback(error, response, body) {
-		logger.info(&quot;entered callback&quot;);
-		if (!error &amp;&amp; response.statusCode == 200) {
-			var allEvents = [];
-			var json = JSON.parse(body);
-			if (json[&#039;renderedFilteredEvents&#039;] != null){
-				var $ = cheerio.load(json[&#039;renderedFilteredEvents&#039;]);
+    var crosshair = techan.plot.crosshair()
+            .xScale(x)
+            .yScale(y)
+            .xAnnotation([timeAnnotation, timeTopAnnotation])
+            .yAnnotation([ohlcAnnotation, ohlcRightAnnotation])
+            .on(&quot;enter&quot;, enter)
+            .on(&quot;out&quot;, out)
+            .on(&quot;move&quot;, move);
 
-				$(&#039;tr[event_attr_id]&#039;).each(function() {
-					var cols = $(this).find(&#039;td&#039;)
-					var econ_event = {
-						eventId: $(this).attr(&#039;id&#039;).replace(&#039;eventRowId_&#039;,&#039;&#039;),
-						time: $(this).attr(&#039;event_timestamp&#039;),
-						country: $(cols[&#039;1&#039;]).find(&#039;span&#039;).attr(&#039;title&#039;),
-						currency: $(cols[&#039;1&#039;]).text().trim(),
-						importance: $(cols[&#039;2&#039;]).attr(&#039;data-img_key&#039;),
-				        description: $(cols[&#039;3&#039;]).text().trim(),
-				        actual: $(cols[&#039;4&#039;]).text(),
-				        forecast: $(cols[&#039;5&#039;]).text(),
-				        previous: $(cols[&#039;6&#039;]).text()
-					}
-					allEvents.push(econ_event);			
-				})
-			}
-			d.resolve(allEvents);
-		} else{
-			 //console.log(&#039;Error&#039; + response.statusCode);
-			// TODO: raise exception. console.log(response.statusCod)
-			d.reject();
-			logger.error(error);
-		}
-		
-	}
-	logger.info(&quot;about to send request&quot;);
-	
-	request.post(options, callback);
+    var svg = d3.select(&quot;#plot-container&quot;).append(&quot;svg&quot;)
+            .attr(&quot;width&quot;, width + margin.left + margin.right)
+            .attr(&quot;height&quot;, height + margin.top + margin.bottom)
+            .append(&quot;g&quot;)
+            .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
 
-	return d.promise;
+    var coordsText = svg.append(&#039;text&#039;)
+            .style(&quot;text-anchor&quot;, &quot;end&quot;)
+            .attr(&quot;class&quot;, &quot;coords&quot;)
+            .attr(&quot;x&quot;, width - 5)
+            .attr(&quot;y&quot;, 15);
+
+    d3.csv(&quot;js/data.csv&quot;, function(error, data) {
+        var accessor = candlestick.accessor();
+
+        data = data.slice(0, 200).map(function(d) {
+            return {
+                date: parseDate(d.Date),
+                open: +d.Open,
+                high: +d.High,
+                low: +d.Low,
+                close: +d.Close,
+                volume: +d.Volume
+            };
+        }).sort(function(a, b) { return d3.ascending(accessor.d(a), accessor.d(b)); });
+
+        x.domain(data.map(accessor.d));
+        y.domain(techan.scale.plot.ohlc(data, accessor).domain());
+
+        svg.append(&quot;g&quot;)
+                .datum(data)
+                .attr(&quot;class&quot;, &quot;candlestick&quot;)
+                .call(candlestick);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;x axis&quot;)
+                .call(xTopAxis);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;x axis&quot;)
+                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+                .call(xAxis);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;y axis&quot;)
+                .call(yAxis);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;y axis&quot;)
+                .attr(&quot;transform&quot;, &quot;translate(&quot; + width + &quot;,0)&quot;)
+                .call(yRightAxis);
+
+        svg.append(&#039;g&#039;)
+                .attr(&quot;class&quot;, &quot;crosshair&quot;)
+                .call(crosshair);
+
+        svg.append(&#039;text&#039;)
+                .attr(&quot;x&quot;, 5)
+                .attr(&quot;y&quot;, 15)
+                .text(&quot;Facebook, Inc. (FB)&quot;);
+    });
+
+    function enter() {
+        coordsText.style(&quot;display&quot;, &quot;inline&quot;);
+    }
+
+    function out() {
+        coordsText.style(&quot;display&quot;, &quot;none&quot;);
+    }
+
+    function move(coords) {
+        coordsText.text(
+            timeAnnotation.format()(coords[0]) + &quot;, &quot; + ohlcAnnotation.format()(coords[1])
+        );
+    }
 }
 
-module.exports.parseInvesting = parseInvesting;
-module.exports.parseWithSplitting = parseWithSplitting;</textarea>
+$(function(){
+    init_plot();
+})</textarea>
   </div>
 </div>
 

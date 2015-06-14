@@ -11,8 +11,8 @@
 
 <span class="hljs-comment">//chai.use(chaiAsPromised);</span>
 
-describe(<span class="hljs-string">'Parse Investing'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-  describe(<span class="hljs-string">'#parseWithSplitting'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+describe(<span class="hljs-string">'Parse Investing'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  describe(<span class="hljs-string">'#parseWithSplitting'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">this</span>.timeout(<span class="hljs-number">60000</span>);
 
     <span class="hljs-keyword">var</span> tests = [
@@ -20,16 +20,16 @@ describe(<span class="hljs-string">'Parse Investing'</span>, <span class="hljs-f
       {args: [<span class="hljs-string">'ru'</span>, <span class="hljs-string">'2014-01-01'</span>, <span class="hljs-string">'2015-01-01'</span>]}
     ];
 
-    tests.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(test)</span></span>{
-      it(<span class="hljs-string">'responds for filter: '</span>+test.args+<span class="hljs-string">' with correct events'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span></span>{
+    tests.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">test</span>)</span>{
+      it(<span class="hljs-string">'responds for filter: '</span>+test.args+<span class="hljs-string">' with correct events'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
         investing.parseWithSplitting(test.args[<span class="hljs-number">0</span>], test.args[<span class="hljs-number">1</span>], test.args[<span class="hljs-number">2</span>])
-          .then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(res)</span></span>{
-            res.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(it)</span></span>{
+          .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
+            res.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">it</span>)</span>{
               logger.info(it[<span class="hljs-string">'time'</span>]);
               moment(it[<span class="hljs-string">'time'</span>]).should.be.within(moment(test.args[<span class="hljs-number">1</span>]), moment(test.args[<span class="hljs-number">2</span>]).add(<span class="hljs-number">1</span>, <span class="hljs-string">'days'</span>));
             })
             done();
-        }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(res, err)</span></span>{
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res, err</span>)</span>{
           logger.error(err);
           done(err);
         })
@@ -39,7 +39,7 @@ describe(<span class="hljs-string">'Parse Investing'</span>, <span class="hljs-f
     
   })
 
-	describe(<span class="hljs-string">'#parseInvesting'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	describe(<span class="hljs-string">'#parseInvesting'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">this</span>.timeout(<span class="hljs-number">40000</span>);
 
 		<span class="hljs-keyword">var</span> tests = [
@@ -48,15 +48,15 @@ describe(<span class="hljs-string">'Parse Investing'</span>, <span class="hljs-f
       {args: [<span class="hljs-string">'en'</span>, <span class="hljs-string">'2015-03-26'</span>, <span class="hljs-string">'2015-04-26'</span>]}
 		];
 
-    tests.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(test)</span></span>{
-      it(<span class="hljs-string">'responds for filter: '</span>+test.args+<span class="hljs-string">' with correct events'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span></span>{
+    tests.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">test</span>)</span>{
+      it(<span class="hljs-string">'responds for filter: '</span>+test.args+<span class="hljs-string">' with correct events'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
         investing.parseInvesting(test.args[<span class="hljs-number">0</span>], test.args[<span class="hljs-number">1</span>], test.args[<span class="hljs-number">2</span>])
-          .then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(res)</span></span>{
-            res.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(it)</span></span>{
+          .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
+            res.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">it</span>)</span>{
               moment(it[<span class="hljs-string">'time'</span>]).should.be.within(moment(test.args[<span class="hljs-number">1</span>]), moment(test.args[<span class="hljs-number">2</span>]).add(<span class="hljs-number">1</span>, <span class="hljs-string">'days'</span>));
             })
             done();
-        }, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(res, err)</span></span>{
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res, err</span>)</span>{
           logger.error(err);
           done(err);
         })

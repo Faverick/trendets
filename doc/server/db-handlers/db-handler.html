@@ -2,50 +2,50 @@
 <span class="hljs-keyword">var</span> TrendetsDb = rek(<span class="hljs-string">'db'</span>);
 <span class="hljs-keyword">var</span> q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">DbHandler</span><span class="hljs-params">(dbPath)</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">DbHandler</span>(<span class="hljs-params">dbPath</span>)</span>{
 
 	<span class="hljs-keyword">var</span> db = <span class="hljs-keyword">new</span> TrendetsDb(dbPath);
 
-	<span class="hljs-keyword">this</span>.isHandlerReady = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{ 
+	<span class="hljs-keyword">this</span>.isHandlerReady = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ 
 		<span class="hljs-keyword">return</span> db.exists() ? <span class="hljs-string">'ok'</span> : db.create();
 	}
 
-	<span class="hljs-keyword">this</span>.insertEventsToDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertEventsToDb</span><span class="hljs-params">(events)</span></span>{
+	<span class="hljs-keyword">this</span>.insertEventsToDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertEventsToDb</span>(<span class="hljs-params">events</span>)</span>{
 
 		<span class="hljs-keyword">return</span> db.connect()
-			.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{				
+			.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{				
 				<span class="hljs-keyword">return</span> db.insert(db.Events, events);
 			});
 		
 	}
 
-	<span class="hljs-keyword">this</span>.insertStocksToDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertStocksToDb</span><span class="hljs-params">(stocks)</span></span>{
+	<span class="hljs-keyword">this</span>.insertStocksToDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertStocksToDb</span>(<span class="hljs-params">stocks</span>)</span>{
 		
 	}
 
-	<span class="hljs-keyword">this</span>.extractEventsFromDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extractEventsFromDb</span><span class="hljs-params">(file_params)</span></span>{
+	<span class="hljs-keyword">this</span>.extractEventsFromDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extractEventsFromDb</span>(<span class="hljs-params">file_params</span>)</span>{
 
 	}
 
-	<span class="hljs-keyword">this</span>.extractStocksFromDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extractStocksFromDb</span><span class="hljs-params">(file_params)</span></span>{
+	<span class="hljs-keyword">this</span>.extractStocksFromDb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extractStocksFromDb</span>(<span class="hljs-params">file_params</span>)</span>{
 
 	}
 
-	<span class="hljs-keyword">this</span>.getEventsByFilter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEventsByFilter</span><span class="hljs-params">(filerParams)</span></span>{
+	<span class="hljs-keyword">this</span>.getEventsByFilter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEventsByFilter</span>(<span class="hljs-params">filerParams</span>)</span>{
 
 		<span class="hljs-keyword">return</span> db.connect()
-			.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">return</span> db.get(db.Events, filerParams);
-			}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span></span>{
+			}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
 				<span class="hljs-built_in">console</span>.error(err);
 			});
 	}
 
-	<span class="hljs-keyword">this</span>.removeEvents = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeEvents</span><span class="hljs-params">(events)</span></span>{
+	<span class="hljs-keyword">this</span>.removeEvents = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeEvents</span>(<span class="hljs-params">events</span>)</span>{
 		<span class="hljs-keyword">return</span> db.connect()
-			.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 				<span class="hljs-keyword">return</span> db.remove(db.Events, events);
-				}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span></span>{
+				}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
 				<span class="hljs-built_in">console</span>.error(err);
 			});
 	}

@@ -25,18 +25,18 @@
 
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downloadData</span><span class="hljs-params">()</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downloadData</span>(<span class="hljs-params"></span>)</span>{
 	<span class="hljs-keyword">return</span> preparation.downloadEvents(defaultParameters[<span class="hljs-string">'investing'</span>])
-		.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> preparation.downloadStocks(defaultParameters[<span class="hljs-string">'stocks'</span>]);
 		});
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uploadData</span><span class="hljs-params">()</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uploadData</span>(<span class="hljs-params"></span>)</span>{
 	<span class="hljs-keyword">return</span> preparation.getEventsByFilter(defaultParameters[<span class="hljs-string">'filter'</span>]);
 }
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeData</span><span class="hljs-params">()</span></span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeData</span>(<span class="hljs-params"></span>)</span>{
 	<span class="hljs-keyword">return</span> preparation.removeEventsByFilter(defaultParameters[<span class="hljs-string">'filter'</span>]);
 }
 

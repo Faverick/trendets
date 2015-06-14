@@ -5,49 +5,52 @@
 
 <span class="hljs-keyword">var</span> settings = rek(<span class="hljs-string">'settings'</span>),
     TrendetsDb = rek(<span class="hljs-string">'db'</span>),
-    logger = rek(<span class="hljs-string">'winstonlog'</span>);
+    logger = rek(<span class="hljs-string">'winstonlog'</span>),
+    DbHandler = rek(<span class="hljs-string">'db-handler'</span>);
 
 <span class="hljs-keyword">var</span> router = express.Router();
 
-router.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> </span>{
+router.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
     logger.info(<span class="hljs-string">'GET Router'</span>);
     res.send(<span class="hljs-string">'LOL'</span>);
 });
 router.use(express.static(path.join(settings.path, <span class="hljs-string">'/web/public'</span>)))
 
 addRestResource(<span class="hljs-string">'Stocks'</span>);
-addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> Adds REST resouce for db model with GET, POST handlers</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addRestResource</span><span class="hljs-params">(name)</span> </span>{
+addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> Adds REST resouce for db model with GET, POST handlers</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addRestResource</span>(<span class="hljs-params">name</span>) </span>{
 
     <span class="hljs-keyword">var</span> settings = {
         resource: name,
         model: name
     };
+
+    <span class="hljs-keyword">var</span> dbHandler = <span class="hljs-keyword">new</span> DbHandler();
+
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">'object'</span>) 
         settings = name; 
 
     router.route(<span class="hljs-string">'/'</span> + settings.resource)
-        .get(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> </span>{
+        .get(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
             <span class="hljs-keyword">new</span> TrendetsDb().connect()
-                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(db)</span> </span>{
+                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">db</span>) </span>{
                     <span class="hljs-keyword">return</span> db[settings.model].all()
                 })
                 .then(responseJson(res), responseError(res));
         })
-        .post(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> </span>{
-            <span class="hljs-keyword">new</span> TrendetsDb().connect()
-                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(db)</span> </span>{
-                    <span class="hljs-keyword">return</span> db[settings.model].create(req.body);
-                })
-                .then(responseJson(res), responseError(res));
+        .post(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+            <span class="hljs-keyword">return</span> dbHandler.getEventsByFilter(req.body)
+                .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">events</span>) </span>{
+                    res.json(events);
+                });
         });
 }
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseJson</span><span class="hljs-params">(resp)</span> </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseJson</span>(<span class="hljs-params">resp</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result</span>) </span>{
         resp.json(result);
     }
 }
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseError</span><span class="hljs-params">(resp)</span> </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseError</span>(<span class="hljs-params">resp</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
         <span class="hljs-keyword">if</span> (err &amp;&amp; (<span class="hljs-string">''</span> + err).indexOf(<span class="hljs-string">'SQLITE_CONSTRAINT: FOREIGN KEY constraint failed'</span>) !== -<span class="hljs-number">1</span>)
             err = <span class="hljs-string">'Cannot delete entry because it is referenced by other entries.'</span>;
         resp.status(<span class="hljs-number">500</span>).json({ error: <span class="hljs-string">'Serverside error: '</span> + err });

@@ -166,7 +166,44 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "parse-investing"
               },
               "depth": 3,
-              "outline": []
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "GETTING PARSED DATA",
+                    "slug": "getting-parsed-data"
+                  },
+                  "depth": 2,
+                  "children": [
+                    {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "LANGUAGE",
+                        "slug": "language"
+                      },
+                      "depth": 3
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "FILTER",
+                        "slug": "filter"
+                      },
+                      "depth": 3
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 3,
+                        "title": "RESPONSE",
+                        "slug": "response"
+                      },
+                      "depth": 3
+                    }
+                  ]
+                }
+              ]
             }, {
               "type": "file",
               "data": {
@@ -184,26 +221,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "targetPath": "server/parsers/parse-stocks",
                 "pageTitle": "server/parsers/parse-stocks",
                 "title": "parse-stocks"
-              },
-              "depth": 3,
-              "outline": []
-            }, {
-              "type": "file",
-              "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
-                "sourcePath": "/home/travis/build/Faverick/trendets/src/server/parsers/stock-parsers.js",
-                "projectPath": "src/server/parsers/stock-parsers.js",
-                "targetPath": "server/parsers/stock-parsers",
-                "pageTitle": "server/parsers/stock-parsers",
-                "title": "stock-parsers"
               },
               "depth": 3,
               "outline": []
@@ -392,6 +409,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "targetPath": "web/public/js/interaction",
                     "pageTitle": "web/public/js/interaction",
                     "title": "interaction"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".js"],
+                      "pygmentsLexer": "javascript",
+                      "multiLineComment": ["/*", "*", "*/"],
+                      "singleLineComment": ["//"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "JavaScript"
+                    },
+                    "sourcePath": "/home/travis/build/Faverick/trendets/src/web/public/js/stock-plot.js",
+                    "projectPath": "src/web/public/js/stock-plot.js",
+                    "targetPath": "web/public/js/stock-plot",
+                    "pageTitle": "web/public/js/stock-plot",
+                    "title": "stock-plot"
                   },
                   "depth": 4,
                   "outline": []

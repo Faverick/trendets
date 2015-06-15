@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">65.82</p>
+      <p class="stat">67.54</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">139</p>
+      <p class="stat">115</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">16.84</p>
+      <p class="stat">15.44</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.63</p>
+      <p class="stat">1.41</p>
     </div>
   </div>
 </div>
@@ -91,8 +91,8 @@
   <div class="row">
     <textarea id="file-source" class="col-md-12">function init_plot(){
     var margin = {top: 20, right: 50, bottom: 30, left: 50},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            width = $(&quot;body&quot;).width() - margin.left - margin.right,
+            height = $(&quot;body&quot;).height() - $(&quot;#optionsContainer&quot;).height() - margin.top - margin.bottom;
 
     var parseDate = d3.time.format(&quot;%d-%b-%y&quot;).parse;
 
@@ -110,25 +110,13 @@
             .scale(x)
             .orient(&quot;bottom&quot;);
 
-    var xTopAxis = d3.svg.axis()
-            .scale(x)
-            .orient(&quot;top&quot;);
-
     var yAxis = d3.svg.axis()
             .scale(y)
             .orient(&quot;left&quot;);
 
-    var yRightAxis = d3.svg.axis()
-            .scale(y)
-            .orient(&quot;right&quot;);
-
     var ohlcAnnotation = techan.plot.axisannotation()
             .axis(yAxis)
             .format(d3.format(&#039;,.2fs&#039;));
-
-    var ohlcRightAnnotation = techan.plot.axisannotation()
-            .axis(yRightAxis)
-            .translate([width, 0]);
 
     var timeAnnotation = techan.plot.axisannotation()
             .axis(xAxis)
@@ -136,19 +124,16 @@
             .width(65)
             .translate([0, height]);
 
-    var timeTopAnnotation = techan.plot.axisannotation()
-            .axis(xTopAxis);
-
     var crosshair = techan.plot.crosshair()
             .xScale(x)
             .yScale(y)
-            .xAnnotation([timeAnnotation, timeTopAnnotation])
-            .yAnnotation([ohlcAnnotation, ohlcRightAnnotation])
+            .xAnnotation([timeAnnotation])
+            .yAnnotation([ohlcAnnotation])
             .on(&quot;enter&quot;, enter)
             .on(&quot;out&quot;, out)
             .on(&quot;move&quot;, move);
 
-    var svg = d3.select(&quot;#plot-container&quot;).append(&quot;svg&quot;)
+    var svg = d3.select(&quot;#plotContainer&quot;).append(&quot;svg&quot;)
             .attr(&quot;width&quot;, width + margin.left + margin.right)
             .attr(&quot;height&quot;, height + margin.top + margin.bottom)
             .append(&quot;g&quot;)
@@ -184,21 +169,12 @@
 
         svg.append(&quot;g&quot;)
                 .attr(&quot;class&quot;, &quot;x axis&quot;)
-                .call(xTopAxis);
-
-        svg.append(&quot;g&quot;)
-                .attr(&quot;class&quot;, &quot;x axis&quot;)
                 .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
                 .call(xAxis);
 
         svg.append(&quot;g&quot;)
                 .attr(&quot;class&quot;, &quot;y axis&quot;)
                 .call(yAxis);
-
-        svg.append(&quot;g&quot;)
-                .attr(&quot;class&quot;, &quot;y axis&quot;)
-                .attr(&quot;transform&quot;, &quot;translate(&quot; + width + &quot;,0)&quot;)
-                .call(yRightAxis);
 
         svg.append(&#039;g&#039;)
                 .attr(&quot;class&quot;, &quot;crosshair&quot;)

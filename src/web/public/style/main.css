@@ -44,8 +44,9 @@ body {
 /*.filterWrapper{
 	width: 679px;
 }*/
-#filterWrapper{
-	position: relative;
+.filterWrapper{
+	position: absolute;
+	z-index: 100;
 }
 
 .countryOption{
@@ -97,6 +98,8 @@ input[type="text"] {
    height: 34px;
 }
 
+
 #plotContainer{
 	margin: 0px;
 }
+

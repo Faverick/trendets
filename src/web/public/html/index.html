@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/style/main.css">
-    <linl rel="stylesheet" href="/style/stock-plot.css">
+    <link rel="stylesheet" href="/style/stock-plot.css">
     <link rel="stylesheet" href="/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 </head>
 <body>
@@ -16,7 +16,7 @@
       <div ng-include="'/html/events-partial.html'"></div>
     </div> -->
 
-    <div class="filter-group"  ng-controller="FormController">
+    <div class="filter-group" id="optionsContainer" ng-controller="FormController">
       <div class="filterButtonLine" >
 
           <button type="button" class="btn btn-default filter-btn" ng-click="btnFilterClick()">
@@ -84,8 +84,7 @@
         </div>
     </div>
 
-    <div class="container" id="plot-container">
-  
+    <div class="container" id="plotContainer">
     </div>
 
     <script src="/bower_components/angular/angular.min.js"></script>

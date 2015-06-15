@@ -22,18 +22,16 @@
               Filter <span class="glyphicon glyphicon glyphicon-filter" aria-hidden="true"></span>
           </button>
 
-          <div class="dropdown">
+          <div class="dropdown" ng-model="selectedStock">
             <button class="btn btn-default filter-btn dropdown-toggle" type="button" id="stocksDropdownMenu" data-toggle="dropdown" aria-expanded="true">
               <!-- instead of dropdown should be one of the stocks. It should be binded with ng-model. -->
-              Dropdown
+              {{selectedStock}}
               <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="stocksDropdownMenu">
-              <!-- below should be used ng-repeat -->
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+            <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="stocksDropdownMenu">        
+              <li ng-repeat="stock in stocks" ng-click="$parent.selectedStock=stock.code" role="presentation">
+                <a role="menuitem" tabindex="-1" href="#">{{ stock.code }}</a>
+              </li>
             </ul>
           </div>
 
@@ -42,22 +40,12 @@
             <button type="button" class="btn btn-default">15</button>
             <button type="button" class="btn btn-default active">30</button>
             <button type="button" class="btn btn-default">1H</button>
+            <button type="button" class="btn btn-default">4H</button>
+            <button type="button" class="btn btn-default">1D</button>
+            <button type="button" class="btn btn-default">1W</button>
+            <button type="button" class="btn btn-default">1M</button>
 
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">&nbsp;
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><button type="button" class="btn btn-default">5</button></li>
-                <li><button type="button" class="btn btn-default">15</button></li>
-                <li><button type="button" class="btn btn-default">30</button></li>
-                <li><button type="button" class="btn btn-default">1H</button></li>
-                <li><button type="button" class="btn btn-default">4H</button></li>
-                <li><button type="button" class="btn btn-default">1D</button></li>
-                <li><button type="button" class="btn btn-default">1W</button></li>
-                <li><button type="button" class="btn btn-default">1M</button></li>
-              </ul>
-            </div>
+            
           </div>
 
           <div class="dropdown datetime">

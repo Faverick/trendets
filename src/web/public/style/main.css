@@ -1,7 +1,7 @@
 .filter-group {
-	width: 681px; 
+	width: 1081px; 
 	border:1px solid black;
-	margin-left: 25%;
+	margin-left: 10%;
 }
 
 .filterButtonLine {
@@ -92,3 +92,13 @@ input[type="text"] {
    width: 120px;
    height: 34px;
 }
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+/*.dropdown-menu {
+    width: 120px !important;
+}*/

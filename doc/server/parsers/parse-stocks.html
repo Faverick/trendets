@@ -1,5 +1,49 @@
-<!DOCTYPE html><html lang="en"><head><title>server/parsers/parse-stocks</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="server/parsers/parse-stocks"><meta name="groc-project-path" content="src/server/parsers/parse-stocks.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/server/parsers/parse-stocks.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStocks</span>(<span class="hljs-params">fromDate, toDate, sendToFunc</span>)</span>{
+<!DOCTYPE html><html lang="en"><head><title>server/parsers/parse-stocks</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="server/parsers/parse-stocks"><meta name="groc-project-path" content="src/server/parsers/parse-stocks.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/server/parsers/parse-stocks.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request'</span>),
+	cheerio = <span class="hljs-built_in">require</span>(<span class="hljs-string">'cheerio'</span>),
+	moment = <span class="hljs-built_in">require</span>(<span class="hljs-string">'moment'</span>),
+	q = <span class="hljs-built_in">require</span>(<span class="hljs-string">'q'</span>),
+	rek = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rekuire'</span>),
+	logger = rek(<span class="hljs-string">'winstonlog'</span>);
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStocks</span>(<span class="hljs-params">fromDate, toDate, sendToFunc</span>)</span>{
 	<span class="hljs-keyword">var</span> allStocks = [];
+	<span class="hljs-keyword">var</span> options = {
+		url: <span class="hljs-string">'http://195.128.78.52/EURUSD_011001_011201.csv?market=5&amp;code=EURUSD&amp;df=1&amp;mf=9&amp;yf=2001&amp;from=01.10.2001&amp;dt=1&amp;mt=11&amp;yt=2001&amp;to=01.12.2001&amp;p=2&amp;f=EURUSD_011001_011201&amp;e=.csv&amp;cn=EURUSD&amp;dtf=1&amp;tmf=1&amp;MSOR=1&amp;mstimever=0&amp;sep=3&amp;sep2=1&amp;datf=2&amp;at=1'</span>
+	};
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span>(<span class="hljs-params">error, response, body</span>) </span>{
+		logger.info(<span class="hljs-string">"entered callback"</span>);
+		<span class="hljs-keyword">if</span> (!error &amp;&amp; response.statusCode == <span class="hljs-number">200</span>) {
+			<span class="hljs-keyword">var</span> allEvents = [];
+			<span class="hljs-keyword">var</span> json = <span class="hljs-built_in">JSON</span>.parse(body);
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-number">123123</span>);
+			<span class="hljs-built_in">console</span>.log(json);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if (json[&#39;renderedFilteredEvents&#39;] != null){
+    var $ = cheerio.load(json[&#39;renderedFilteredEvents&#39;]);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>$(&#39;tr[event_attr_id]&#39;).each(function() {
+    var cols = $(this).find(&#39;td&#39;)
+    var econ_event = {
+        eventId: $(this).attr(&#39;id&#39;).replace(&#39;eventRowId_&#39;,&#39;&#39;),
+        time: $(this).attr(&#39;event_timestamp&#39;),
+        country: $(cols[&#39;1&#39;]).find(&#39;span&#39;).attr(&#39;title&#39;),
+        currency: $(cols[&#39;1&#39;]).text().trim(),
+        importance: $(cols[&#39;2&#39;]).attr(&#39;data-img_key&#39;),
+        description: $(cols[&#39;3&#39;]).text().trim(),
+        actual: $(cols[&#39;4&#39;]).text(),
+        forecast: $(cols[&#39;5&#39;]).text(),
+        previous: $(cols[&#39;6&#39;]).text()
+    }
+    allEvents.push(econ_event);            
+})</code></pre></div></div><div class="code"><div class="wrapper">			<span class="hljs-comment">// </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>d.resolve(allEvents);</p></div></div><div class="code"><div class="wrapper">		} <span class="hljs-keyword">else</span>{
+			 <span class="hljs-comment">//console.log('Error' + response.statusCode);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: raise exception. console.log(response.statusCod)
+d.reject();</p></div></div><div class="code"><div class="wrapper">			logger.error(error);
+			<span class="hljs-built_in">console</span>.log(error);
+		}
+		
+	}
+
+	logger.info(<span class="hljs-string">"about to send request"</span>);
+	request.get(options, callback);
+
 	<span class="hljs-keyword">return</span> allStocks;
 }
 

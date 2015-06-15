@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">45.80</p>
+      <p class="stat">41.77</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">139</p>
+      <p class="stat">239</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">26.25</p>
+      <p class="stat">22.73</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">3.00</p>
+      <p class="stat">5.47</p>
     </div>
   </div>
 </div>
@@ -106,6 +106,7 @@ app.filter(&#039;range&#039;, function() {
 
 app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResources&#039;, function($scope, dataResources){
 	$scope.filterFormVisibility = false;
+	$scope.selectedStock = &quot;EUR/USD&quot;;
 	$scope.formFilter = {
 		dateFrom:&#039;2014-04-09&#039;,
 		dateTo: &#039;2014-11-01&#039;,
@@ -134,6 +135,11 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 
     $scope.clearStopDate = function() {
         $scope.stop_date = null;
+    }
+
+    $scope.onStockClick = function(stockCode) {
+    	console.log(stockCode);
+    	$scope.selectedStock = stockCode;
     }
 
 	$scope.countries = [
@@ -225,7 +231,101 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 		{fullName: &quot;Zambia&quot;, currency: &quot;ZMK&quot;, checked: false},
 		{fullName: &quot;Zimbabwe&quot;, currency: &quot;ZWD&quot;, checked: false}
 	]
+
+	$scope.stocks = [
+		{code:&quot;AUD/CAD&quot;, id:&quot;181410&quot;},
+		{code:&quot;AUD/CHF&quot;, id:&quot;181411&quot;},
+		{code:&quot;AUD/DKK&quot;, id:&quot;181418&quot;},
+		{code:&quot;AUD/JPY&quot;, id:&quot;181408&quot;},
+		{code:&quot;AUD/NOK&quot;, id:&quot;181417&quot;},
+		{code:&quot;AUD/NZD&quot;, id:&quot;181409&quot;},
+		{code:&quot;AUD/SEK&quot;, id:&quot;181419&quot;},
+		{code:&quot;AUD/SGD&quot;, id:&quot;181416&quot;},
+		{code:&quot;AUD/USD&quot;, id:&quot;66699&quot;},
+		{code:&quot;CAD/CHF&quot;, id:&quot;181389&quot;},
+		{code:&quot;CAD/JPY&quot;, id:&quot;181390&quot;},
+		{code:&quot;CAD/USD&quot;, id:&quot;181455&quot;},
+		{code:&quot;CHF/DKK&quot;, id:&quot;181403&quot;},
+		{code:&quot;CHF/JPY&quot;, id:&quot;21084&quot;},
+		{code:&quot;CHF/SGD&quot;, id:&quot;181396&quot;},
+		{code:&quot;CHF/USD&quot;, id:&quot;181454&quot;},
+		{code:&quot;DKK/USD&quot;, id:&quot;181402&quot;},
+		{code:&quot;EUR/AUD&quot;, id:&quot;181414&quot;},
+		{code:&quot;EUR/BYR&quot;, id:&quot;176166&quot;},
+		{code:&quot;EUR/CAD&quot;, id:&quot;181413&quot;},
+		{code:&quot;EUR/CHF&quot;, id:&quot;106&quot;},
+		{code:&quot;EUR/CNY&quot;, id:&quot;83226&quot;},
+		{code:&quot;EUR/GBP&quot;, id:&quot;88&quot;},
+		{code:&quot;EUR/HKD&quot;, id:&quot;181407&quot;},
+		{code:&quot;EUR/HUF&quot;, id:&quot;181422&quot;},
+		{code:&quot;EUR/JPY&quot;, id:&quot;84&quot;},
+		{code:&quot;EUR/KZT&quot;, id:&quot;176172&quot;},
+		{code:&quot;EUR/LVL&quot;, id:&quot;176177&quot;},
+		{code:&quot;EUR/MDL&quot;, id:&quot;176179&quot;},
+		{code:&quot;EUR/NOK&quot;, id:&quot;181401&quot;},
+		{code:&quot;EUR/NZD&quot;, id:&quot;181415&quot;},
+		{code:&quot;EUR/RUB&quot;, id:&quot;66860&quot;},
+		{code:&quot;EUR/SEK&quot;, id:&quot;181406&quot;},
+		{code:&quot;EUR/SGD&quot;, id:&quot;181395&quot;},
+		{code:&quot;EUR/TJS&quot;, id:&quot;176174&quot;},
+		{code:&quot;EUR/UAH&quot;, id:&quot;176168&quot;},
+		{code:&quot;EUR/USD&quot;, id:&quot;83&quot;},
+		{code:&quot;EUR/UZS&quot;, id:&quot;176170&quot;},
+		{code:&quot;GBP/AUD&quot;, id:&quot;181412&quot;},
+		{code:&quot;GBP/CAD&quot;, id:&quot;181388&quot;},
+		{code:&quot;GBP/CHF&quot;, id:&quot;181387&quot;},
+		{code:&quot;GBP/JPY&quot;, id:&quot;181386&quot;},
+		{code:&quot;GBP/NOK&quot;, id:&quot;181400&quot;},
+		{code:&quot;GBP/SEK&quot;, id:&quot;181405&quot;},
+		{code:&quot;GBP/SGD&quot;, id:&quot;181394&quot;},
+		{code:&quot;GBP/USD&quot;, id:&quot;86&quot;},
+		{code:&quot;HKD/USD&quot;, id:&quot;181420&quot;},
+		{code:&quot;HUF/USD&quot;, id:&quot;181421&quot;},
+		{code:&quot;JPY/USD&quot;, id:&quot;181450&quot;},
+		{code:&quot;MXN/USD&quot;, id:&quot;181385&quot;},
+		{code:&quot;NOK/USD&quot;, id:&quot;181399&quot;},
+		{code:&quot;NZD/CAD&quot;, id:&quot;181392&quot;},
+		{code:&quot;NZD/JPY&quot;, id:&quot;181391&quot;},
+		{code:&quot;NZD/SGD&quot;, id:&quot;181398&quot;},
+		{code:&quot;NZD/USD&quot;, id:&quot;181425&quot;},
+		{code:&quot;PLN/USD&quot;, id:&quot;181423&quot;},
+		{code:&quot;RUB/EUR&quot;, id:&quot;176165&quot;},
+		{code:&quot;RUB/LVL&quot;, id:&quot;176176&quot;},
+		{code:&quot;RUB/USD&quot;, id:&quot;176164&quot;},
+		{code:&quot;SEK/USD&quot;, id:&quot;181404&quot;},
+		{code:&quot;SGD/JPY&quot;, id:&quot;181397&quot;},
+		{code:&quot;SGD/USD&quot;, id:&quot;181393&quot;},
+		{code:&quot;USD/BYR&quot;, id:&quot;176167&quot;},
+		{code:&quot;USD/CAD&quot;, id:&quot;66700&quot;},
+		{code:&quot;USD/CHF&quot;, id:&quot;85&quot;},
+		{code:&quot;USD/CNY&quot;, id:&quot;83225&quot;},
+		{code:&quot;USD/DEM&quot;, id:&quot;82&quot;},
+		{code:&quot;USD/DKK&quot;, id:&quot;398508&quot;},
+		{code:&quot;USD/HKD&quot;, id:&quot;398511&quot;},
+		{code:&quot;USD/HUF&quot;, id:&quot;398512&quot;},
+		{code:&quot;USD/IDR&quot;, id:&quot;182106&quot;},
+		{code:&quot;USD/INR&quot;, id:&quot;181873&quot;},
+		{code:&quot;USD/JPY&quot;, id:&quot;87&quot;},
+		{code:&quot;USD/KZT&quot;, id:&quot;176173&quot;},
+		{code:&quot;USD/LVL&quot;, id:&quot;176178&quot;},
+		{code:&quot;USD/MDL&quot;, id:&quot;176180&quot;},
+		{code:&quot;USD/MXN&quot;, id:&quot;398515&quot;},
+		{code:&quot;USD/NOK&quot;, id:&quot;398516&quot;},
+		{code:&quot;USD/PLN&quot;, id:&quot;398513&quot;},
+		{code:&quot;USD/RUB&quot;, id:&quot;901&quot;},
+		{code:&quot;USD/SEK&quot;, id:&quot;398509&quot;},
+		{code:&quot;USD/SGD&quot;, id:&quot;398510&quot;},
+		{code:&quot;USD/TJS&quot;, id:&quot;176175&quot;},
+		{code:&quot;USD/UAH&quot;, id:&quot;176169&quot;},
+		{code:&quot;USD/UZS&quot;, id:&quot;176171&quot;},
+		{code:&quot;USD/ZAR&quot;, id:&quot;398514&quot;},
+		{code:&quot;XAG/USD&quot;, id:&quot;181426&quot;},
+		{code:&quot;XAU/USD&quot;, id:&quot;181427&quot;},
+		{code:&quot;ZAR/USD&quot;, id:&quot;181424&quot;}
+	]
 }]);
+
+
 
 app.run();</textarea>
   </div>

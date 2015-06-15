@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">84.77</p>
+      <p class="stat">65.68</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">6</p>
+      <p class="stat">58</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">4.13</p>
+      <p class="stat">11.78</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.02</p>
+      <p class="stat">0.24</p>
     </div>
   </div>
 </div>
@@ -89,8 +89,60 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">function parseStocks(fromDate, toDate, sendToFunc){
+    <textarea id="file-source" class="col-md-12">var request = require(&#039;request&#039;),
+	cheerio = require(&#039;cheerio&#039;),
+	moment = require(&#039;moment&#039;),
+	q = require(&#039;q&#039;),
+	rek = require(&#039;rekuire&#039;),
+	logger = rek(&#039;winstonlog&#039;);
+
+
+function parseStocks(fromDate, toDate, sendToFunc){
 	var allStocks = [];
+	var options = {
+		url: &#039;http://195.128.78.52/EURUSD_011001_011201.csv?market=5&amp;code=EURUSD&amp;df=1&amp;mf=9&amp;yf=2001&amp;from=01.10.2001&amp;dt=1&amp;mt=11&amp;yt=2001&amp;to=01.12.2001&amp;p=2&amp;f=EURUSD_011001_011201&amp;e=.csv&amp;cn=EURUSD&amp;dtf=1&amp;tmf=1&amp;MSOR=1&amp;mstimever=0&amp;sep=3&amp;sep2=1&amp;datf=2&amp;at=1&#039;
+	};
+
+	function callback(error, response, body) {
+		logger.info(&quot;entered callback&quot;);
+		if (!error &amp;&amp; response.statusCode == 200) {
+			var allEvents = [];
+			var json = JSON.parse(body);
+			console.log(123123);
+			console.log(json);
+			// if (json[&#039;renderedFilteredEvents&#039;] != null){
+			// 	var $ = cheerio.load(json[&#039;renderedFilteredEvents&#039;]);
+
+			// 	$(&#039;tr[event_attr_id]&#039;).each(function() {
+			// 		var cols = $(this).find(&#039;td&#039;)
+			// 		var econ_event = {
+			// 			eventId: $(this).attr(&#039;id&#039;).replace(&#039;eventRowId_&#039;,&#039;&#039;),
+			// 			time: $(this).attr(&#039;event_timestamp&#039;),
+			// 			country: $(cols[&#039;1&#039;]).find(&#039;span&#039;).attr(&#039;title&#039;),
+			// 			currency: $(cols[&#039;1&#039;]).text().trim(),
+			// 			importance: $(cols[&#039;2&#039;]).attr(&#039;data-img_key&#039;),
+			// 	        description: $(cols[&#039;3&#039;]).text().trim(),
+			// 	        actual: $(cols[&#039;4&#039;]).text(),
+			// 	        forecast: $(cols[&#039;5&#039;]).text(),
+			// 	        previous: $(cols[&#039;6&#039;]).text()
+			// 		}
+			// 		allEvents.push(econ_event);			
+			// 	})
+			// }
+			// d.resolve(allEvents);
+		} else{
+			 //console.log(&#039;Error&#039; + response.statusCode);
+			// TODO: raise exception. console.log(response.statusCod)
+			// d.reject();
+			logger.error(error);
+			console.log(error);
+		}
+		
+	}
+
+	logger.info(&quot;about to send request&quot;);
+	request.get(options, callback);
+
 	return allStocks;
 }
 

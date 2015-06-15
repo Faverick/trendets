@@ -15,6 +15,7 @@ app.filter(<span class="hljs-string">'range'</span>, <span class="hljs-function"
 
 app.controller(<span class="hljs-string">'FormController'</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">'dataResources'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$scope, dataResources</span>)</span>{
 	$scope.filterFormVisibility = <span class="hljs-literal">false</span>;
+	$scope.selectedStock = <span class="hljs-string">"EUR/USD"</span>;
 	$scope.formFilter = {
 		dateFrom:<span class="hljs-string">'2014-04-09'</span>,
 		dateTo: <span class="hljs-string">'2014-11-01'</span>,
@@ -43,6 +44,11 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 
     $scope.clearStopDate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         $scope.stop_date = <span class="hljs-literal">null</span>;
+    }
+
+    $scope.onStockClick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stockCode</span>) </span>{
+    	<span class="hljs-built_in">console</span>.log(stockCode);
+    	$scope.selectedStock = stockCode;
     }
 
 	$scope.countries = [
@@ -134,6 +140,100 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		{fullName: <span class="hljs-string">"Zambia"</span>, currency: <span class="hljs-string">"ZMK"</span>, checked: <span class="hljs-literal">false</span>},
 		{fullName: <span class="hljs-string">"Zimbabwe"</span>, currency: <span class="hljs-string">"ZWD"</span>, checked: <span class="hljs-literal">false</span>}
 	]
+
+	$scope.stocks = [
+		{code:<span class="hljs-string">"AUD/CAD"</span>, id:<span class="hljs-string">"181410"</span>},
+		{code:<span class="hljs-string">"AUD/CHF"</span>, id:<span class="hljs-string">"181411"</span>},
+		{code:<span class="hljs-string">"AUD/DKK"</span>, id:<span class="hljs-string">"181418"</span>},
+		{code:<span class="hljs-string">"AUD/JPY"</span>, id:<span class="hljs-string">"181408"</span>},
+		{code:<span class="hljs-string">"AUD/NOK"</span>, id:<span class="hljs-string">"181417"</span>},
+		{code:<span class="hljs-string">"AUD/NZD"</span>, id:<span class="hljs-string">"181409"</span>},
+		{code:<span class="hljs-string">"AUD/SEK"</span>, id:<span class="hljs-string">"181419"</span>},
+		{code:<span class="hljs-string">"AUD/SGD"</span>, id:<span class="hljs-string">"181416"</span>},
+		{code:<span class="hljs-string">"AUD/USD"</span>, id:<span class="hljs-string">"66699"</span>},
+		{code:<span class="hljs-string">"CAD/CHF"</span>, id:<span class="hljs-string">"181389"</span>},
+		{code:<span class="hljs-string">"CAD/JPY"</span>, id:<span class="hljs-string">"181390"</span>},
+		{code:<span class="hljs-string">"CAD/USD"</span>, id:<span class="hljs-string">"181455"</span>},
+		{code:<span class="hljs-string">"CHF/DKK"</span>, id:<span class="hljs-string">"181403"</span>},
+		{code:<span class="hljs-string">"CHF/JPY"</span>, id:<span class="hljs-string">"21084"</span>},
+		{code:<span class="hljs-string">"CHF/SGD"</span>, id:<span class="hljs-string">"181396"</span>},
+		{code:<span class="hljs-string">"CHF/USD"</span>, id:<span class="hljs-string">"181454"</span>},
+		{code:<span class="hljs-string">"DKK/USD"</span>, id:<span class="hljs-string">"181402"</span>},
+		{code:<span class="hljs-string">"EUR/AUD"</span>, id:<span class="hljs-string">"181414"</span>},
+		{code:<span class="hljs-string">"EUR/BYR"</span>, id:<span class="hljs-string">"176166"</span>},
+		{code:<span class="hljs-string">"EUR/CAD"</span>, id:<span class="hljs-string">"181413"</span>},
+		{code:<span class="hljs-string">"EUR/CHF"</span>, id:<span class="hljs-string">"106"</span>},
+		{code:<span class="hljs-string">"EUR/CNY"</span>, id:<span class="hljs-string">"83226"</span>},
+		{code:<span class="hljs-string">"EUR/GBP"</span>, id:<span class="hljs-string">"88"</span>},
+		{code:<span class="hljs-string">"EUR/HKD"</span>, id:<span class="hljs-string">"181407"</span>},
+		{code:<span class="hljs-string">"EUR/HUF"</span>, id:<span class="hljs-string">"181422"</span>},
+		{code:<span class="hljs-string">"EUR/JPY"</span>, id:<span class="hljs-string">"84"</span>},
+		{code:<span class="hljs-string">"EUR/KZT"</span>, id:<span class="hljs-string">"176172"</span>},
+		{code:<span class="hljs-string">"EUR/LVL"</span>, id:<span class="hljs-string">"176177"</span>},
+		{code:<span class="hljs-string">"EUR/MDL"</span>, id:<span class="hljs-string">"176179"</span>},
+		{code:<span class="hljs-string">"EUR/NOK"</span>, id:<span class="hljs-string">"181401"</span>},
+		{code:<span class="hljs-string">"EUR/NZD"</span>, id:<span class="hljs-string">"181415"</span>},
+		{code:<span class="hljs-string">"EUR/RUB"</span>, id:<span class="hljs-string">"66860"</span>},
+		{code:<span class="hljs-string">"EUR/SEK"</span>, id:<span class="hljs-string">"181406"</span>},
+		{code:<span class="hljs-string">"EUR/SGD"</span>, id:<span class="hljs-string">"181395"</span>},
+		{code:<span class="hljs-string">"EUR/TJS"</span>, id:<span class="hljs-string">"176174"</span>},
+		{code:<span class="hljs-string">"EUR/UAH"</span>, id:<span class="hljs-string">"176168"</span>},
+		{code:<span class="hljs-string">"EUR/USD"</span>, id:<span class="hljs-string">"83"</span>},
+		{code:<span class="hljs-string">"EUR/UZS"</span>, id:<span class="hljs-string">"176170"</span>},
+		{code:<span class="hljs-string">"GBP/AUD"</span>, id:<span class="hljs-string">"181412"</span>},
+		{code:<span class="hljs-string">"GBP/CAD"</span>, id:<span class="hljs-string">"181388"</span>},
+		{code:<span class="hljs-string">"GBP/CHF"</span>, id:<span class="hljs-string">"181387"</span>},
+		{code:<span class="hljs-string">"GBP/JPY"</span>, id:<span class="hljs-string">"181386"</span>},
+		{code:<span class="hljs-string">"GBP/NOK"</span>, id:<span class="hljs-string">"181400"</span>},
+		{code:<span class="hljs-string">"GBP/SEK"</span>, id:<span class="hljs-string">"181405"</span>},
+		{code:<span class="hljs-string">"GBP/SGD"</span>, id:<span class="hljs-string">"181394"</span>},
+		{code:<span class="hljs-string">"GBP/USD"</span>, id:<span class="hljs-string">"86"</span>},
+		{code:<span class="hljs-string">"HKD/USD"</span>, id:<span class="hljs-string">"181420"</span>},
+		{code:<span class="hljs-string">"HUF/USD"</span>, id:<span class="hljs-string">"181421"</span>},
+		{code:<span class="hljs-string">"JPY/USD"</span>, id:<span class="hljs-string">"181450"</span>},
+		{code:<span class="hljs-string">"MXN/USD"</span>, id:<span class="hljs-string">"181385"</span>},
+		{code:<span class="hljs-string">"NOK/USD"</span>, id:<span class="hljs-string">"181399"</span>},
+		{code:<span class="hljs-string">"NZD/CAD"</span>, id:<span class="hljs-string">"181392"</span>},
+		{code:<span class="hljs-string">"NZD/JPY"</span>, id:<span class="hljs-string">"181391"</span>},
+		{code:<span class="hljs-string">"NZD/SGD"</span>, id:<span class="hljs-string">"181398"</span>},
+		{code:<span class="hljs-string">"NZD/USD"</span>, id:<span class="hljs-string">"181425"</span>},
+		{code:<span class="hljs-string">"PLN/USD"</span>, id:<span class="hljs-string">"181423"</span>},
+		{code:<span class="hljs-string">"RUB/EUR"</span>, id:<span class="hljs-string">"176165"</span>},
+		{code:<span class="hljs-string">"RUB/LVL"</span>, id:<span class="hljs-string">"176176"</span>},
+		{code:<span class="hljs-string">"RUB/USD"</span>, id:<span class="hljs-string">"176164"</span>},
+		{code:<span class="hljs-string">"SEK/USD"</span>, id:<span class="hljs-string">"181404"</span>},
+		{code:<span class="hljs-string">"SGD/JPY"</span>, id:<span class="hljs-string">"181397"</span>},
+		{code:<span class="hljs-string">"SGD/USD"</span>, id:<span class="hljs-string">"181393"</span>},
+		{code:<span class="hljs-string">"USD/BYR"</span>, id:<span class="hljs-string">"176167"</span>},
+		{code:<span class="hljs-string">"USD/CAD"</span>, id:<span class="hljs-string">"66700"</span>},
+		{code:<span class="hljs-string">"USD/CHF"</span>, id:<span class="hljs-string">"85"</span>},
+		{code:<span class="hljs-string">"USD/CNY"</span>, id:<span class="hljs-string">"83225"</span>},
+		{code:<span class="hljs-string">"USD/DEM"</span>, id:<span class="hljs-string">"82"</span>},
+		{code:<span class="hljs-string">"USD/DKK"</span>, id:<span class="hljs-string">"398508"</span>},
+		{code:<span class="hljs-string">"USD/HKD"</span>, id:<span class="hljs-string">"398511"</span>},
+		{code:<span class="hljs-string">"USD/HUF"</span>, id:<span class="hljs-string">"398512"</span>},
+		{code:<span class="hljs-string">"USD/IDR"</span>, id:<span class="hljs-string">"182106"</span>},
+		{code:<span class="hljs-string">"USD/INR"</span>, id:<span class="hljs-string">"181873"</span>},
+		{code:<span class="hljs-string">"USD/JPY"</span>, id:<span class="hljs-string">"87"</span>},
+		{code:<span class="hljs-string">"USD/KZT"</span>, id:<span class="hljs-string">"176173"</span>},
+		{code:<span class="hljs-string">"USD/LVL"</span>, id:<span class="hljs-string">"176178"</span>},
+		{code:<span class="hljs-string">"USD/MDL"</span>, id:<span class="hljs-string">"176180"</span>},
+		{code:<span class="hljs-string">"USD/MXN"</span>, id:<span class="hljs-string">"398515"</span>},
+		{code:<span class="hljs-string">"USD/NOK"</span>, id:<span class="hljs-string">"398516"</span>},
+		{code:<span class="hljs-string">"USD/PLN"</span>, id:<span class="hljs-string">"398513"</span>},
+		{code:<span class="hljs-string">"USD/RUB"</span>, id:<span class="hljs-string">"901"</span>},
+		{code:<span class="hljs-string">"USD/SEK"</span>, id:<span class="hljs-string">"398509"</span>},
+		{code:<span class="hljs-string">"USD/SGD"</span>, id:<span class="hljs-string">"398510"</span>},
+		{code:<span class="hljs-string">"USD/TJS"</span>, id:<span class="hljs-string">"176175"</span>},
+		{code:<span class="hljs-string">"USD/UAH"</span>, id:<span class="hljs-string">"176169"</span>},
+		{code:<span class="hljs-string">"USD/UZS"</span>, id:<span class="hljs-string">"176171"</span>},
+		{code:<span class="hljs-string">"USD/ZAR"</span>, id:<span class="hljs-string">"398514"</span>},
+		{code:<span class="hljs-string">"XAG/USD"</span>, id:<span class="hljs-string">"181426"</span>},
+		{code:<span class="hljs-string">"XAU/USD"</span>, id:<span class="hljs-string">"181427"</span>},
+		{code:<span class="hljs-string">"ZAR/USD"</span>, id:<span class="hljs-string">"181424"</span>}
+	]
 }]);
+
+
 
 app.run();</div></div></div></div></body></html>

@@ -412,6 +412,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   },
                   "depth": 4,
                   "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".js"],
+                      "pygmentsLexer": "javascript",
+                      "multiLineComment": ["/*", "*", "*/"],
+                      "singleLineComment": ["//"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "JavaScript"
+                    },
+                    "sourcePath": "/home/travis/build/Faverick/trendets/src/web/public/js/stock-plot.js",
+                    "projectPath": "src/web/public/js/stock-plot.js",
+                    "targetPath": "web/public/js/stock-plot",
+                    "pageTitle": "web/public/js/stock-plot",
+                    "title": "stock-plot"
+                  },
+                  "depth": 4,
+                  "outline": []
                 }
               ]
             }

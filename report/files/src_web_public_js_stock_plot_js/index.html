@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - src/web/public/js/stock-plot.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/web/public/js/stock-plot.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">67.54</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">115</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">15.44</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.41</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">function init_plot(){
+    var margin = {top: 20, right: 50, bottom: 30, left: 50},
+            width = $(&quot;body&quot;).width() - margin.left - margin.right,
+            height = $(&quot;body&quot;).height() - $(&quot;#optionsContainer&quot;).height() - margin.top - margin.bottom;
+
+    var parseDate = d3.time.format(&quot;%d-%b-%y&quot;).parse;
+
+    var x = techan.scale.financetime()
+            .range([0, width]);
+
+    var y = d3.scale.linear()
+            .range([height, 0]);
+
+    var candlestick = techan.plot.candlestick()
+            .xScale(x)
+            .yScale(y);
+
+    var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient(&quot;bottom&quot;);
+
+    var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient(&quot;left&quot;);
+
+    var ohlcAnnotation = techan.plot.axisannotation()
+            .axis(yAxis)
+            .format(d3.format(&#039;,.2fs&#039;));
+
+    var timeAnnotation = techan.plot.axisannotation()
+            .axis(xAxis)
+            .format(d3.time.format(&#039;%Y-%m-%d&#039;))
+            .width(65)
+            .translate([0, height]);
+
+    var crosshair = techan.plot.crosshair()
+            .xScale(x)
+            .yScale(y)
+            .xAnnotation([timeAnnotation])
+            .yAnnotation([ohlcAnnotation])
+            .on(&quot;enter&quot;, enter)
+            .on(&quot;out&quot;, out)
+            .on(&quot;move&quot;, move);
+
+    var svg = d3.select(&quot;#plotContainer&quot;).append(&quot;svg&quot;)
+            .attr(&quot;width&quot;, width + margin.left + margin.right)
+            .attr(&quot;height&quot;, height + margin.top + margin.bottom)
+            .append(&quot;g&quot;)
+            .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
+
+    var coordsText = svg.append(&#039;text&#039;)
+            .style(&quot;text-anchor&quot;, &quot;end&quot;)
+            .attr(&quot;class&quot;, &quot;coords&quot;)
+            .attr(&quot;x&quot;, width - 5)
+            .attr(&quot;y&quot;, 15);
+
+    d3.csv(&quot;js/data.csv&quot;, function(error, data) {
+        var accessor = candlestick.accessor();
+
+        data = data.slice(0, 200).map(function(d) {
+            return {
+                date: parseDate(d.Date),
+                open: +d.Open,
+                high: +d.High,
+                low: +d.Low,
+                close: +d.Close,
+                volume: +d.Volume
+            };
+        }).sort(function(a, b) { return d3.ascending(accessor.d(a), accessor.d(b)); });
+
+        x.domain(data.map(accessor.d));
+        y.domain(techan.scale.plot.ohlc(data, accessor).domain());
+
+        svg.append(&quot;g&quot;)
+                .datum(data)
+                .attr(&quot;class&quot;, &quot;candlestick&quot;)
+                .call(candlestick);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;x axis&quot;)
+                .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+                .call(xAxis);
+
+        svg.append(&quot;g&quot;)
+                .attr(&quot;class&quot;, &quot;y axis&quot;)
+                .call(yAxis);
+
+        svg.append(&#039;g&#039;)
+                .attr(&quot;class&quot;, &quot;crosshair&quot;)
+                .call(crosshair);
+
+        svg.append(&#039;text&#039;)
+                .attr(&quot;x&quot;, 5)
+                .attr(&quot;y&quot;, 15)
+                .text(&quot;Facebook, Inc. (FB)&quot;);
+    });
+
+    function enter() {
+        coordsText.style(&quot;display&quot;, &quot;inline&quot;);
+    }
+
+    function out() {
+        coordsText.style(&quot;display&quot;, &quot;none&quot;);
+    }
+
+    function move(coords) {
+        coordsText.text(
+            timeAnnotation.format()(coords[0]) + &quot;, &quot; + ohlcAnnotation.format()(coords[1])
+        );
+    }
+}
+
+$(function(){
+    init_plot();
+})</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

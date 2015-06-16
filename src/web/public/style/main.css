@@ -44,8 +44,9 @@
 /*.filterWrapper{
 	width: 679px;
 }*/
-#filterWrapper{
-	position: relative;
+.filterWrapper{
+	position: absolute;
+	z-index: 100;
 }
 
 .countryOption{
@@ -112,10 +113,13 @@ label {
     font-weight: bold;
 }
 
-body{
-    overflow:hidden;
-}
+
 
 /*.dropdown-menu {
     width: 120px !important;
 }*/
+
+#plotContainer{
+	margin: 0px;
+	padding: 0px;
+}

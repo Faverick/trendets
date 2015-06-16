@@ -1,7 +1,7 @@
 function init_plot(){
     var margin = {top: 20, right: 50, bottom: 30, left: 50},
-            width = $("body").width() - margin.left - margin.right,
-            height = $("body").height() - $("#optionsContainer").height() - margin.top - margin.bottom;
+            width = $("body").width() - margin.left - margin.right - 10,
+            height = $("body").height() - $("#optionsContainer").height() - margin.top - margin.bottom - 10;
 
     var parseDate = d3.time.format("%d-%b-%y").parse;
 

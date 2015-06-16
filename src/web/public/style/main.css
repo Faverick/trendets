@@ -1,11 +1,7 @@
-body {
-    overflow-x:hidden;
-}
-
 .filter-group {
-	width: 681px; 
+	width: 1120px; 
 	border:1px solid black;
-	margin-left: 25%;
+	margin-left: 10%;
 }
 
 .filterButtonLine {
@@ -23,6 +19,10 @@ body {
 .dropdown-menu {
 	min-width: auto;
 	/*text-align: center;*/
+}
+
+.datetime-dropdown{
+    margin-top: 18px;
 }
 
 .btn-group > .btn-group {
@@ -44,9 +44,8 @@ body {
 /*.filterWrapper{
 	width: 679px;
 }*/
-.filterWrapper{
-	position: absolute;
-	z-index: 100;
+#filterWrapper{
+	position: relative;
 }
 
 .countryOption{
@@ -58,7 +57,7 @@ body {
 }
 
 .filterBox .right {
-    width: 568px;
+    width: 987px;
 }
 
 .FilterBox .left {
@@ -83,6 +82,7 @@ div.clear { clear: both; display: block; }
 
 .datetime {
     margin: 8px 0px 0px 10px;
+    height: 21px;
 }
 
 .cross-icon {
@@ -98,8 +98,20 @@ input[type="text"] {
    height: 34px;
 }
 
-
-#plotContainer{
-	margin: 0px;
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
 }
 
+label {
+    font-weight: normal;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/*.dropdown-menu {
+    width: 120px !important;
+}*/

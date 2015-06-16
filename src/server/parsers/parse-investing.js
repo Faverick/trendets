@@ -50,7 +50,7 @@ var request = require('request'),
 	logger = rek('winstonlog');
 
 function parseWithSplitting(lang, fromDate, toDate){
-	logger.info('enter parseWithSplitting');
+	logger.info('enter parseWithSplitting-Investing');
 	var prevDate = moment(fromDate),
 		endDate = moment(toDate),
 		stepTime = {month:1},

@@ -1,4 +1,3 @@
-
 var app = angular.module('TrendetsApp', ['ng', 'ngRoute', 'ngResource', 'ngAnimate', 'TrendetsApp.Interaction',
 											'ui.bootstrap.datetimepicker']);
 

@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/style/main.css">
+    <link rel="stylesheet" href="/style/stock-plot.css">
     <link rel="stylesheet" href="/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 </head>
 <body>
@@ -15,7 +16,7 @@
       <div ng-include="'/html/events-partial.html'"></div>
     </div> -->
 
-    <div class="filter-group"  ng-controller="FormController">
+    <div class="filter-group" id="optionsContainer" ng-controller="FormController">
       <div class="filterButtonLine" >
 
         <button type="button" class="btn btn-default filter-btn" ng-click="btnFilterClick()">
@@ -85,6 +86,9 @@
         </div>
     </div>
 
+    <div class="container" id="plotContainer">
+    </div>
+
     <script src="/bower_components/angular/angular.min.js"></script>
     <script src="/bower_components/angular-route/angular-route.min.js"></script>
     <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
@@ -93,7 +97,10 @@
     <script src="/bower_components/moment/moment.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script src="/bower_components/d3/d3.js"></script>
+    <script src="/bower_components/TechanJS/dist/techan.js"></script>
     <script src="/js/interaction.js"></script>
     <script src="/js/index.js"></script>
+    <script src="/js/stock-plot.js"></script>
 </body>
 </html>

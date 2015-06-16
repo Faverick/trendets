@@ -5,30 +5,51 @@
         </div>
         <div id="filterBoxCountry" class="filterBox">
             <div class="left float_lang_base_1">
-              <p class="arial_14 bold">Country:</p>
+              <p class="bold">Country:</p>
               <a href="javascript:void(0);" id="selectAllCountry" onclick="selectAll('country[]');">Select All</a><br>
               <a href="javascript:void(0);" id="clearAllCountry" onclick="clearAll('country[]');">Clear</a>
             </div>
-            <div class="right float_lang_base_2">
+            <div class="right float_lang_base_1">
                 <ul class="countryOption">
-                    <li ng-repeat="country in countries | range:0:29">
-                        <input type="checkbox" ng-model="country.checked">
+                    <li ng-repeat="country in countries | range:0:15">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
-                        <label>{{country.fullName}}</label></li>
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
                     </li>                
                 </ul>
                 <ul class="countryOption">
-                    <li ng-repeat="country in countries | range:29:58">
-                        <input type="checkbox" ng-model="country.checked">
+                    <li ng-repeat="country in countries | range:15:30">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
-                        <label>{{country.fullName}}</label></li>
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
                     </li>                
                 </ul>
                 <ul class="countryOption">
-                    <li ng-repeat="country in countries | range:58:87">
-                        <input type="checkbox" ng-model="country.checked">
+                    <li ng-repeat="country in countries | range:30:45">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
                         <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
-                        <label>{{country.fullName}}</label></li>
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
+                    </li>                
+                </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:45:60">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
+                    </li>                
+                </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:60:75">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
+                    </li>                
+                </ul>
+                <ul class="countryOption">
+                    <li ng-repeat="country in countries | range:75:87">
+                        <input type="checkbox" id="countryCheckbox{{$id}}" ng-model="country.checked">
+                        <!-- <span class="ceFlags Argentina">&nbsp;</span> -->
+                        <label for="countryCheckbox{{$id}}">{{country.fullName}}</label>
                     </li>                
                 </ul>
             </div>
@@ -40,25 +61,51 @@
               <a href="javascript:void(0);" id="selectAllCategory" onclick="selectAll('category[]');">Select All</a><br>
               <a href="javascript:void(0);" id="clearAllCategory" onclick="clearAll('category[]');">Clear</a>
             </div>
-            <div class="right float_lang_base_2">
-            <ul>
-                            
-                <li class="firstRow"><input id="category_employment" name="category[]" type="checkbox" value="_employment"><label for="category_employment">Employment</label></li>
-                                
-                <li class="firstRow"><input id="category_economicActivity" name="category[]" type="checkbox" value="_economicActivity"><label for="category_economicActivity">Economic Activity</label></li>
-                                
-                <li class="firstRow"><input id="category_inflation" name="category[]" type="checkbox" value="_inflation"><label for="category_inflation">Inflation</label></li>
-                                
-                <li class="clear"><input id="category_credit" name="category[]" type="checkbox" value="_credit"><label for="category_credit">Credit</label></li>
-                                
-                <li class=""><input id="category_centralBanks" name="category[]" type="checkbox" value="_centralBanks"><label for="category_centralBanks">Central Banks</label></li>
-                                
-                <li class=""><input id="category_confidenceIndex" name="category[]" type="checkbox" value="_confidenceIndex"><label for="category_confidenceIndex">Confidence Index</label></li>
-                                
-                <li class="clear"><input id="category_balance" name="category[]" type="checkbox" value="_balance"><label for="category_balance">Balance</label></li>
-                                
-                <li class=""><input id="category_Bonds" name="category[]" type="checkbox" value="_Bonds"><label for="category_Bonds">Bonds</label></li>
-                            </ul>
+            <div class="right float_lang_base_1">
+                <ul class="countryOption">           
+                    <li>
+                        <input id="category_employment" type="checkbox">
+                        <label for="category_employment">Employment</label>
+                    </li>
+                                    
+                    <li>
+                        <input id="category_economicActivity" type="checkbox">
+                        <label for="category_economicActivity">Economic Activity</label>
+                    </li>
+                </ul>   
+                <ul class="countryOption">              
+                    <li>
+                        <input id="category_inflation" type="checkbox">
+                        <label for="category_inflation">Inflation</label>
+                    </li>
+                                    
+                    <li>
+                        <input id="category_credit" type="checkbox">
+                        <label for="category_credit">Credit</label>
+                    </li>
+                </ul>   
+                <ul class="countryOption">                
+                    <li>
+                        <input id="category_centralBanks" type="checkbox">
+                        <label for="category_centralBanks">Central Banks</label>
+                    </li>
+                                    
+                    <li>
+                        <input id="category_confidenceIndex" type="checkbox">
+                        <label for="category_confidenceIndex">Confidence Index</label>
+                    </li>
+                </ul>   
+                <ul class="countryOption">                    
+                    <li>
+                        <input id="category_balance"type="checkbox">
+                        <label for="category_balance">Balance</label>
+                    </li>
+                                    
+                    <li>
+                        <input id="category_Bonds" type="checkbox">
+                        <label for="category_Bonds">Bonds</label>
+                    </li>
+                </ul>
             </div>
             <div class="clear"></div>
         </div>
@@ -69,9 +116,16 @@
             </div>
             <div class="right float_lang_base_2">
             <ul>
-                <li class="firstRow"><input type="checkbox" id="importance1" name="importance[]" value="1"><label><i class="grayFullBullishIcon"></i><i class="whiteEmptyBullishIcon"></i><i class="whiteEmptyBullishIcon"></i></label></li>
-                <li class="firstRow"><input type="checkbox" id="importance2" name="importance[]" value="2"><label><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i><i class="whiteEmptyBullishIcon"></i></label></li>
-                <li class="firstRow"><input type="checkbox" id="importance3" name="importance[]" value="3"><label><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i></label></li>
+                <li>
+                    <input type="checkbox" id="importance1" name="importance[]" value="1">
+                    <label>
+                        <i class="grayFullBullishIcon"></i>
+                        <i class="whiteEmptyBullishIcon"></i>
+                        <i class="whiteEmptyBullishIcon"></i>
+                    </label>
+                </li>
+                <li><input type="checkbox" id="importance2" name="importance[]" value="2"><label><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i><i class="whiteEmptyBullishIcon"></i></label></li>
+                <li><input type="checkbox" id="importance3" name="importance[]" value="3"><label><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i><i class="grayFullBullishIcon"></i></label></li>
             </ul>
             </div>
             <div class="clear"></div>

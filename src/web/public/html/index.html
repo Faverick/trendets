@@ -18,50 +18,64 @@
     <div class="filter-group"  ng-controller="FormController">
       <div class="filterButtonLine" >
 
-          <button type="button" class="btn btn-default filter-btn" ng-click="btnFilterClick()">
-              Filter <span class="glyphicon glyphicon glyphicon-filter" aria-hidden="true"></span>
+        <button type="button" class="btn btn-default filter-btn" ng-click="btnFilterClick()">
+            Filter <span class="glyphicon glyphicon glyphicon-filter" aria-hidden="true"></span>
+        </button>
+
+        <div class="dropdown" ng-model="selectedStock">
+          <button class="btn btn-default filter-btn dropdown-toggle" type="button" id="stocksDropdownMenu" data-toggle="dropdown" aria-expanded="true">
+            {{selectedStock}}
+            <span class="caret"></span>
           </button>
+          <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="stocksDropdownMenu">        
+            <li ng-repeat="stock in stocks" ng-click="$parent.selectedStock=stock.code" role="presentation">
+              <a role="menuitem" tabindex="-1" href="#">{{ stock.code }}</a>
+            </li>
+          </ul>
+        </div>
 
-          <div class="dropdown" ng-model="selectedStock">
-            <button class="btn btn-default filter-btn dropdown-toggle" type="button" id="stocksDropdownMenu" data-toggle="dropdown" aria-expanded="true">
-              <!-- instead of dropdown should be one of the stocks. It should be binded with ng-model. -->
-              {{selectedStock}}
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="stocksDropdownMenu">        
-              <li ng-repeat="stock in stocks" ng-click="$parent.selectedStock=stock.code" role="presentation">
-                <a role="menuitem" tabindex="-1" href="#">{{ stock.code }}</a>
-              </li>
-            </ul>
-          </div>
+        <div class="btn-group timeFrame-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" id="timeFrame5" ng-click="onTimeFrameButtonClick('timeFrame5')">5</button>
+          <button type="button" class="btn btn-default" id="timeFrame15" ng-click="onTimeFrameButtonClick('timeFrame15')">15</button>
+          <button type="button" class="btn btn-default" id="timeFrame30" ng-click="onTimeFrameButtonClick('timeFrame30')">30</button>
+          <button type="button" class="btn btn-default" id="timeFrame1H" ng-click="onTimeFrameButtonClick('timeFrame1H')">1H</button>
+          <button type="button" class="btn btn-default" id="timeFrame4H" ng-click="onTimeFrameButtonClick('timeFrame4H')">4H</button>
+          <button type="button" class="btn btn-default" id="timeFrame1D" ng-click="onTimeFrameButtonClick('timeFrame1D')">1D</button>
+          <button type="button" class="btn btn-default" id="timeFrame1W" ng-click="onTimeFrameButtonClick('timeFrame1W')">1W</button>
+          <button type="button" class="btn btn-default" id="timeFrame1M" ng-click="onTimeFrameButtonClick('timeFrame1M')">1M</button>  
+        </div>
 
-          <div class="btn-group timeFrame-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">5</button>
-            <button type="button" class="btn btn-default">15</button>
-            <button type="button" class="btn btn-default active">30</button>
-            <button type="button" class="btn btn-default">1H</button>
-            <button type="button" class="btn btn-default">4H</button>
-            <button type="button" class="btn btn-default">1D</button>
-            <button type="button" class="btn btn-default">1W</button>
-            <button type="button" class="btn btn-default">1M</button>
+        <div class="dropdown datetime">
+          <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
+            <div class="input-append">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="From" value="{{ start_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                <div class="cross-icon">
+                  <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
+                </div>
+              </div>
+            </div>
+          </span>
+          <ul class="dropdown-menu datetime-dropdown" role="menu" aria-labelledby="dLabel1">
+            <datetimepicker data-ng-model="start_date"
+            data-datetimepicker-config="{ startView:'day', minView:'day', dropdownSelector: '#dLabel1' }"></datetimepicker>
+          </ul>
+        </div>
 
-            
-          </div>
-
-          <div class="dropdown datetime">
-            <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
+        <div class="dropdown datetime">
+            <span class="dropdown-toggle" id="dLabel2" role="button" data-toggle="dropdown" data-target="#">
               <div class="input-append">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="From" value="{{ start_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                  <input type="text" class="form-control" placeholder="To" value="{{ stop_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
                   <div class="cross-icon">
-                    <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
+                    <i class=" glyphicon glyphicon-remove" ng-show="stop_date" ng-click ="clearStopDate()" stop-event></i>
                   </div>
                 </div>
               </div>
             </span>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel1">
-              <datetimepicker data-ng-model="start_date"
-              data-datetimepicker-config="{ startView:'day', minView:'day', dropdownSelector: '#dLabel1' }"></datetimepicker>
+            <ul class="dropdown-menu datetime-dropdown" role="menu" aria-labelledby="dLabel2">
+              <datetimepicker data-ng-model="stop_date"
+              data-datetimepicker-config="{ startView:'day', minView:'day', dropdownSelector: '#dLabel2' }"></datetimepicker>
             </ul>
           </div>
         </div>

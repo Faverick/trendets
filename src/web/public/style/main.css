@@ -1,5 +1,5 @@
 .filter-group {
-	width: 1081px; 
+	width: 1120px; 
 	border:1px solid black;
 	margin-left: 10%;
 }
@@ -19,6 +19,10 @@
 .dropdown-menu {
 	min-width: auto;
 	/*text-align: center;*/
+}
+
+.datetime-dropdown{
+    margin-top: 18px;
 }
 
 .btn-group > .btn-group {
@@ -53,7 +57,7 @@
 }
 
 .filterBox .right {
-    width: 568px;
+    width: 987px;
 }
 
 .FilterBox .left {
@@ -78,6 +82,7 @@ div.clear { clear: both; display: block; }
 
 .datetime {
     margin: 8px 0px 0px 10px;
+    height: 21px;
 }
 
 .cross-icon {
@@ -97,6 +102,14 @@ input[type="text"] {
     height: auto;
     max-height: 200px;
     overflow-x: hidden;
+}
+
+label {
+    font-weight: normal;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 /*.dropdown-menu {

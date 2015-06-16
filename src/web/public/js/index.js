@@ -17,6 +17,7 @@ app.filter('range', function() {
 app.controller('FormController', ["$scope", 'dataResources', function($scope, dataResources){
 	$scope.filterFormVisibility = false;
 	$scope.selectedStock = "EUR/USD";
+	$scope.selectedTimeFrame = "timeFrame1H";
 	$scope.formFilter = {
 		dateFrom:'2014-04-09',
 		dateTo: '2014-11-01',
@@ -24,6 +25,7 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		importance: ["bull1"],
 		descriptionText: ""
 	}
+	$("#" + $scope.selectedTimeFrame).addClass('active');
 
 	$scope.btnFilterClick = function() {
 		if($scope.filterFormVisibility == true)
@@ -34,13 +36,10 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 
 	$scope.submitForm = function() {
 		dataResources.submit($scope.formFilter);
-		console.log($scope.countries[0].checked);
-		console.log($scope.countries[1].checked);
 	}
 
 	$scope.clearStartDate = function() {
         $scope.start_date = null;
-        return false;
     }
 
     $scope.clearStopDate = function() {
@@ -48,8 +47,13 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
     }
 
     $scope.onStockClick = function(stockCode) {
-    	console.log(stockCode);
     	$scope.selectedStock = stockCode;
+    }
+
+    $scope.onTimeFrameButtonClick = function(timeFrame) {
+    	$("#" + $scope.selectedTimeFrame).removeClass('active');
+    	$scope.selectedTimeFrame = timeFrame;
+    	$("#" + $scope.selectedTimeFrame).addClass('active');
     }
 
 	$scope.countries = [

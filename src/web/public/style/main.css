@@ -112,6 +112,10 @@ label {
     font-weight: bold;
 }
 
+body{
+    overflow:hidden;
+}
+
 /*.dropdown-menu {
     width: 120px !important;
 }*/

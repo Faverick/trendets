@@ -16,6 +16,7 @@ app.filter(<span class="hljs-string">'range'</span>, <span class="hljs-function"
 app.controller(<span class="hljs-string">'FormController'</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">'dataResources'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$scope, dataResources</span>)</span>{
 	$scope.filterFormVisibility = <span class="hljs-literal">false</span>;
 	$scope.selectedStock = <span class="hljs-string">"EUR/USD"</span>;
+	$scope.selectedTimeFrame = <span class="hljs-string">"timeFrame1H"</span>;
 	$scope.formFilter = {
 		dateFrom:<span class="hljs-string">'2014-04-09'</span>,
 		dateTo: <span class="hljs-string">'2014-11-01'</span>,
@@ -23,6 +24,7 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		importance: [<span class="hljs-string">"bull1"</span>],
 		descriptionText: <span class="hljs-string">""</span>
 	}
+	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).addClass(<span class="hljs-string">'active'</span>);
 
 	$scope.btnFilterClick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">if</span>($scope.filterFormVisibility == <span class="hljs-literal">true</span>)
@@ -33,13 +35,10 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 
 	$scope.submitForm = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 		dataResources.submit($scope.formFilter);
-		<span class="hljs-built_in">console</span>.log($scope.countries[<span class="hljs-number">0</span>].checked);
-		<span class="hljs-built_in">console</span>.log($scope.countries[<span class="hljs-number">1</span>].checked);
 	}
 
 	$scope.clearStartDate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         $scope.start_date = <span class="hljs-literal">null</span>;
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 
     $scope.clearStopDate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
@@ -47,8 +46,13 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
     }
 
     $scope.onStockClick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stockCode</span>) </span>{
-    	<span class="hljs-built_in">console</span>.log(stockCode);
     	$scope.selectedStock = stockCode;
+    }
+
+    $scope.onTimeFrameButtonClick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">timeFrame</span>) </span>{
+    	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).removeClass(<span class="hljs-string">'active'</span>);
+    	$scope.selectedTimeFrame = timeFrame;
+    	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).addClass(<span class="hljs-string">'active'</span>);
     }
 
 	$scope.countries = [

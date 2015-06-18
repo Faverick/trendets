@@ -4,6 +4,10 @@
 	margin-left: 10%;
 }
 
+html, body {
+    min-height: 100%;
+}
+
 .filterButtonLine {
 	display: inline-block;
 	/*margin-left: 20%;*/

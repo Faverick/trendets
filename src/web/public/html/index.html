@@ -81,6 +81,10 @@
           </div>
         </div>
 
+        <button type="button" class="btn btn-default filter-btn" ng-click="submitForm()">
+              Submit
+        </button> 
+
         <div class="filterWrapper" ng-model="filterForm" ng-show="filterFormVisibility">
           <div ng-include="'/html/form-partial.html'"></div>
         </div>

@@ -20,7 +20,7 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 	$scope.formFilter = {
 		dateFrom:'2014-04-09',
 		dateTo: '2014-11-01',
-		country: [],
+		country: ["Italy"],
 		importance: ["bull1"],
 		descriptionText: ""
 	}
@@ -34,7 +34,10 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 	}
 
 	$scope.submitForm = function() {
-		dataResources.submit($scope.formFilter);
+		var url = {
+			url : formRequest()
+		};
+		dataResources.submit($scope.formFilter, url);
 	}
 
 	$scope.clearStartDate = function() {
@@ -54,6 +57,130 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
     	$scope.selectedTimeFrame = timeFrame;
     	$("#" + $scope.selectedTimeFrame).addClass('active');
     }
+
+	function formRequest()
+	{
+		var request = 'http://195.128.78.52/';
+		var stockString = $scope.selectedStock.replace('/','');
+		request = request.concat(stockString+'_');
+		//TODO: check if dates from and to are correct
+
+		// form the name of the file
+		var startDate = moment($scope.start_date);
+		var year = startDate.year();
+		request = request.concat(year % 100);
+		request = request.concat(("0" + (startDate.month() + 1)).slice(-2));
+		request = request.concat(("0" + startDate.date()).slice(-2) + '_');
+
+		var stopDate = moment($scope.stop_date);
+		var year = stopDate.year();
+		request = request.concat(year % 100);
+		request = request.concat(("0" + (stopDate.month() + 1)).slice(-2));
+		request = request.concat(("0" + stopDate.date()).slice(-2)  + '.csv?');
+
+		//concat market id
+		request = request.concat('market=5');
+
+		//concat stock id
+		var stockId = getStockIdByCode($scope.selectedStock);
+		request = request.concat('&em=' + stockId);
+
+		//concat the code of stock
+		request = request.concat('&code=' + stockString);
+
+		//concat date of start date
+		request = request.concat('&df=' + startDate.date());
+
+		//concat month of start date
+		request = request.concat('&mf=' + startDate.month());
+
+		//concat year of start date
+		request = request.concat('&yf=' + startDate.year());
+
+		//concat start date
+		request = request.concat('&from=' + ("0" + startDate.date()).slice(-2) + '.' + ("0" + (startDate.month() + 1)).slice(-2) + 
+			'.' + startDate.year());
+
+		//concat date of stop date
+		request = request.concat('&dt=' + stopDate.date());
+
+		//concat month of stop date
+		request = request.concat('&mt=' + stopDate.month());
+
+		//concat year of stop date
+		request = request.concat('&yt=' + stopDate.year());
+
+		//concat stop date
+		request = request.concat('&to=' + ("0" + stopDate.date()).slice(-2) + '.' + ("0" + (stopDate.month() + 1)).slice(-2) + 
+			'.' + stopDate.year());
+
+		//concat timeFrame
+		request = request.concat('&p=' + timeFrameDictionary[$scope.selectedTimeFrame]);
+
+		//concat filename
+		request = request.concat('&f='+stockString+'_');
+		var startDate = moment($scope.start_date);
+		var year = startDate.year();
+		request = request.concat(year % 100);
+		request = request.concat(("0" + (startDate.month() + 1)).slice(-2));
+		request = request.concat(("0" + startDate.date()).slice(-2) + '_');
+
+		var stopDate = moment($scope.stop_date);
+		var year = stopDate.year();
+		request = request.concat(year % 100);
+		request = request.concat(("0" + (stopDate.month() + 1)).slice(-2));
+		request = request.concat(("0" + stopDate.date()).slice(-2));
+
+		//concat file format
+		request = request.concat('&e=.csv');
+		
+		//concat stock pair
+		request = request.concat('&cn=' + stockString);
+
+		//concat date format
+		request = request.concat('&dtf=1');
+
+		//concat time format
+		request = request.concat('&tmf=2');
+
+		//concat parameters of time to be give
+		request = request.concat('&MSOR=1&mstimever=0');
+
+		//concat the separator (";")
+		request = request.concat('&sep=3&sep2=1');
+
+		//concat format of file representative
+		request = request.concat('&datf=1');
+
+		//concat the presence of header
+		request = request.concat('&at=1');
+
+		console.log(request);
+		return request;
+	}
+
+	function getStockIdByCode(stockCode)
+	{
+		var stockId = null;
+		$scope.stocks.forEach(function (stock)
+		{
+			if (stock['code'] === stockCode) {
+				stockId = stock['id'];
+			}
+		});
+
+		return stockId;
+	}
+
+	var timeFrameDictionary = {
+		"timeFrame5": 3,
+		"timeFrame15": 5,
+		"timeFrame30": 6,
+		"timeFrame1H": 7,
+		"timeFrame1D": 8,
+		"timeFrame1W": 9,
+		"timeFrame1M": 10
+	}
 
 	$scope.countries = [
 		{fullName: "Argentina", currency: "ARS", checked: false},

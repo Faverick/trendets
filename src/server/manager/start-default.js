@@ -43,11 +43,6 @@ function removeData(){
 }
 
 
-function downloadStocks(){
-	return preparation.downloadStocks(defaultParameters['investing']);
-}
-
 module.exports.downloadData = downloadData;
 module.exports.uploadData = uploadData;
 module.exports.removeData = removeData;
-module.exports.downloadStocks = downloadStocks;

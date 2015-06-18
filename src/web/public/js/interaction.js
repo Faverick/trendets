@@ -3,10 +3,15 @@ angular.module('TrendetsApp.Interaction', [])
     var events = {};
     var stocks = {};
 
-    var submit = function(form){
+    var submit = function(form, urlToRequest){
       $http.post('/api/events', form).
         success(function(data) {
           events = data;
+        });
+
+      $http.post('/api/stocks', urlToRequest).
+        success(function(data) {
+          stocks = data;
         });
     };
 

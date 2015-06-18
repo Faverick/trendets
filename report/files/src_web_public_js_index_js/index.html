@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">42.50</p>
+      <p class="stat">43.80</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">243</p>
+      <p class="stat">370</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">24.18</p>
+      <p class="stat">31.12</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">5.54</p>
+      <p class="stat">7.51</p>
     </div>
   </div>
 </div>
@@ -111,7 +111,7 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 	$scope.formFilter = {
 		dateFrom:&#039;2014-04-09&#039;,
 		dateTo: &#039;2014-11-01&#039;,
-		country: [],
+		country: [&quot;Italy&quot;],
 		importance: [&quot;bull1&quot;],
 		descriptionText: &quot;&quot;
 	}
@@ -125,7 +125,10 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 	}
 
 	$scope.submitForm = function() {
-		dataResources.submit($scope.formFilter);
+		var url = {
+			url : formRequest()
+		};
+		dataResources.submit($scope.formFilter, url);
 	}
 
 	$scope.clearStartDate = function() {
@@ -145,6 +148,130 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
     	$scope.selectedTimeFrame = timeFrame;
     	$(&quot;#&quot; + $scope.selectedTimeFrame).addClass(&#039;active&#039;);
     }
+
+	function formRequest()
+	{
+		var request = &#039;http://195.128.78.52/&#039;;
+		var stockString = $scope.selectedStock.replace(&#039;/&#039;,&#039;&#039;);
+		request = request.concat(stockString+&#039;_&#039;);
+		//TODO: check if dates from and to are correct
+
+		// form the name of the file
+		var startDate = moment($scope.start_date);
+		var year = startDate.year();
+		request = request.concat(year % 100);
+		request = request.concat((&quot;0&quot; + (startDate.month() + 1)).slice(-2));
+		request = request.concat((&quot;0&quot; + startDate.date()).slice(-2) + &#039;_&#039;);
+
+		var stopDate = moment($scope.stop_date);
+		var year = stopDate.year();
+		request = request.concat(year % 100);
+		request = request.concat((&quot;0&quot; + (stopDate.month() + 1)).slice(-2));
+		request = request.concat((&quot;0&quot; + stopDate.date()).slice(-2)  + &#039;.csv?&#039;);
+
+		//concat market id
+		request = request.concat(&#039;market=5&#039;);
+
+		//concat stock id
+		var stockId = getStockIdByCode($scope.selectedStock);
+		request = request.concat(&#039;&amp;em=&#039; + stockId);
+
+		//concat the code of stock
+		request = request.concat(&#039;&amp;code=&#039; + stockString);
+
+		//concat date of start date
+		request = request.concat(&#039;&amp;df=&#039; + startDate.date());
+
+		//concat month of start date
+		request = request.concat(&#039;&amp;mf=&#039; + startDate.month());
+
+		//concat year of start date
+		request = request.concat(&#039;&amp;yf=&#039; + startDate.year());
+
+		//concat start date
+		request = request.concat(&#039;&amp;from=&#039; + (&quot;0&quot; + startDate.date()).slice(-2) + &#039;.&#039; + (&quot;0&quot; + (startDate.month() + 1)).slice(-2) + 
+			&#039;.&#039; + startDate.year());
+
+		//concat date of stop date
+		request = request.concat(&#039;&amp;dt=&#039; + stopDate.date());
+
+		//concat month of stop date
+		request = request.concat(&#039;&amp;mt=&#039; + stopDate.month());
+
+		//concat year of stop date
+		request = request.concat(&#039;&amp;yt=&#039; + stopDate.year());
+
+		//concat stop date
+		request = request.concat(&#039;&amp;to=&#039; + (&quot;0&quot; + stopDate.date()).slice(-2) + &#039;.&#039; + (&quot;0&quot; + (stopDate.month() + 1)).slice(-2) + 
+			&#039;.&#039; + stopDate.year());
+
+		//concat timeFrame
+		request = request.concat(&#039;&amp;p=&#039; + timeFrameDictionary[$scope.selectedTimeFrame]);
+
+		//concat filename
+		request = request.concat(&#039;&amp;f=&#039;+stockString+&#039;_&#039;);
+		var startDate = moment($scope.start_date);
+		var year = startDate.year();
+		request = request.concat(year % 100);
+		request = request.concat((&quot;0&quot; + (startDate.month() + 1)).slice(-2));
+		request = request.concat((&quot;0&quot; + startDate.date()).slice(-2) + &#039;_&#039;);
+
+		var stopDate = moment($scope.stop_date);
+		var year = stopDate.year();
+		request = request.concat(year % 100);
+		request = request.concat((&quot;0&quot; + (stopDate.month() + 1)).slice(-2));
+		request = request.concat((&quot;0&quot; + stopDate.date()).slice(-2));
+
+		//concat file format
+		request = request.concat(&#039;&amp;e=.csv&#039;);
+		
+		//concat stock pair
+		request = request.concat(&#039;&amp;cn=&#039; + stockString);
+
+		//concat date format
+		request = request.concat(&#039;&amp;dtf=1&#039;);
+
+		//concat time format
+		request = request.concat(&#039;&amp;tmf=2&#039;);
+
+		//concat parameters of time to be give
+		request = request.concat(&#039;&amp;MSOR=1&amp;mstimever=0&#039;);
+
+		//concat the separator (&quot;;&quot;)
+		request = request.concat(&#039;&amp;sep=3&amp;sep2=1&#039;);
+
+		//concat format of file representative
+		request = request.concat(&#039;&amp;datf=1&#039;);
+
+		//concat the presence of header
+		request = request.concat(&#039;&amp;at=1&#039;);
+
+		console.log(request);
+		return request;
+	}
+
+	function getStockIdByCode(stockCode)
+	{
+		var stockId = null;
+		$scope.stocks.forEach(function (stock)
+		{
+			if (stock[&#039;code&#039;] === stockCode) {
+				stockId = stock[&#039;id&#039;];
+			}
+		});
+
+		return stockId;
+	}
+
+	var timeFrameDictionary = {
+		&quot;timeFrame5&quot;: 3,
+		&quot;timeFrame15&quot;: 5,
+		&quot;timeFrame30&quot;: 6,
+		&quot;timeFrame1H&quot;: 7,
+		&quot;timeFrame1D&quot;: 8,
+		&quot;timeFrame1W&quot;: 9,
+		&quot;timeFrame1M&quot;: 10
+	}
 
 	$scope.countries = [
 		{fullName: &quot;Argentina&quot;, currency: &quot;ARS&quot;, checked: false},

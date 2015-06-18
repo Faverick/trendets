@@ -1,7 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><title>server/routers/resource-router</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="server/routers/resource-router"><meta name="groc-project-path" content="src/server/routers/resource-router.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/server/routers/resource-router.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>),
     bodyParser = <span class="hljs-built_in">require</span>(<span class="hljs-string">'body-parser'</span>),
     rek = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rekuire'</span>),
-    path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+    path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>),
+    request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request'</span>);
 
 <span class="hljs-keyword">var</span> settings = rek(<span class="hljs-string">'settings'</span>),
     TrendetsDb = rek(<span class="hljs-string">'db'</span>),
@@ -16,8 +17,9 @@ router.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><sp
 });
 router.use(express.static(path.join(settings.path, <span class="hljs-string">'/web/public'</span>)))
 
-addRestResource(<span class="hljs-string">'Stocks'</span>);
-addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> Adds REST resouce for db model with GET, POST handlers</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addRestResource</span>(<span class="hljs-params">name</span>) </span>{
+<span class="hljs-comment">//addRestResource('Stocks');</span>
+addRestResource(<span class="hljs-string">'Events'</span>);
+addRestStocksResource();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> Adds REST resouce for db model with GET, POST handlers</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addRestResource</span>(<span class="hljs-params">name</span>) </span>{
 
     <span class="hljs-keyword">var</span> settings = {
         resource: name,
@@ -43,6 +45,48 @@ addRestResource(<span class="hljs-string">'Events'</span>);</div></div></div><di
                     res.json(events);
                 });
         });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addRestStocksResource</span>(<span class="hljs-params"></span>)
+</span>{
+    <span class="hljs-keyword">var</span> settings = {
+            resource: <span class="hljs-string">'Stocks'</span>,
+            model: <span class="hljs-string">'Stocks'</span>
+    };
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">'object'</span>) 
+        settings = name;
+
+    router.route(<span class="hljs-string">'/'</span> + settings.resource)
+        .post(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) </span>{
+            <span class="hljs-keyword">var</span> options = {
+                url: req.body[<span class="hljs-string">'url'</span>],
+                headers: {
+                    <span class="hljs-string">'Host'</span>: <span class="hljs-string">'195.128.78.52'</span>,
+                    <span class="hljs-string">'User-Agent'</span>: <span class="hljs-string">'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36'</span>,
+                    <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'</span>,
+                    <span class="hljs-string">'Accept-Language'</span>: <span class="hljs-string">'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3'</span>,
+                    <span class="hljs-string">'Accept-Encoding'</span>: <span class="hljs-string">'null'</span>,
+                    <span class="hljs-string">'Referer'</span>: <span class="hljs-string">'http://www.finam.ru/profile/forex/eur-usd/export/'</span>,
+                    <span class="hljs-string">'Connection'</span>: <span class="hljs-string">'keep-alive'</span>
+                }
+            };
+            logger.info(<span class="hljs-string">"about to send request for stocks"</span>);
+            request.get(options, callback);
+        });
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span>(<span class="hljs-params">error, response, body</span>) </span>{
+        logger.info(<span class="hljs-string">"entered callback"</span>);
+        <span class="hljs-keyword">if</span> (!error &amp;&amp; response.statusCode == <span class="hljs-number">200</span>) {
+            <span class="hljs-keyword">var</span> allEvents = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var json = JSON.parse(body);
+console.log(123123);
+console.log(json);</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-built_in">console</span>.log(body);
+        } <span class="hljs-keyword">else</span>{
+            logger.error(error);
+            <span class="hljs-built_in">console</span>.log(error);
+        }
+        
+    }
 }
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">responseJson</span>(<span class="hljs-params">resp</span>) </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result</span>) </span>{

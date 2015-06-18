@@ -20,7 +20,7 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 	$scope.formFilter = {
 		dateFrom:<span class="hljs-string">'2014-04-09'</span>,
 		dateTo: <span class="hljs-string">'2014-11-01'</span>,
-		country: [],
+		country: [<span class="hljs-string">"Italy"</span>],
 		importance: [<span class="hljs-string">"bull1"</span>],
 		descriptionText: <span class="hljs-string">""</span>
 	}
@@ -34,7 +34,10 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 	}
 
 	$scope.submitForm = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-		dataResources.submit($scope.formFilter);
+		<span class="hljs-keyword">var</span> url = {
+			url : formRequest()
+		};
+		dataResources.submit($scope.formFilter, url);
 	}
 
 	$scope.clearStartDate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
@@ -54,6 +57,127 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
     	$scope.selectedTimeFrame = timeFrame;
     	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).addClass(<span class="hljs-string">'active'</span>);
     }
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">formRequest</span>(<span class="hljs-params"></span>)
+	</span>{
+		<span class="hljs-keyword">var</span> request = <span class="hljs-string">'http://195.128.78.52/'</span>;
+		<span class="hljs-keyword">var</span> stockString = $scope.selectedStock.replace(<span class="hljs-string">'/'</span>,<span class="hljs-string">''</span>);
+		request = request.concat(stockString+<span class="hljs-string">'_'</span>);
+		<span class="hljs-comment">//<span class="hljs-doctag"><span class="hljs-keyword">TODO</span></span>: check if dates from and to are correct</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>form the name of the file</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">var</span> startDate = moment($scope.start_date);
+		<span class="hljs-keyword">var</span> year = startDate.year();
+		request = request.concat(year % <span class="hljs-number">100</span>);
+		request = request.concat((<span class="hljs-string">"0"</span> + (startDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>));
+		request = request.concat((<span class="hljs-string">"0"</span> + startDate.date()).slice(-<span class="hljs-number">2</span>) + <span class="hljs-string">'_'</span>);
+
+		<span class="hljs-keyword">var</span> stopDate = moment($scope.stop_date);
+		<span class="hljs-keyword">var</span> year = stopDate.year();
+		request = request.concat(year % <span class="hljs-number">100</span>);
+		request = request.concat((<span class="hljs-string">"0"</span> + (stopDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>));
+		request = request.concat((<span class="hljs-string">"0"</span> + stopDate.date()).slice(-<span class="hljs-number">2</span>)  + <span class="hljs-string">'.csv?'</span>);
+
+		<span class="hljs-comment">//concat market id</span>
+		request = request.concat(<span class="hljs-string">'market=5'</span>);
+
+		<span class="hljs-comment">//concat stock id</span>
+		<span class="hljs-keyword">var</span> stockId = getStockIdByCode($scope.selectedStock);
+		request = request.concat(<span class="hljs-string">'&amp;em='</span> + stockId);
+
+		<span class="hljs-comment">//concat the code of stock</span>
+		request = request.concat(<span class="hljs-string">'&amp;code='</span> + stockString);
+
+		<span class="hljs-comment">//concat date of start date</span>
+		request = request.concat(<span class="hljs-string">'&amp;df='</span> + startDate.date());
+
+		<span class="hljs-comment">//concat month of start date</span>
+		request = request.concat(<span class="hljs-string">'&amp;mf='</span> + startDate.month());
+
+		<span class="hljs-comment">//concat year of start date</span>
+		request = request.concat(<span class="hljs-string">'&amp;yf='</span> + startDate.year());
+
+		<span class="hljs-comment">//concat start date</span>
+		request = request.concat(<span class="hljs-string">'&amp;from='</span> + (<span class="hljs-string">"0"</span> + startDate.date()).slice(-<span class="hljs-number">2</span>) + <span class="hljs-string">'.'</span> + (<span class="hljs-string">"0"</span> + (startDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>) + 
+			<span class="hljs-string">'.'</span> + startDate.year());
+
+		<span class="hljs-comment">//concat date of stop date</span>
+		request = request.concat(<span class="hljs-string">'&amp;dt='</span> + stopDate.date());
+
+		<span class="hljs-comment">//concat month of stop date</span>
+		request = request.concat(<span class="hljs-string">'&amp;mt='</span> + stopDate.month());
+
+		<span class="hljs-comment">//concat year of stop date</span>
+		request = request.concat(<span class="hljs-string">'&amp;yt='</span> + stopDate.year());
+
+		<span class="hljs-comment">//concat stop date</span>
+		request = request.concat(<span class="hljs-string">'&amp;to='</span> + (<span class="hljs-string">"0"</span> + stopDate.date()).slice(-<span class="hljs-number">2</span>) + <span class="hljs-string">'.'</span> + (<span class="hljs-string">"0"</span> + (stopDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>) + 
+			<span class="hljs-string">'.'</span> + stopDate.year());
+
+		<span class="hljs-comment">//concat timeFrame</span>
+		request = request.concat(<span class="hljs-string">'&amp;p='</span> + timeFrameDictionary[$scope.selectedTimeFrame]);
+
+		<span class="hljs-comment">//concat filename</span>
+		request = request.concat(<span class="hljs-string">'&amp;f='</span>+stockString+<span class="hljs-string">'_'</span>);
+		<span class="hljs-keyword">var</span> startDate = moment($scope.start_date);
+		<span class="hljs-keyword">var</span> year = startDate.year();
+		request = request.concat(year % <span class="hljs-number">100</span>);
+		request = request.concat((<span class="hljs-string">"0"</span> + (startDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>));
+		request = request.concat((<span class="hljs-string">"0"</span> + startDate.date()).slice(-<span class="hljs-number">2</span>) + <span class="hljs-string">'_'</span>);
+
+		<span class="hljs-keyword">var</span> stopDate = moment($scope.stop_date);
+		<span class="hljs-keyword">var</span> year = stopDate.year();
+		request = request.concat(year % <span class="hljs-number">100</span>);
+		request = request.concat((<span class="hljs-string">"0"</span> + (stopDate.month() + <span class="hljs-number">1</span>)).slice(-<span class="hljs-number">2</span>));
+		request = request.concat((<span class="hljs-string">"0"</span> + stopDate.date()).slice(-<span class="hljs-number">2</span>));
+
+		<span class="hljs-comment">//concat file format</span>
+		request = request.concat(<span class="hljs-string">'&amp;e=.csv'</span>);
+		
+		<span class="hljs-comment">//concat stock pair</span>
+		request = request.concat(<span class="hljs-string">'&amp;cn='</span> + stockString);
+
+		<span class="hljs-comment">//concat date format</span>
+		request = request.concat(<span class="hljs-string">'&amp;dtf=1'</span>);
+
+		<span class="hljs-comment">//concat time format</span>
+		request = request.concat(<span class="hljs-string">'&amp;tmf=2'</span>);
+
+		<span class="hljs-comment">//concat parameters of time to be give</span>
+		request = request.concat(<span class="hljs-string">'&amp;MSOR=1&amp;mstimever=0'</span>);
+
+		<span class="hljs-comment">//concat the separator (";")</span>
+		request = request.concat(<span class="hljs-string">'&amp;sep=3&amp;sep2=1'</span>);
+
+		<span class="hljs-comment">//concat format of file representative</span>
+		request = request.concat(<span class="hljs-string">'&amp;datf=1'</span>);
+
+		<span class="hljs-comment">//concat the presence of header</span>
+		request = request.concat(<span class="hljs-string">'&amp;at=1'</span>);
+
+		<span class="hljs-built_in">console</span>.log(request);
+		<span class="hljs-keyword">return</span> request;
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStockIdByCode</span>(<span class="hljs-params">stockCode</span>)
+	</span>{
+		<span class="hljs-keyword">var</span> stockId = <span class="hljs-literal">null</span>;
+		$scope.stocks.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stock</span>)
+		</span>{
+			<span class="hljs-keyword">if</span> (stock[<span class="hljs-string">'code'</span>] === stockCode) {
+				stockId = stock[<span class="hljs-string">'id'</span>];
+			}
+		});
+
+		<span class="hljs-keyword">return</span> stockId;
+	}
+
+	<span class="hljs-keyword">var</span> timeFrameDictionary = {
+		<span class="hljs-string">"timeFrame5"</span>: <span class="hljs-number">3</span>,
+		<span class="hljs-string">"timeFrame15"</span>: <span class="hljs-number">5</span>,
+		<span class="hljs-string">"timeFrame30"</span>: <span class="hljs-number">6</span>,
+		<span class="hljs-string">"timeFrame1H"</span>: <span class="hljs-number">7</span>,
+		<span class="hljs-string">"timeFrame1D"</span>: <span class="hljs-number">8</span>,
+		<span class="hljs-string">"timeFrame1W"</span>: <span class="hljs-number">9</span>,
+		<span class="hljs-string">"timeFrame1M"</span>: <span class="hljs-number">10</span>
+	}
 
 	$scope.countries = [
 		{fullName: <span class="hljs-string">"Argentina"</span>, currency: <span class="hljs-string">"ARS"</span>, checked: <span class="hljs-literal">false</span>},

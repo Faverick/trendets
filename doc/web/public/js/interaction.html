@@ -3,10 +3,15 @@
     <span class="hljs-keyword">var</span> events = {};
     <span class="hljs-keyword">var</span> stocks = {};
 
-    <span class="hljs-keyword">var</span> submit = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">form</span>)</span>{
+    <span class="hljs-keyword">var</span> submit = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">form, urlToRequest</span>)</span>{
       $http.post(<span class="hljs-string">'/api/events'</span>, form).
         success(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
           events = data;
+        });
+
+      $http.post(<span class="hljs-string">'/api/stocks'</span>, urlToRequest).
+        success(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{
+          stocks = data;
         });
     };
 

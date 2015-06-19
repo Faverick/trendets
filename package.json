@@ -36,7 +36,9 @@
     "should": "*",
     "sqlite3": "^3.0.4",
     "techan": "andredumas/techan.js",
-    "winston": "*"
+    "winston": "*",
+    "babyparse": "^0.4.3",
+    "async": "^1.2.1"
   },
   "description": "visual calendar",
   "main": "gulpfile.js",

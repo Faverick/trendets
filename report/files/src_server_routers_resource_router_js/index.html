@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">75.38</p>
+      <p class="stat">73.45</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">109</p>
+      <p class="stat">133</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">21.46</p>
+      <p class="stat">22.76</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.85</p>
+      <p class="stat">1.25</p>
     </div>
   </div>
 </div>
@@ -93,7 +93,9 @@
     bodyParser = require(&#039;body-parser&#039;),
     rek = require(&#039;rekuire&#039;),
     path = require(&#039;path&#039;),
-    request = require(&#039;request&#039;);
+    request = require(&#039;request&#039;),
+    papa = require(&#039;babyparse&#039;),
+    async = require(&#039;async&#039;);
 
 var settings = rek(&#039;settings&#039;),
     TrendetsDb = rek(&#039;db&#039;),
@@ -153,36 +155,58 @@ function addRestStocksResource()
 
     router.route(&#039;/&#039; + settings.resource)
         .post(function (req, res) {
-            var options = {
-                url: req.body[&#039;url&#039;],
-                headers: {
-                    &#039;Host&#039;: &#039;195.128.78.52&#039;,
-                    &#039;User-Agent&#039;: &#039;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36&#039;,
-                    &#039;Accept&#039;: &#039;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#039;,
-                    &#039;Accept-Language&#039;: &#039;ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3&#039;,
-                    &#039;Accept-Encoding&#039;: &#039;null&#039;,
-                    &#039;Referer&#039;: &#039;http://www.finam.ru/profile/forex/eur-usd/export/&#039;,
-                    &#039;Connection&#039;: &#039;keep-alive&#039;
+            async.parallel([
+                function (callback) {
+                    var allStocks = [];
+                    var options = {
+                        url: req.body[&#039;url&#039;],
+                        headers: {
+                            &#039;Host&#039;: &#039;195.128.78.52&#039;,
+                            &#039;User-Agent&#039;: &#039;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36&#039;,
+                            &#039;Accept&#039;: &#039;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#039;,
+                            &#039;Accept-Language&#039;: &#039;ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3&#039;,
+                            &#039;Accept-Encoding&#039;: &#039;null&#039;,
+                            &#039;Referer&#039;: &#039;http://www.finam.ru/profile/forex/eur-usd/export/&#039;,
+                            &#039;Connection&#039;: &#039;keep-alive&#039;
+                        }
+                    }
+                    logger.info(&quot;about to send request for stocks&quot;);
+                    request.get(options, function (error, response, body) {
+                        if (!error &amp;&amp; response.statusCode == 200) {
+                            papa.parse(body, {
+                                worker: true,
+                                step: function(results) {
+                                    var stock = {
+                                        code: results.data[0][0],
+                                        period: results.data[0][1],
+                                        date: results.data[0][2],
+                                        time: results.data[0][3],
+                                        open: results.data[0][4],
+                                        high: results.data[0][5],
+                                        low: results.data[0][6],
+                                        close: results.data[0][7],
+                                        volume: results.data[0][8] 
+                                    }
+                                    allStocks.push(stock);
+                                }
+                            });
+                            callback(false, allStocks);
+                        } else{
+                            logger.error(error);
+                            console.log(error);
+                            callback(true); 
+                            return;
+                        }  
+                    });
+                },],
+                function(err, results) {
+                    if(err) { console.log(err); res.send(500,&quot;Server Error&quot;); return; }
+                    res.send(results[0]);
                 }
-            };
-            logger.info(&quot;about to send request for stocks&quot;);
-            request.get(options, callback);
+            );
         });
 
-    function callback(error, response, body) {
-        logger.info(&quot;entered callback&quot;);
-        if (!error &amp;&amp; response.statusCode == 200) {
-            var allEvents = [];
-            // var json = JSON.parse(body);
-            // console.log(123123);
-            // console.log(json);
-            console.log(body);
-        } else{
-            logger.error(error);
-            console.log(error);
-        }
-        
-    }
+    
 }
 function responseJson(resp) {
     return function (result) {

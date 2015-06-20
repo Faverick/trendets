@@ -1,7 +1,7 @@
 define([
     'd3',
-    'components/sl',
-    'utils/yScaleTransform'
+    'js/chart/components/sl',
+    'js/chart/utils/yScaleTransform'
 ], function (d3, sl, yScaleTransform) {
     'use strict';
 

@@ -1,7 +1,7 @@
 define([
     'd3',
-    'utils/tickWidth',
-    'components/sl'
+    'js/chart/utils/tickWidth',
+    'js/chart/components/sl'
 ], function (d3, tickWidth, sl) {
     'use strict';
 

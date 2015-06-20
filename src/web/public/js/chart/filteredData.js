@@ -1,13 +1,13 @@
 define([
     'd3',
-    'components/sl',
-    'MockData',
-    'utils/tickWidth',
+    'js/chart/components/sl',
+    'js/chart/MockData',
+    'js/chart/utils/tickWidth',
     'moment',
     'moment-range',
-    'components/ohlcBarSeries',
+    'js/chart/components/ohlcBarSeries',
     'modernizr',
-    'zoomChart'
+    'js/chart/zoomChart'
 ], function (d3, sl, MockData, tickWidth, moment) {
     'use strict';
 

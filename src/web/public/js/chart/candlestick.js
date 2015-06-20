@@ -1,8 +1,8 @@
 define([
     'd3',
-    'components/sl',
-    'MockData',
-    'components/candlestickSeries'
+    'js/chart/components/sl',
+    'js/chart/MockData',
+    'js/chart/components/candlestickSeries'
 ], function (d3, sl, MockData) {
     'use strict';
 

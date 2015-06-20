@@ -1,6 +1,6 @@
 define([
     'd3',
-    'components/sl'
+    'js/chart/components/sl'
 ], function (d3, sl) {
     'use strict';
 

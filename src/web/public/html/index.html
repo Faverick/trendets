@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="TrendetsApp">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Trendets</title>
         <!-- inject:css -->
@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="/style/main.css">
     <link rel="stylesheet" href="/style/stock-plot.css">
     <link rel="stylesheet" href="/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
-    <link rel="stylesheet" href="main-plot/style/style.css" />
+    <link rel="stylesheet" href="/style/style.css" />
+
 </head>
 <body>
 
@@ -94,20 +95,12 @@
     <div class="container" id="plotContainer">
     </div>
 
-    <script src="/bower_components/angular/angular.min.js"></script>
-    <script src="/bower_components/angular-route/angular-route.min.js"></script>
-    <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
-    <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/bower_components/moment/moment.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
-    <script src="/bower_components/d3/d3.js"></script>
-    <script src="/bower_components/TechanJS/dist/techan.js"></script>
+    <!--<script src="require.config.js"></script>
+
     <script src="/js/interaction.js"></script>
     <script src="/js/index.js"></script>
-    <!--<script src="/js/stock-plot2.js"></script>-->
-    <script src="main-plot/js/require.config.js"></script>
-    <script data-main="main-plot/js/ohlcGeometricZoom.js" src="main-plot/js/lib/require.js"></script>
+    <script src="/js/stock-plot2.js"></script>-->
+    
+    <script data-main="require.config.js" src="lib/require.js"></script>
 </body>
 </html>

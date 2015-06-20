@@ -1,7 +1,7 @@
 define ([
     'd3',
-    'components/sl',
-    'components/ohlcBar'
+    'js/chart/components/sl',
+    'js/chart/components/ohlcBar'
 ], function (d3, sl) {
     'use strict';
 

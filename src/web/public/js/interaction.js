@@ -1,24 +1,26 @@
-angular.module('TrendetsApp.Interaction', [])
-  .factory('dataResources', ['$http',  function($http) {
-    var events = {};
-    var stocks = {};
+define(['angular'
+], function(angular){
+  angular.module('TrendetsApp.Interaction', [])
+    .factory('dataResources', ['$http',  function($http) {
+      var events = {};
+      var stocks = {};
 
 
-    var submit = function(form, urlToRequest, callback){
-      var eventsReceived = false;
-      var stocksReceived = false;
+      var submit = function(form, urlToRequest, callback){
+        var eventsReceived = false;
+        var stocksReceived = false;
 
-      $http.post('/api/events', form).
-        success(function(data) {
-          events = data;
-          onDataReceived('events');
-        });
+        $http.post('/api/events', form).
+          success(function(data) {
+            events = data;
+            onDataReceived('events');
+          });
 
-      $http.post('/api/stocks', urlToRequest).
-        success(function(data) {
-          stocks = data;
-          onDataReceived('stocks');
-        });
+        $http.post('/api/stocks', urlToRequest).
+          success(function(data) {
+            stocks = data;
+            onDataReceived('stocks');
+          });
 
         var onDataReceived = function(type){
           if (type==='events') {
@@ -33,13 +35,15 @@ angular.module('TrendetsApp.Interaction', [])
               stocks: stocks});
           };
         }
-    };
+      };
 
-    
+      
 
-    return {
-      events: events,
-      stocks: stocks,
-      submit: submit
-    };
-}]);
+      return {
+        events: events,
+        stocks: stocks,
+        submit: submit
+      };
+  }]);
+})
+

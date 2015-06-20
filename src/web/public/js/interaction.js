@@ -1,5 +1,6 @@
-define(['angular'
-], function(angular){
+define(['angular',
+  'moment'
+], function(angular, moment){
   angular.module('TrendetsApp.Interaction', [])
     .factory('dataResources', ['$http',  function($http) {
       var events = {};
@@ -19,6 +20,9 @@ define(['angular'
         $http.post('/api/stocks', urlToRequest).
           success(function(data) {
             stocks = data;
+            stocks.forEach(function(i){
+              i.date = moment(i.date, "DD/MM/YY HH:mm").toDate();
+            })
             onDataReceived('stocks');
           });
 

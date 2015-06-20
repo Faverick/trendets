@@ -16,15 +16,19 @@ define([
         makeChart: function(dataSeries){
             var hasVectorEffect = Modernizr.testProp('vectorEffect');
 
-            var mockData = new MockData(0, 0.1, 100, 50, function (moment) {
+            /*var mockData = new MockData(0, 0.1, 100, 50, function (moment) {
                 return !(moment.day() === 0 || moment.day() === 6);
             });
 
             var fromDate = new Date(2008, 8, 1),
                 toDate = new Date(2014, 8, 1);
 
-            var data = mockData.generateOHLC(fromDate, toDate);
-            //var data = dataSeries.stocks;
+            var data = mockData.generateOHLC(fromDate, toDate);*/
+
+
+            var data = dataSeries.stocks;
+            var fromDate = data[0].date,
+                toDate = data[data.length-1].date;
 
             var xScale = d3.time.scale(),
                 yScale = d3.scale.linear(),

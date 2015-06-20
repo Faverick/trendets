@@ -5,7 +5,7 @@ var defaultParameters={
 	investing:{
 		language: 'en',
 		dateFrom:'2015-04-02',
-		dateTo: '2015-04-02',
+		dateTo: '2015-06-19',
 		country: [],
 		importance: [],
 		quotes_search_text: ''
@@ -28,10 +28,10 @@ var defaultParameters={
 }
 
 function downloadData(){
-	return preparation.downloadEvents(defaultParameters['investing'])
-		.then(function () {
-			return preparation.downloadStocks(defaultParameters['stocks']);
-		});
+	return preparation.downloadEvents(defaultParameters['investing']);
+		//.then(function () {
+		//	return preparation.downloadStocks(defaultParameters['stocks']);
+		//});
 }
 
 function uploadData(){

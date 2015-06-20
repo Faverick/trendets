@@ -45,9 +45,7 @@ define(['angular',
 				$scope.filterFormVisibility = true;
 		}
 
-		$scope.submitForm = function() {
-			chartManager.makeChart(null);
-		
+		$scope.submitForm = function() {		
 			var url = {
 				url : formRequest()
 			};
@@ -156,10 +154,10 @@ define(['angular',
 			request = request.concat('&cn=' + stockString);
 
 			//concat date format
-			request = request.concat('&dtf=1');
+			request = request.concat('&dtf=4');
 
 			//concat time format
-			request = request.concat('&tmf=2');
+			request = request.concat('&tmf=4');
 
 			//concat parameters of time to be give
 			request = request.concat('&MSOR=1&mstimever=0');

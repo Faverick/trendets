@@ -1,12 +1,14 @@
 var rek = require('rekuire');
 var TrendetsDb = rek('db');
 var q = require('q');
+var logger = rek('winstonlog');
 
 function DbHandler(dbPath){
 
 	var db = new TrendetsDb(dbPath);
 
 	this.isHandlerReady = function(){ 
+		logger.info('entered db-handler/DbHandler.isHandlerReady');
 		return db.exists() ? 'ok' : db.create();
 	}
 

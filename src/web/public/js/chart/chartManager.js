@@ -31,7 +31,7 @@ define([
                 toDate = data[data.length-1].date;
 
             var xScale = d3.time.scale(),
-                yScale = d3.scale.linear(),
+                yScale = d3.scale.linear(), 
                 initialScale;
 
             var xAxis = d3.svg.axis()

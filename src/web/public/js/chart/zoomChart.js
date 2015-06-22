@@ -12,8 +12,10 @@ define([
         var zoomChart = function () {
             var margin = {top: 20, right: 20, bottom: 30, left: 50},
                 width = $(window).width() - margin.left - margin.right - 10,
-                height = $(window).height() - $("#optionsContainer").height() - margin.top - margin.bottom - 10,
-                stockPart = 0.6;
+                height = $(window).height() - $("#optionsContainer").height() - margin.top - margin.bottom - 10;
+
+            // What part of the viewport will be taken by stock plot
+            var stockPart = 0.6; 
 
             // Create svg element
             var svg = d3.select('#plotContainer').classed('chart', true).append('svg')
@@ -57,7 +59,7 @@ define([
 
             // Set scale ranges
             xScale.range([0, width]);
-            yScale.range([height, 0]);
+            yScale.range([height*stockPart, 0]);
 
             // Reset zoom.
             zoom.x(xScale);

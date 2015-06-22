@@ -27,7 +27,7 @@ define(['angular',
 	app.controller('FormController', ["$scope", 'dataResources', function($scope, dataResources){
 		$scope.filterFormVisibility = false;
 		$scope.selectedStock = "EUR/USD";
-		$scope.selectedTimeFrame = "timeFrame1H";
+		$scope.selectedTimeFrame = "timeFrame1D";
 		$scope.formFilter = {
 			dateFrom:'2014-04-09',
 			dateTo: '2014-11-01',
@@ -35,6 +35,9 @@ define(['angular',
 			importance: ["bull1"],
 			descriptionText: ""
 		}
+		$scope.start_date = '2014-01-01';
+		$scope.stop_date = '2015-01-01';
+
 		$scope.dataResources = dataResources;
 		$("#" + $scope.selectedTimeFrame).addClass('active');
 

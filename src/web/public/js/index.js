@@ -56,7 +56,10 @@ define(['angular',
 		}
 
 		var refreshChart = function(dataSeries){
-			chartManager.makeChart(dataSeries);
+			options = {
+				selectedTimeFrame: $scope.selectedTimeFrame
+			}
+			chartManager.makeChart(dataSeries, options);
 		}
 
 		$scope.clearStartDate = function() {

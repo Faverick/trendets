@@ -13,7 +13,7 @@ define([
     'use strict';
 
     return {
-        makeChart: function(dataSeries){
+        makeChart: function(dataSeries, options){
             var hasVectorEffect = Modernizr.testProp('vectorEffect');
 
             /*var mockData = new MockData(0, 0.1, 100, 50, function (moment) {
@@ -54,7 +54,7 @@ define([
                 .on('zoomend', zoomend);
 
 
-            var zoomChart = sl.example.zoomChart(zoom, data, series, xScale, yScale, xAxis, yAxis, fromDate, toDate);
+            var zoomChart = sl.example.zoomChart(zoom, data, series, xScale, yScale, xAxis, yAxis, fromDate, toDate, options.selectedTimeFrame);
             zoomChart();
 
             initialScale = zoomChart.initialScale();

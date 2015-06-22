@@ -5,7 +5,7 @@ define([
 ], function (d3, tickWidth, sl) {
     'use strict';
 
-    sl.example.zoomChart = function (zoom, data, series, xScale, yScale, xAxis, yAxis, fromDate, toDate) {
+    sl.example.zoomChart = function (zoom, data, series, xScale, yScale, xAxis, yAxis, fromDate, toDate, timeFrame) {
 
         var initialScale = d3.scale.linear();
 
@@ -64,7 +64,8 @@ define([
             // Reset zoom.
             zoom.x(xScale);
 
-            series.tickWidth(tickWidth(xScale, fromDate, toDate));
+            series.tickWidth(tickWidth(xScale, fromDate, toDate, timeFrame));
+            //series.tickWidth(1.6);
 
             // Draw axes
             g.append('g')

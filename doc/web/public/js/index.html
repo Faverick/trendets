@@ -16,14 +16,15 @@ app.filter(<span class="hljs-string">'range'</span>, <span class="hljs-function"
 app.controller(<span class="hljs-string">'FormController'</span>, [<span class="hljs-string">"$scope"</span>, <span class="hljs-string">'dataResources'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$scope, dataResources</span>)</span>{
 	$scope.filterFormVisibility = <span class="hljs-literal">false</span>;
 	$scope.selectedStock = <span class="hljs-string">"EUR/USD"</span>;
-	$scope.selectedTimeFrame = <span class="hljs-string">"timeFrame1H"</span>;
-	$scope.formFilter = {
-		dateFrom:<span class="hljs-string">'2014-04-09'</span>,
-		dateTo: <span class="hljs-string">'2014-11-01'</span>,
-		country: [<span class="hljs-string">"Italy"</span>],
-		importance: [<span class="hljs-string">"bull1"</span>],
-		descriptionText: <span class="hljs-string">""</span>
+	$scope.eventDescription = {
+		text: <span class="hljs-string">""</span>
 	}
+	$scope.selectedTimeFrame = <span class="hljs-string">"timeFrame1H"</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>$scope.formFilter = {
+    dateFrom: $scope.start_date,
+    dateTo: $scope.stop_date,
+    country: [&#39;Euro Zone&#39;, &#39;Germany&#39;, &#39;Italy&#39;, &#39;Russia&#39;, &#39;United Kingdom&#39;, &#39;United States&#39;],
+    importance: [&quot;bull1&quot;],
+    descriptionText: &quot;&quot;</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-comment">// </span>
 	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).addClass(<span class="hljs-string">'active'</span>);
 
 	$scope.btnFilterClick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
@@ -37,7 +38,14 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		<span class="hljs-keyword">var</span> url = {
 			url : formRequest()
 		};
-		dataResources.submit($scope.formFilter, url);
+		<span class="hljs-keyword">var</span> formFilter = {
+			dateFrom: $scope.start_date,
+			dateTo: $scope.stop_date,
+			country: getCheckedCountries(),
+			importance: getCheckedImportances(),
+			descriptionText: $scope.eventDescription[<span class="hljs-string">'text'</span>]
+		}
+		dataResources.submit(formFilter, url);
 	}
 
 	$scope.clearStartDate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
@@ -58,8 +66,7 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
     	$(<span class="hljs-string">"#"</span> + $scope.selectedTimeFrame).addClass(<span class="hljs-string">'active'</span>);
     }
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">formRequest</span>(<span class="hljs-params"></span>)
-	</span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">formRequest</span>(<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">var</span> request = <span class="hljs-string">'http://195.128.78.52/'</span>;
 		<span class="hljs-keyword">var</span> stockString = $scope.selectedStock.replace(<span class="hljs-string">'/'</span>,<span class="hljs-string">''</span>);
 		request = request.concat(stockString+<span class="hljs-string">'_'</span>);
@@ -152,12 +159,10 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		<span class="hljs-comment">//concat the presence of header</span>
 		request = request.concat(<span class="hljs-string">'&amp;at=1'</span>);
 
-		<span class="hljs-built_in">console</span>.log(request);
 		<span class="hljs-keyword">return</span> request;
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStockIdByCode</span>(<span class="hljs-params">stockCode</span>)
-	</span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStockIdByCode</span>(<span class="hljs-params">stockCode</span>) </span>{
 		<span class="hljs-keyword">var</span> stockId = <span class="hljs-literal">null</span>;
 		$scope.stocks.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stock</span>)
 		</span>{
@@ -169,6 +174,29 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		<span class="hljs-keyword">return</span> stockId;
 	}
 
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCheckedCountries</span>(<span class="hljs-params"></span>) </span>{
+		<span class="hljs-keyword">var</span> checkedCountries = [];
+		$scope.countries.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">country</span>)
+		</span>{
+			<span class="hljs-keyword">if</span> (country[<span class="hljs-string">'checked'</span>] == <span class="hljs-literal">true</span>)
+				checkedCountries.push(country[<span class="hljs-string">'fullName'</span>]);
+		})
+
+		<span class="hljs-keyword">return</span> checkedCountries;
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCheckedImportances</span>(<span class="hljs-params"></span>) </span>{
+		<span class="hljs-keyword">var</span> checkedImportances = [];
+
+		$scope.importances.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">importance</span>)
+		</span>{
+			<span class="hljs-keyword">if</span> (importance[<span class="hljs-string">'checked'</span>] == <span class="hljs-literal">true</span>)
+				checkedImportances.push(importance[<span class="hljs-string">'name'</span>]);
+		})
+
+		<span class="hljs-keyword">return</span> checkedImportances;
+	}
+
 	<span class="hljs-keyword">var</span> timeFrameDictionary = {
 		<span class="hljs-string">"timeFrame5"</span>: <span class="hljs-number">3</span>,
 		<span class="hljs-string">"timeFrame15"</span>: <span class="hljs-number">5</span>,
@@ -178,6 +206,12 @@ app.controller(<span class="hljs-string">'FormController'</span>, [<span class="
 		<span class="hljs-string">"timeFrame1W"</span>: <span class="hljs-number">9</span>,
 		<span class="hljs-string">"timeFrame1M"</span>: <span class="hljs-number">10</span>
 	}
+
+	$scope.importances = [
+		{name: <span class="hljs-string">"bull1"</span>, checked: <span class="hljs-literal">true</span>},
+		{name: <span class="hljs-string">"bull2"</span>, checked: <span class="hljs-literal">true</span>},
+		{name: <span class="hljs-string">"bull3"</span>, checked: <span class="hljs-literal">true</span>}
+	]
 
 	$scope.countries = [
 		{fullName: <span class="hljs-string">"Argentina"</span>, currency: <span class="hljs-string">"ARS"</span>, checked: <span class="hljs-literal">false</span>},

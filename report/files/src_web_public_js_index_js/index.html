@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">43.80</p>
+      <p class="stat">46.71</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">370</p>
+      <p class="stat">406</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">31.12</p>
+      <p class="stat">31.51</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">7.51</p>
+      <p class="stat">7.83</p>
     </div>
   </div>
 </div>
@@ -107,14 +107,17 @@ app.filter(&#039;range&#039;, function() {
 app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResources&#039;, function($scope, dataResources){
 	$scope.filterFormVisibility = false;
 	$scope.selectedStock = &quot;EUR/USD&quot;;
-	$scope.selectedTimeFrame = &quot;timeFrame1H&quot;;
-	$scope.formFilter = {
-		dateFrom:&#039;2014-04-09&#039;,
-		dateTo: &#039;2014-11-01&#039;,
-		country: [&quot;Italy&quot;],
-		importance: [&quot;bull1&quot;],
-		descriptionText: &quot;&quot;
+	$scope.eventDescription = {
+		text: &quot;&quot;
 	}
+	$scope.selectedTimeFrame = &quot;timeFrame1H&quot;;
+	// $scope.formFilter = {
+	// 	dateFrom: $scope.start_date,
+	// 	dateTo: $scope.stop_date,
+	// 	country: [&#039;Euro Zone&#039;, &#039;Germany&#039;, &#039;Italy&#039;, &#039;Russia&#039;, &#039;United Kingdom&#039;, &#039;United States&#039;],
+	// 	importance: [&quot;bull1&quot;],
+	// 	descriptionText: &quot;&quot;
+	// }
 	$(&quot;#&quot; + $scope.selectedTimeFrame).addClass(&#039;active&#039;);
 
 	$scope.btnFilterClick = function() {
@@ -128,7 +131,14 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 		var url = {
 			url : formRequest()
 		};
-		dataResources.submit($scope.formFilter, url);
+		var formFilter = {
+			dateFrom: $scope.start_date,
+			dateTo: $scope.stop_date,
+			country: getCheckedCountries(),
+			importance: getCheckedImportances(),
+			descriptionText: $scope.eventDescription[&#039;text&#039;]
+		}
+		dataResources.submit(formFilter, url);
 	}
 
 	$scope.clearStartDate = function() {
@@ -149,8 +159,7 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
     	$(&quot;#&quot; + $scope.selectedTimeFrame).addClass(&#039;active&#039;);
     }
 
-	function formRequest()
-	{
+	function formRequest() {
 		var request = &#039;http://195.128.78.52/&#039;;
 		var stockString = $scope.selectedStock.replace(&#039;/&#039;,&#039;&#039;);
 		request = request.concat(stockString+&#039;_&#039;);
@@ -246,12 +255,10 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 		//concat the presence of header
 		request = request.concat(&#039;&amp;at=1&#039;);
 
-		console.log(request);
 		return request;
 	}
 
-	function getStockIdByCode(stockCode)
-	{
+	function getStockIdByCode(stockCode) {
 		var stockId = null;
 		$scope.stocks.forEach(function (stock)
 		{
@@ -263,6 +270,29 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 		return stockId;
 	}
 
+	function getCheckedCountries() {
+		var checkedCountries = [];
+		$scope.countries.forEach(function (country)
+		{
+			if (country[&#039;checked&#039;] == true)
+				checkedCountries.push(country[&#039;fullName&#039;]);
+		})
+
+		return checkedCountries;
+	}
+
+	function getCheckedImportances() {
+		var checkedImportances = [];
+
+		$scope.importances.forEach(function (importance)
+		{
+			if (importance[&#039;checked&#039;] == true)
+				checkedImportances.push(importance[&#039;name&#039;]);
+		})
+
+		return checkedImportances;
+	}
+
 	var timeFrameDictionary = {
 		&quot;timeFrame5&quot;: 3,
 		&quot;timeFrame15&quot;: 5,
@@ -272,6 +302,12 @@ app.controller(&#039;FormController&#039;, [&quot;$scope&quot;, &#039;dataResour
 		&quot;timeFrame1W&quot;: 9,
 		&quot;timeFrame1M&quot;: 10
 	}
+
+	$scope.importances = [
+		{name: &quot;bull1&quot;, checked: true},
+		{name: &quot;bull2&quot;, checked: true},
+		{name: &quot;bull3&quot;, checked: true}
+	]
 
 	$scope.countries = [
 		{fullName: &quot;Argentina&quot;, currency: &quot;ARS&quot;, checked: false},

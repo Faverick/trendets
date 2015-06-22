@@ -16,14 +16,17 @@ app.filter('range', function() {
 app.controller('FormController', ["$scope", 'dataResources', function($scope, dataResources){
 	$scope.filterFormVisibility = false;
 	$scope.selectedStock = "EUR/USD";
-	$scope.selectedTimeFrame = "timeFrame1H";
-	$scope.formFilter = {
-		dateFrom:'2014-04-09',
-		dateTo: '2014-11-01',
-		country: ["Italy"],
-		importance: ["bull1"],
-		descriptionText: ""
+	$scope.eventDescription = {
+		text: ""
 	}
+	$scope.selectedTimeFrame = "timeFrame1H";
+	// $scope.formFilter = {
+	// 	dateFrom: $scope.start_date,
+	// 	dateTo: $scope.stop_date,
+	// 	country: ['Euro Zone', 'Germany', 'Italy', 'Russia', 'United Kingdom', 'United States'],
+	// 	importance: ["bull1"],
+	// 	descriptionText: ""
+	// }
 	$("#" + $scope.selectedTimeFrame).addClass('active');
 
 	$scope.btnFilterClick = function() {
@@ -37,7 +40,14 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		var url = {
 			url : formRequest()
 		};
-		dataResources.submit($scope.formFilter, url);
+		var formFilter = {
+			dateFrom: $scope.start_date,
+			dateTo: $scope.stop_date,
+			country: getCheckedCountries(),
+			importance: getCheckedImportances(),
+			descriptionText: $scope.eventDescription['text']
+		}
+		dataResources.submit(formFilter, url);
 	}
 
 	$scope.clearStartDate = function() {
@@ -58,8 +68,7 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
     	$("#" + $scope.selectedTimeFrame).addClass('active');
     }
 
-	function formRequest()
-	{
+	function formRequest() {
 		var request = 'http://195.128.78.52/';
 		var stockString = $scope.selectedStock.replace('/','');
 		request = request.concat(stockString+'_');
@@ -155,12 +164,10 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		//concat the presence of header
 		request = request.concat('&at=1');
 
-		console.log(request);
 		return request;
 	}
 
-	function getStockIdByCode(stockCode)
-	{
+	function getStockIdByCode(stockCode) {
 		var stockId = null;
 		$scope.stocks.forEach(function (stock)
 		{
@@ -172,6 +179,29 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		return stockId;
 	}
 
+	function getCheckedCountries() {
+		var checkedCountries = [];
+		$scope.countries.forEach(function (country)
+		{
+			if (country['checked'] == true)
+				checkedCountries.push(country['fullName']);
+		})
+
+		return checkedCountries;
+	}
+
+	function getCheckedImportances() {
+		var checkedImportances = [];
+
+		$scope.importances.forEach(function (importance)
+		{
+			if (importance['checked'] == true)
+				checkedImportances.push(importance['name']);
+		})
+
+		return checkedImportances;
+	}
+
 	var timeFrameDictionary = {
 		"timeFrame5": 3,
 		"timeFrame15": 5,
@@ -181,6 +211,12 @@ app.controller('FormController', ["$scope", 'dataResources', function($scope, da
 		"timeFrame1W": 9,
 		"timeFrame1M": 10
 	}
+
+	$scope.importances = [
+		{name: "bull1", checked: true},
+		{name: "bull2", checked: true},
+		{name: "bull3", checked: true}
+	]
 
 	$scope.countries = [
 		{fullName: "Argentina", currency: "ARS", checked: false},

@@ -1,5 +1,5 @@
 .filter-group {
-	width: 1120px; 
+	width: 1100px; 
 	border:1px solid black;
 	margin-left: 10%;
 }
@@ -45,9 +45,6 @@ html, body {
 	vertical-align: middle;
 }
 
-/*.filterWrapper{
-	width: 679px;
-}*/
 .filterWrapper{
 	position: absolute;
 	z-index: 100;
@@ -98,7 +95,7 @@ div.clear { clear: both; display: block; }
     background-color: #FFFFFF;
 }
 
-input[type="text"] {
+.dateTextBox {
    width: 120px;
    height: 34px;
 }
@@ -126,4 +123,23 @@ label {
 #plotContainer{
 	margin: 0px;
 	padding: 0px;
+}
+
+.alignCenter {
+    text-align: center;
+}
+
+.searchBox {
+    background-color: #F2F2F2;
+    padding: 10px 0px;
+    position: relative;
+}
+
+.inlineBlock {
+    display: inline-block;
+}
+
+.eventTextBox {
+    height: 26px;
+    width: 250px;
 }

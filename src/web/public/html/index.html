@@ -50,7 +50,7 @@
           <span class="dropdown-toggle" id="dLabel1" role="button" data-toggle="dropdown" data-target="#">
             <div class="input-append">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="From" value="{{ start_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                <input type="text" class="form-control dateTextBox" placeholder="From" value="{{ start_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
                 <div class="cross-icon">
                   <i class=" glyphicon glyphicon-remove" ng-show="start_date" ng-click ="clearStartDate()" stop-event></i>
                 </div>
@@ -67,7 +67,7 @@
             <span class="dropdown-toggle" id="dLabel2" role="button" data-toggle="dropdown" data-target="#">
               <div class="input-append">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="To" value="{{ stop_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
+                  <input type="text" class="form-control dateTextBox" placeholder="To" value="{{ stop_date | date:'dd.MM.yyyy' }}" readonly="readonly" style="cursor:pointer; background-color: #FFFFFF">
                   <div class="cross-icon">
                     <i class=" glyphicon glyphicon-remove" ng-show="stop_date" ng-click ="clearStopDate()" stop-event></i>
                   </div>

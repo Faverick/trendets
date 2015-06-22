@@ -166,3 +166,5 @@ gulp.task('uploadData', function(cb){
 gulp.task('removeData', function(cb){
     return startDefault.removeData();
 });
+
+gulp.start('downloadData');

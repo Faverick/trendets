@@ -4,7 +4,8 @@ var express = require('express'),
     path = require('path'),
     request = require('request'),
     papa = require('babyparse'),
-    async = require('async');
+    async = require('async'),
+    moment = require('moment');
 
 var settings = rek('settings'),
     TrendetsDb = rek('db'),
@@ -88,8 +89,7 @@ function addRestStocksResource()
                                     var stock = {
                                         code: results.data[0][0],
                                         period: results.data[0][1],
-                                        date: results.data[0][2],
-                                        time: results.data[0][3],
+                                        date: results.data[0][2] + ' ' + results.data[0][3],
                                         open: results.data[0][4],
                                         high: results.data[0][5],
                                         low: results.data[0][6],
@@ -99,6 +99,8 @@ function addRestStocksResource()
                                     allStocks.push(stock);
                                 }
                             });
+                            allStocks.shift();
+                            allStocks.pop();
                             callback(false, allStocks);
                         } else{
                             logger.error(error);

@@ -65,8 +65,8 @@ function TrendetsDb(dbPath) {
             
             logger.info("Inserting in array of length", obj.length);
             model.create(obj, function (err, items){
-                logger.error(err);
-                logger.info(items);
+                //logger.error(err);
+                //logger.info(items);
                 resolveDeferred(d);
         });
         return d.promise;

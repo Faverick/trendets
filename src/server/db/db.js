@@ -3,6 +3,7 @@ var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 var orm = require("orm");
 var q = require('q');
+var moment = require('moment');
 var rek = require('rekuire');
 var logger = rek('winstonlog');
 
@@ -87,14 +88,10 @@ function TrendetsDb(dbPath) {
             throw new Error("Provided bad parameters for importance or country");
         }
 
-        var date = new Date();
-        if(filterParam['dateTo'] !== ''){
-            date = new Date(filterParam['dateTo']);
-            date.setDate(date.getDate() + 1);
-        }
+        filterParam['dateTo'] = moment(filterParam['dateTo'], 'YYYY-MM-DD').add(1, 'd').format('YYYY-MM-DD');
 
         var d = q.defer();
-        model.find({time: orm.gte(filterParam['dateFrom']) && orm.lte(date.toISOString())
+        model.find({time: orm.between(filterParam['dateFrom'], filterParam['dateTo'])
                 , country: filterParam['country'], importance: filterParam['importance']
                 , description: orm.like("%"+filterParam['descriptionText']+"%")}, (function (error, events){
             if (error) {

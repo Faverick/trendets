@@ -39,8 +39,8 @@ define(['angular',
 		// 	descriptionText: ""
 		// }
 		$("#" + $scope.selectedTimeFrame).addClass('active');
-		$scope.start_date = '2014-01-01';
-		$scope.stop_date = '2015-01-01';
+		$scope.start_date = moment('2015-02-01', 'YYYY-MM-DD').toDate();
+		$scope.stop_date = moment('2015-02-03', 'YYYY-MM-DD').toDate();
 
 		$scope.btnFilterClick = function() {
 			if($scope.filterFormVisibility == true)
@@ -54,8 +54,8 @@ define(['angular',
 				url : formRequest()
 			};
 			var formFilter = {
-				dateFrom: $scope.start_date,
-				dateTo: $scope.stop_date,
+				dateFrom: moment($scope.start_date).format('YYYY-MM-DD'),
+				dateTo: moment($scope.stop_date).format('YYYY-MM-DD'),
 				country: getCheckedCountries(),
 				importance: getCheckedImportances(),
 				descriptionText: $scope.eventDescription['text']

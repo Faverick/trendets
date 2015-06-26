@@ -4,8 +4,8 @@ var preparation = rek('data-preparation')
 var defaultParameters={
 	investing:{
 		language: 'en',
-		dateFrom:'2015-04-02',
-		dateTo: '2015-06-19',
+		dateFrom:'2015-01-01',
+		dateTo: '2015-06-23',
 		country: [],
 		importance: [],
 		quotes_search_text: ''
